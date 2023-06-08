@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BAWebLab2.props" />
+</Project>
