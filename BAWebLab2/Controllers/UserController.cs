@@ -8,10 +8,10 @@ using BAWebLab2.Business;
 using System.Net.WebSockets;
 using System.Net;
 using Microsoft.AspNetCore.Cors;
-using System.Web.Http;
+
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
-[RoutePrefix("user")]
+[Route("user")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -29,8 +29,8 @@ public class UserController : ControllerBase
 
         _userBusiness = userBusiness;
     }
-    [Microsoft.AspNetCore.Mvc.Route("getListUserFilter")]
-    [HttpPost]
+    //[Microsoft.AspNetCore.Mvc.Route("getListUserFilter")]
+    [HttpPost("getListUserFilter")]
     [EnableCors]
     public   IActionResult GetAllProducts([Microsoft.AspNetCore.Mvc.FromBody] JsonDocument data  )
     {
@@ -51,8 +51,8 @@ public class UserController : ControllerBase
 
 
 
-    [Microsoft.AspNetCore.Mvc.Route("login")]
-    [HttpPost]
+    //[System.Web.Http.Route("login")]
+    [HttpPost("login")]
     [EnableCors]
     public IActionResult Login([System.Web.Http.FromBody] JsonDocument data)
     {
@@ -82,16 +82,95 @@ public class UserController : ControllerBase
     }
 
 
-    //[HttpGet("{id}")]
-    //public async Task<ActionResult<Product>> GetProductById(int id)
-    //{
-    //    var product = await _userRepository.GetProductById(id);
-    //    if (product == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    return product;
-    //}
 
-    // Thêm các phương thức API khác tùy ý
+    [HttpPost("adduser")]
+    [EnableCors]
+    public IActionResult addUser([FromBody] JsonDocument data)
+    {
+        //var json = JToken.Parse(string_json);
+        var t = _userBusiness.addUser(data);
+
+
+        //if (int.Parse(t.GetType().GetProperty("result").GetValue(t, null).ToString()) != 0)
+        //{
+        //    result.StatusCode = (int)HttpStatusCode.BadRequest;
+        //}    else
+        //{
+
+        //}
+
+        var result = new ObjectResult(t)
+        {
+            StatusCode = (int)HttpStatusCode.OK
+
+        };
+
+        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
+        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        return result;
+    }
+
+
+    [HttpPost("edituser")]
+    [EnableCors]
+    public IActionResult editUser([FromBody] JsonDocument data)
+    {
+        //var json = JToken.Parse(string_json);
+        var t = _userBusiness.editUser(data);
+
+
+        //if (int.Parse(t.GetType().GetProperty("result").GetValue(t, null).ToString()) != 0)
+        //{
+        //    result.StatusCode = (int)HttpStatusCode.BadRequest;
+        //}    else
+        //{
+
+        //}
+
+        var result = new ObjectResult(t)
+        {
+            StatusCode = (int)HttpStatusCode.OK
+
+        };
+
+        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
+        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        return result;
+    }
+
+    [HttpPost("deleteuser")]
+    [EnableCors]
+    public IActionResult deleteUser([FromBody] JsonDocument data)
+    {
+        //var json = JToken.Parse(string_json);
+        var t = _userBusiness.deleteUser(data);
+
+
+        //if (int.Parse(t.GetType().GetProperty("result").GetValue(t, null).ToString()) != 0)
+        //{
+        //    result.StatusCode = (int)HttpStatusCode.BadRequest;
+        //}    else
+        //{
+
+        //}
+
+        var result = new ObjectResult(t)
+        {
+            StatusCode = (int)HttpStatusCode.OK
+
+        };
+
+        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
+        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        return result;
+    }
+
+
+
 }

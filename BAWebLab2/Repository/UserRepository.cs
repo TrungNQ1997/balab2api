@@ -56,14 +56,56 @@ public class UserRepository
     }
 
 
-    //public async Task<Product> GetProductById(int id)
-    //{
-    //    using (var connection = new SqlConnection(_connectionString))
-    //    {
-    //        await connection.OpenAsync();
-    //        return await connection.QuerySingleOrDefaultAsync<Product>("SELECT * FROM Products WHERE Id = @Id", new { Id = id });
-    //    }
-    //}
+    public Object AddUser(DynamicParameters param)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
 
-    // Thêm các phương thức CRUD khác tùy ý
+
+            var customer = connection.Query("sysUserInfoAdd", param, commandType: CommandType.StoredProcedure);
+            var result = param.Get<Int64>("pret");
+
+            dynamic myObject = new ExpandoObject();
+            myObject.result = result;
+            return myObject;
+
+        }
+
+    }
+
+    public Object EditUser(DynamicParameters param)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+
+
+            var customer = connection.Query("sysUserInfoUpd", param, commandType: CommandType.StoredProcedure);
+            var result = param.Get<Int64>("pret");
+
+            dynamic myObject = new ExpandoObject();
+            myObject.result = result;
+            return myObject;
+
+        }
+
+    }
+
+    public Object DeleteUser(DynamicParameters param)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+
+
+            var customer = connection.Query("sysUserInfoDel", param, commandType: CommandType.StoredProcedure);
+            var result = param.Get<Int64>("pret");
+
+            dynamic myObject = new ExpandoObject();
+            myObject.result = result;
+            return myObject;
+
+        }
+
+
+    }
+
 }
