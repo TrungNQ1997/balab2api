@@ -49,6 +49,30 @@ public class UserRepository
 
             dynamic myObject = new ExpandoObject();
             myObject.result = result;
+            myObject.userInfo = customer;
+            return myObject;
+
+        }
+
+    }
+
+    public Object CheckLoginAndRole(DynamicParameters param)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+
+
+            var customer = connection.QueryMultiple("CheckTokenLoginAndGetRole", param, commandType: CommandType.StoredProcedure);
+            var ProductListOne = customer.Read<Object>().ToList();
+            var ProductListTwo = customer.Read<Object>().ToList();
+            var result = param.Get<Int64>("pret");
+            //var ProductListOne = customer.Read<Object>().ToList();
+            //var ProductListTwo = customer.Read<Object>().ToList();
+
+            dynamic myObject = new ExpandoObject();
+            myObject.is_login = result;
+            myObject.is_admin = ProductListOne;
+            myObject.role = ProductListTwo;
             return myObject;
 
         }

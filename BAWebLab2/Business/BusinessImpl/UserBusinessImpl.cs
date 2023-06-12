@@ -54,12 +54,31 @@ namespace BAWebLab2.Business
 
             parameters.Add("pUsername", (json.RootElement.GetProperty("username").ToString())) ;
             parameters.Add("pPass", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("pass").ToString())));
+            parameters.Add("pis_remember", (Boolean.Parse(json.RootElement.GetProperty("is_remember").ToString())));
             parameters.Add("pret", 0,DbType.Int64,ParameterDirection.Output);
              
             t = _userRepository.Login(parameters);
 
             return t;
         }
+
+        public Object checkLoginAndRole(JsonDocument json)
+        {
+
+            var t = new Object();
+
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("pToken", (json.RootElement.GetProperty("token").ToString()));
+            //parameters.Add("pMenu_id", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("pass").ToString())));
+            parameters.Add("pMenu_id", (int.Parse(json.RootElement.GetProperty("menu_id").ToString())));
+            parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+
+            t = _userRepository.CheckLoginAndRole(parameters);
+
+            return t;
+        }
+
 
         public Object addUser(JsonDocument json)
         {
@@ -116,16 +135,35 @@ namespace BAWebLab2.Business
         public Object deleteUser(JsonDocument json)
         {
 
+
+
+            var jobject = JObject.Parse(json.RootElement.ToString());
+            string user_id = jobject["user_id"].ToString();
+            var listDelete = jobject["listDelete"].ToArray();
             var t = new Object();
+            foreach (var item in listDelete) {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("pid", (item["id"].ToString()));
+                parameters.Add("pusername", (item["username"].ToString()));
 
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("pid", (json.RootElement.GetProperty("id").ToString()));
-            
-            parameters.Add("puser_id", (json.RootElement.GetProperty("user_id").ToString()));
+                parameters.Add("puser_id", (user_id));
 
-            parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+                parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
 
-            t = _userRepository.AddUser(parameters);
+                t = _userRepository.DeleteUser(parameters);
+            } 
+
+    
+
+            //DynamicParameters parameters = new DynamicParameters();
+            //parameters.Add("pid", (json.RootElement.GetProperty("id").ToString()));
+            //parameters.Add("pusername", (json.RootElement.GetProperty("username").ToString()));
+
+            //parameters.Add("puser_id", (json.RootElement.GetProperty("user_id").ToString()));
+
+            //parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+
+            //t = _userRepository.DeleteUser(parameters);
 
             return t;
         }

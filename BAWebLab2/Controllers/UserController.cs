@@ -82,6 +82,27 @@ public class UserController : ControllerBase
     }
 
 
+    [HttpPost("checklogingetrole")]
+    [EnableCors]
+    public IActionResult checkLoginAndRole([System.Web.Http.FromBody] JsonDocument data)
+    {
+        
+        var t = _userBusiness.checkLoginAndRole(data);
+         
+        var result = new ObjectResult(t)
+        {
+            StatusCode = (int)HttpStatusCode.OK
+
+        };
+
+        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
+        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        return result;
+    }
+
+
 
     [HttpPost("adduser")]
     [EnableCors]
