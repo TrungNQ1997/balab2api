@@ -36,8 +36,7 @@ namespace BAWebLab2.Business
             parameters.Add("pBirthday_to", json.RootElement.GetProperty("birthday_to").ToString() == "" ? new DateTime(1900, 1, 1) :
                 DateTime.Parse(json.RootElement.GetProperty("birthday_to").ToString()), DbType.DateTime2, ParameterDirection.Input);
             parameters.Add("pGioi_tinh_search", int.Parse(json.RootElement.GetProperty("gioi_tinh_search").ToString()));
-
-
+             
             t = _userRepository.GetAllProducts( parameters);
 
             return t;
@@ -114,7 +113,14 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("pid", (json.RootElement.GetProperty("id").ToString().Trim()));
             parameters.Add("pusername", (json.RootElement.GetProperty("username").ToString().Trim()));
-            parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("password").ToString())));
+            if(json.RootElement.GetProperty("password").ToString() == "")
+            {
+                parameters.Add("ppassword", "");
+            } else
+            {
+                parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("password").ToString())));
+            }
+            
             parameters.Add("pho_ten", (json.RootElement.GetProperty("ho_ten").ToString()));
             parameters.Add("pgioi_tinh", (json.RootElement.GetProperty("gioi_tinh").ToString()));
             parameters.Add("psdt", (json.RootElement.GetProperty("sdt").ToString()));
