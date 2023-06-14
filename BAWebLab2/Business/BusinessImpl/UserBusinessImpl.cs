@@ -158,19 +158,7 @@ namespace BAWebLab2.Business
 
                 t = _userRepository.DeleteUser(parameters);
             } 
-
-    
-
-            //DynamicParameters parameters = new DynamicParameters();
-            //parameters.Add("pid", (json.RootElement.GetProperty("id").ToString()));
-            //parameters.Add("pusername", (json.RootElement.GetProperty("username").ToString()));
-
-            //parameters.Add("puser_id", (json.RootElement.GetProperty("user_id").ToString()));
-
-            //parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
-
-            //t = _userRepository.DeleteUser(parameters);
-
+             
             return t;
         }
 
