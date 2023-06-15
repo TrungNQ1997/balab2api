@@ -40,25 +40,38 @@ public class UserRepository
 
     public Object Login(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
         {
+            using (var connection = new SqlConnection(_connectionString))
+            {
 
 
-            var customer = connection.Query("UserLogin", param, commandType: CommandType.StoredProcedure);
-            var result = param.Get<Int64>("pret");
+                var customer = connection.Query("UserLogin", param, commandType: CommandType.StoredProcedure);
+                var result = param.Get<Int64>("pret");
 
-            dynamic myObject = new ExpandoObject();
-            myObject.result = result;
-            myObject.userInfo = customer;
-            return myObject;
+                
+                myObject.result = result;
+                myObject.userInfo = customer;
+                return myObject;
 
+            }
         }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
 
     }
 
     public Object CheckLoginAndRole(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
         {
 
 
@@ -66,68 +79,134 @@ public class UserRepository
             var ProductListOne = customer.Read<Object>().ToList();
             var ProductListTwo = customer.Read<Object>().ToList();
             var result = param.Get<Int64>("pret");
-            //var ProductListOne = customer.Read<Object>().ToList();
-            //var ProductListTwo = customer.Read<Object>().ToList();
-
-            dynamic myObject = new ExpandoObject();
+             
+            
             myObject.is_login = result;
             myObject.is_admin = ProductListOne;
             myObject.role = ProductListTwo;
             return myObject;
 
+            }
         }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
+
+    }
+
+    public Object GetRole(DynamicParameters param)
+    {
+        dynamic myObject = new ExpandoObject();
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+
+
+                var customer = connection.QueryMultiple("GetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                var ProductListOne = customer.Read<Object>().ToList();
+                var ProductListTwo = customer.Read<Object>().ToList();
+                
+
+
+                
+                myObject.is_admin = ProductListOne;
+                myObject.role = ProductListTwo;
+                return myObject;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
 
     }
 
 
     public Object AddUser(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
         {
+            using (var connection = new SqlConnection(_connectionString))
+            {
 
 
-            var customer = connection.Query("sysUserInfoAdd", param, commandType: CommandType.StoredProcedure);
-            var result = param.Get<Int64>("pret");
+                var customer = connection.Query("sysUserInfoAdd", param, commandType: CommandType.StoredProcedure);
+                var result = param.Get<Int64>("pret");
 
-            dynamic myObject = new ExpandoObject();
-            myObject.result = result;
-            return myObject;
+                
+                myObject.result = result;
+                
 
+            }
+        } catch (Exception ex)
+        {
+            myObject.result = 99;
+            
+            myObject.exception = ex.ToString();
         }
+        return myObject;
 
     }
 
     public Object EditUser(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
         {
+            using (var connection = new SqlConnection(_connectionString))
+            {
 
 
-            var customer = connection.Query("sysUserInfoUpd", param, commandType: CommandType.StoredProcedure);
-            var result = param.Get<Int64>("pret");
+                var customer = connection.Query("sysUserInfoUpd", param, commandType: CommandType.StoredProcedure);
+                var result = param.Get<Int64>("pret");
 
-            dynamic myObject = new ExpandoObject();
-            myObject.result = result;
-            return myObject;
+                
+                myObject.result = result;
+                return myObject;
 
+            }
         }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
 
     }
 
     public Object DeleteUser(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
         {
 
 
             var customer = connection.Query("sysUserInfoDel", param, commandType: CommandType.StoredProcedure);
             var result = param.Get<Int64>("pret");
 
-            dynamic myObject = new ExpandoObject();
+            
             myObject.result = result;
             return myObject;
 
+            }
         }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
 
 
     }

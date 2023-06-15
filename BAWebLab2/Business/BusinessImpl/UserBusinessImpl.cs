@@ -78,6 +78,23 @@ namespace BAWebLab2.Business
             return t;
         }
 
+        public Object getRole(JsonDocument json)
+        {
+
+            var t = new Object();
+
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("puser_id", (json.RootElement.GetProperty("user_id").ToString()));
+            //parameters.Add("pMenu_id", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("pass").ToString())));
+            parameters.Add("pMenu_id", (int.Parse(json.RootElement.GetProperty("menu_id").ToString())));
+            
+
+            t = _userRepository.GetRole(parameters);
+
+            return t;
+        }
+
 
         public Object addUser(JsonDocument json)
         {
