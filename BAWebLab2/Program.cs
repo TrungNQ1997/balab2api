@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "MyPolicy";
 IConfigurationRoot configuration = new ConfigurationBuilder()
         .SetBasePath(AppContext.BaseDirectory)
         .AddJsonFile("appsettings.json")
@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyAllowSpecificOrigins,
                           policy =>
                           {
-                              policy.AllowAnyOrigin()
+                              policy.WithOrigins("http://10.1.11.110:4200")
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod();
                           });
@@ -35,8 +35,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();

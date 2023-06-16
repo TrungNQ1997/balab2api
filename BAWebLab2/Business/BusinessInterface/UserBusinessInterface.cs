@@ -12,6 +12,7 @@ namespace BAWebLab2.Business
         public Object getRole(JsonDocument json);
         public Object addUser(JsonDocument json);
         public Object editUser(JsonDocument json);
+        public Object changePass(JsonDocument json);
         public Object deleteUser(JsonDocument json);
     }
 }

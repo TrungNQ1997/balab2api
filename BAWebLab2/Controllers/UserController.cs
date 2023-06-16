@@ -25,7 +25,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("getListUserFilter")]
-    [EnableCors]
+    //[EnableCors]
     public   IActionResult GetAllProducts([Microsoft.AspNetCore.Mvc.FromBody] JsonDocument data  )
     {
         
@@ -107,7 +107,7 @@ public class UserController : ControllerBase
 
 
     [HttpPost("adduser")]
-    [EnableCors]
+    //[EnableCors]
     public IActionResult addUser([FromBody] JsonDocument data)
     {
          
@@ -128,26 +128,89 @@ public class UserController : ControllerBase
 
 
     [HttpPost("edituser")]
-    [EnableCors]
+    [EnableCors("MyPolicy")]
     public IActionResult editUser([FromBody] JsonDocument data)
     {
-         var t = _userBusiness.editUser(data);
-         
-        var result = new ObjectResult(t)
+        var t = new object();
+        var result = new ObjectResult(1);
+        try
+        { 
+        t = _userBusiness.editUser(data);
+        } catch (Exception ex) {
+
+            result = new ObjectResult(ex.ToString())
+            {
+                StatusCode = (int)HttpStatusCode.Unauthorized,
+                Value = ex.ToString()
+            };
+
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+            Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+            return result;
+
+
+        }
+        //var result = new ObjectResult(data)
+         result = new ObjectResult(t)
         {
             StatusCode = (int)HttpStatusCode.OK
 
         };
 
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
+        Response.Headers.Add("Access-Control-Allow-Origin", "*");
         Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
         return result;
     }
 
+
+    [HttpPost("changepass")]
+    [EnableCors("MyPolicy")]
+    public IActionResult changePass([FromBody] JsonDocument data)
+    {
+        var t = new object();
+        var result = new ObjectResult(1);
+        try
+        {
+            t = _userBusiness.changePass(data);
+        }
+        catch (Exception ex)
+        {
+
+            result = new ObjectResult(ex.ToString())
+            {
+                StatusCode = (int)HttpStatusCode.Unauthorized,
+                Value = ex.ToString()
+            };
+
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+            Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+            return result;
+
+
+        }
+        //var result = new ObjectResult(data)
+        result = new ObjectResult(t)
+        {
+            StatusCode = (int)HttpStatusCode.OK
+
+        };
+
+        Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+        return result;
+    }
+
+
     [HttpPost("deleteuser")]
-    [EnableCors]
+    //[EnableCors]
     public IActionResult deleteUser([FromBody] JsonDocument data)
     {
          var t = _userBusiness.deleteUser(data);

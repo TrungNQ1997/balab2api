@@ -183,6 +183,34 @@ public class UserRepository
 
     }
 
+    public Object changePass(DynamicParameters param)
+    {
+        dynamic myObject = new ExpandoObject();
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+
+
+                var customer = connection.Query("sysUserInfoChangePass", param, commandType: CommandType.StoredProcedure);
+                var result = param.Get<Int64>("pret");
+
+
+                myObject.result = result;
+                return myObject;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.ToString();
+        }
+        return myObject;
+
+    }
+
+
     public Object DeleteUser(DynamicParameters param)
     {
         dynamic myObject = new ExpandoObject();

@@ -155,6 +155,26 @@ namespace BAWebLab2.Business
             return t;
         }
 
+        public Object changePass(JsonDocument json)
+        {
+
+            var t = new Object();
+
+            DynamicParameters parameters = new DynamicParameters();
+             
+            parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("password").ToString())));
+            parameters.Add("ppassword_old", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("password_old").ToString())));
+            parameters.Add("puser_id", (int.Parse(json.RootElement.GetProperty("user_id").ToString())));
+            parameters.Add("pusername", (json.RootElement.GetProperty("username").ToString()));
+
+            parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+
+            t = _userRepository.changePass(parameters);
+
+            return t;
+        }
+
+
         public Object deleteUser(JsonDocument json)
         {
 
