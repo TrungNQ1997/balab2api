@@ -1,16 +1,18 @@
-﻿using System.Text.Json;
+﻿using BAWebLab2.DTO;
+using BAWebLab2.Entity;
+using System.Text.Json;
 
 namespace BAWebLab2.Business
 {
     public interface IUserBusiness
     {
-       public Object GetAllUser(JsonDocument json);
-        public Object Login(JsonDocument json);
-        public Object CheckLoginAndRole(JsonDocument json);
-        public Object GetRole(JsonDocument json);
-        public Object AddUser(JsonDocument json);
-        public Object EditUser(JsonDocument json);
-        public Object ChangePass(JsonDocument json);
-        public Object DeleteUser(JsonDocument json);
+       public StoreResult<User> GetAllUser(JsonDocument json);
+        public StoreResult<User> Login(JsonDocument json);
+        public StoreResult<UserRole> CheckLoginAndRole(JsonDocument json);
+        public StoreResult<UserRole> GetRole(JsonDocument json);
+        public StoreResult<int> AddUser(JsonDocument json);
+        public StoreResult<int> EditUser(JsonDocument json);
+        public StoreResult<int> ChangePass(JsonDocument json);
+        public StoreResult<int> DeleteUser(JsonDocument json);
     }
 }

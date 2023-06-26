@@ -1,10 +1,13 @@
-﻿using Dapper;
+﻿using BAWebLab2.DTO;
+using BAWebLab2.Entity;
+using Dapper;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Text.Json;
 
 namespace BAWebLab2.Business
 {
+    /// <summary>class để xử lí parce dữ liệu từ json</summary>
     public class UserBusinessImpl : IUserBusiness
     {
         private readonly UserRepository _userRepository;
@@ -17,10 +20,13 @@ namespace BAWebLab2.Business
         }
 
 
-        public Object GetAllUser(JsonDocument json)
+        /// <summary>parce json lấy tham số truyền vào store lấy danh sách user</summary>
+        /// <param name="json">json chứa tham số truyền vào store</param>
+        /// <returns>length của list và list select theo offset thỏa mãn điều kiện filter</returns>
+        public StoreResult<User> GetAllUser(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<User>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
@@ -34,11 +40,12 @@ namespace BAWebLab2.Business
                 parameters.Add("pBirthday_to", json.RootElement.GetProperty("birthday_to").ToString() == "" ? new DateTime(1900, 1, 1) :
                     DateTime.Parse(json.RootElement.GetProperty("birthday_to").ToString()), DbType.DateTime2, ParameterDirection.Input);
                 parameters.Add("pGioi_tinh_search", int.Parse(json.RootElement.GetProperty("gioi_tinh_search").ToString()));
-                result = _userRepository.GetAllProducts(parameters);
+                parameters.Add("pCount", 0,DbType.Int64,ParameterDirection.Output);
+                result = _userRepository.GetAllUsers(parameters);
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+             //   result = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
 
@@ -47,10 +54,10 @@ namespace BAWebLab2.Business
 
 
 
-        public Object Login(JsonDocument json)
+        public StoreResult<User> Login(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<User>();
 
             DynamicParameters parameters = new DynamicParameters();
 
@@ -65,16 +72,16 @@ namespace BAWebLab2.Business
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
         }
 
-        public Object CheckLoginAndRole(JsonDocument json)
+        public StoreResult<UserRole> CheckLoginAndRole(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<UserRole>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
@@ -83,21 +90,23 @@ namespace BAWebLab2.Business
 
                 parameters.Add("pMenu_id", (int.Parse(json.RootElement.GetProperty("menu_id").ToString())));
                 parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+                parameters.Add("pis_admin", 0, DbType.Boolean, ParameterDirection.Output);
 
                 result = _userRepository.CheckLoginAndRole(parameters);
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.message = ex.Message;
+                result.is_error = true;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
         }
 
-        public Object GetRole(JsonDocument json)
+        public StoreResult<UserRole> GetRole(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<UserRole>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
@@ -105,23 +114,24 @@ namespace BAWebLab2.Business
                 parameters.Add("puser_id", (json.RootElement.GetProperty("user_id").ToString()));
 
                 parameters.Add("pMenu_id", (int.Parse(json.RootElement.GetProperty("menu_id").ToString())));
-
+                parameters.Add("pis_admin", 0, DbType.Boolean, ParameterDirection.Output);
 
                 result = _userRepository.GetRole(parameters);
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.is_error = true;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
         }
 
 
-        public Object AddUser(JsonDocument json)
+        public StoreResult<int> AddUser(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<int>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
@@ -144,31 +154,24 @@ namespace BAWebLab2.Business
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.is_error = true;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
         }
 
-        public Object EditUser(JsonDocument json)
+        public StoreResult<int> EditUser(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<int>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
             {
                 parameters.Add("pid", (json.RootElement.GetProperty("id").ToString().Trim()));
                 parameters.Add("pusername", (json.RootElement.GetProperty("username").ToString().Trim()));
-                if (json.RootElement.GetProperty("password").ToString() == "")
-                {
-                    parameters.Add("ppassword", "");
-                }
-                else
-                {
-                    parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(json.RootElement.GetProperty("password").ToString())));
-                }
-
+                
                 parameters.Add("pho_ten", (json.RootElement.GetProperty("ho_ten").ToString()));
                 parameters.Add("pgioi_tinh", (json.RootElement.GetProperty("gioi_tinh").ToString()));
                 parameters.Add("psdt", (json.RootElement.GetProperty("sdt").ToString()));
@@ -185,16 +188,17 @@ namespace BAWebLab2.Business
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.is_error = true;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
         }
 
-        public Object ChangePass(JsonDocument json)
+        public StoreResult<int> ChangePass(JsonDocument json)
         {
 
-            var result = new Object();
+            var result = new StoreResult<int>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
@@ -210,7 +214,8 @@ namespace BAWebLab2.Business
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.is_error = true;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -220,12 +225,12 @@ namespace BAWebLab2.Business
         /// <summary>Deletes the user.</summary>
         /// <param name="json">đối tượng jsondocument nhận từ api</param>
         /// <returns>kết quả thực thi store xóa user</returns>
-        public Object DeleteUser(JsonDocument json)
+        public StoreResult<int> DeleteUser(JsonDocument json)
         {
 
             var jobject = new JObject();
             string user_id = "";
-            var result = new Object();
+            var result = new StoreResult<int>();
             try
             {
                 jobject = JObject.Parse(json.RootElement.ToString());
@@ -247,9 +252,13 @@ namespace BAWebLab2.Business
             }
             catch (Exception ex)
             {
-                result = ex.Message;
+                result.is_error = true;
+                result.message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
+
+
+
             return result;
         }
 

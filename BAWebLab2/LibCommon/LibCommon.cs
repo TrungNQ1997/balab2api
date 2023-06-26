@@ -4,8 +4,13 @@ using System.Text;
 
 namespace BAWebLab2.LibCommon
 {
+    /// <summary>class chứa các hàm chung</summary>
     public class LibCommon
     {
+        /// <summary>mã hóa md5 1 chuỗi</summary>
+        /// <param name="text">The text.
+        /// chuỗi cần mã hóa</param>
+        /// <returns>chuỗi đã mã hóa</returns>
         public static string HashMD5(string text)
         {
             MD5 md5 = MD5.Create();
@@ -18,6 +23,8 @@ namespace BAWebLab2.LibCommon
             return hashSb.ToString();
         }
 
+        /// <summary>ghi vào file log.txt</summary>
+        /// <param name="text">nội dung cần ghi</param>
         public static void WriteLog(string text)
         {
             StringBuilder sb = new StringBuilder();

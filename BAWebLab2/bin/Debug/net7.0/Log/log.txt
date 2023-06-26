@@ -1,0 +1,101 @@
+ 
+  
+ 6/26/2023 2:16:12 PM   System.Collections.Generic.KeyNotFoundException: The given key 'pcount' was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 318
+   at UserRepository.GetAllProducts(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 34 
+  
+ 6/26/2023 2:17:33 PM   System.Collections.Generic.KeyNotFoundException: The given key 'pcount' was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 318
+   at UserRepository.GetAllProducts(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 34 
+  
+ 6/26/2023 2:30:43 PM   System.FormatException: String '2343' was not recognized as a valid DateTime.
+   at System.DateTime.Parse(String s)
+   at BAWebLab2.Business.UserBusinessImpl.GetAllUser(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 40 
+  
+ 6/26/2023 3:28:34 PM   System.FormatException: String '1' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at BAWebLab2.Business.UserBusinessImpl.Login(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 68 
+  
+ 6/26/2023 3:29:31 PM   System.FormatException: String '1' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at BAWebLab2.Business.UserBusinessImpl.Login(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 68 
+  
+ 6/26/2023 3:29:44 PM   System.FormatException: String '1' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at BAWebLab2.Business.UserBusinessImpl.Login(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 68 
+  
+ 6/26/2023 3:53:27 PM   System.FormatException: String '1' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at BAWebLab2.Business.UserBusinessImpl.Login(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 68 
+  
+ 6/26/2023 3:54:17 PM   System.InvalidCastException: Unable to cast object of type 'DapperRow' to type 'BAWebLab2.Entity.User'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at UserRepository.Login(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 69 
+  
+ 6/26/2023 3:57:46 PM   System.NullReferenceException: Object reference not set to an instance of an object.
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 329
+   at UserRepository.Login(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 67 
+  
+ 6/26/2023 4:23:52 PM   System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Text.Json.JsonElement.GetProperty(String propertyName)
+   at BAWebLab2.Business.UserBusinessImpl.CheckLoginAndRole(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 91 
+  
+ 6/26/2023 4:24:43 PM   System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Text.Json.JsonElement.GetProperty(String propertyName)
+   at BAWebLab2.Business.UserBusinessImpl.CheckLoginAndRole(JsonDocument json) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Business\BusinessImpl\UserBusinessImpl.cs:line 91 
+  
+ 6/26/2023 4:25:35 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.CheckLoginAndRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 101 
+  
+ 6/26/2023 4:26:48 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.CheckLoginAndRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 101 
+  
+ 6/26/2023 4:31:05 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.CheckLoginAndRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 101 
+  
+ 6/26/2023 4:33:56 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.CheckLoginAndRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 101 
+  
+ 6/26/2023 4:50:39 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.GetRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 136 
+  
+ 6/26/2023 4:51:09 PM   System.ApplicationException: Attempting to cast a DBNull to a non nullable type! Note that out/return parameters will not have updated values until the data stream completes (after the 'foreach' for Query(..., buffered: false), or after the GridReader has been disposed for QueryMultiple)
+   at Dapper.DynamicParameters.Get[T](String name) in /_/Dapper/DynamicParameters.cs:line 325
+   at UserRepository.GetRole(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 136 
+  
+ 6/26/2023 5:07:16 PM   System.Data.SqlClient.SqlException (0x80131904): Violation of UNIQUE KEY constraint 'UQ__SysUserI__F3DBC5726AB40EDB'. Cannot insert duplicate key in object 'dbo.SysUserInfo'. The duplicate key value is (sa2                                               ).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite, String method)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Dapper.SqlMapper.ExecuteReaderWithFlagsFallback(IDbCommand cmd, Boolean wasClosed, CommandBehavior behavior) in /_/Dapper/SqlMapper.cs:line 1066
+   at Dapper.SqlMapper.QueryImpl[T](IDbConnection cnn, CommandDefinition command, Type effectiveType)+MoveNext() in /_/Dapper/SqlMapper.cs:line 1094
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Dapper.SqlMapper.Query[T](IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Boolean buffered, Nullable`1 commandTimeout, Nullable`1 commandType) in /_/Dapper/SqlMapper.cs:line 734
+   at Dapper.SqlMapper.Query(IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Boolean buffered, Nullable`1 commandTimeout, Nullable`1 commandType) in /_/Dapper/SqlMapper.cs:line 661
+   at UserRepository.AddUser(DynamicParameters param) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\Repository\UserRepository.cs:line 168
+ClientConnectionId:1b181e9b-e47f-4465-91ae-5d41997d6327
+Error Number:2627,State:1,Class:14

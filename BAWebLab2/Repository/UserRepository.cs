@@ -1,10 +1,13 @@
 ﻿using BAWebLab2.LibCommon;
 using Dapper;
- 
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
- 
+using BAWebLab2.Entity;
+using BAWebLab2.DTO;
 
 public class UserRepository
 {
@@ -15,144 +18,178 @@ public class UserRepository
         _connectionString = connectionString;
     }
 
-    public  Object GetAllProducts(DynamicParameters param)
+    public StoreResult<User> GetAllUsers(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        //dynamic myObject = new ExpandoObject();
+        var result = new StoreResult<User>();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                  
-                var results = connection.QueryMultiple("BAWebUserGetSysUserInfo", param, commandType: CommandType.StoredProcedure);
-                var count = results.Read<Object>().ToList();
-                var list = results.Read<Object>().ToList();
-                 
-                myObject.count = count;
-                myObject.list = list;
+                var resultsExcute = connection.QueryMultiple("BAWebUserGetSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                
+                var list = resultsExcute.Read<User>().ToList();
+
+                var count = param.Get<Int64>("pCount");
+
+                
+                result.count = (int)count;
+                result.list = list;
+                result.is_success = true;
+                result.is_error = false;
+                //myObject.count = count;
+                //myObject.list = list;
                  
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            result.is_error = true;
+            result.is_success = false;
+            result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
-        return myObject;
+        return result;
 
     }
 
-    public Object Login(DynamicParameters param)
+    public StoreResult<User> Login(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var result = new StoreResult<User>();
+        //dynamic myObject = new ExpandoObject();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                  
-                var userInfo = connection.Query("BAWebUserLoginSysUserInfo", param, commandType: CommandType.StoredProcedure);
-                var result = param.Get<Int64>("pret");
-                 
-                myObject.result = result;
-                myObject.userInfo = userInfo;
+                var userInfo = connection.Query<User>("BAWebUserLoginSysUserInfo", param, commandType: CommandType.StoredProcedure).AsList();
+                //var ret = param.Get<Int64>("pret");
+
+                result.list = userInfo;
+                var ret = param.Get<Int64>("pret");
+                result.count = (int)ret;
+                result.is_error = false;
+                //myObject.result = result;
+                //myObject.userInfo = userInfo;
                   
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            result.is_error = true;
+            result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
-        return myObject;
+        return result;
 
     }
 
-    public Object CheckLoginAndRole(DynamicParameters param)
+    public StoreResult<UserRole> CheckLoginAndRole(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var result = new StoreResult<UserRole>();
+        //dynamic myObject = new ExpandoObject();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
         {
                  
             var tables = connection.QueryMultiple("BAWebUserCheckTokenLoginAndGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
-            var isAdmin = tables.Read<Object>().ToList();
-            var role = tables.Read<Object>().ToList();
-            var result = param.Get<Int64>("pret");
-              
-            myObject.is_login = result;
-            myObject.is_admin = isAdmin;
-            myObject.role = role;
+            
+            var role = tables.Read<UserRole>().ToList();
+            //var result = param.Get<Int64>("pret");
+                var is_admin = param.Get<Boolean>("pis_admin");
+                var ret = param.Get<Int64>("pret");
+                result.list = role;
+                result.is_success = ret == 0? false: true;
+                result.is_admin = is_admin;
+                result.is_error = false;
+            //    myObject.is_login = result;
+            //myObject.is_admin = isAdmin;
+            //myObject.role = role;
              
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            result.is_error = true;
+            //result.message = 99;
+            result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
-        return myObject;
+        return result;
 
     }
 
-    public Object GetRole(DynamicParameters param)
+    public StoreResult<UserRole> GetRole(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var result = new StoreResult<UserRole>();
+        //dynamic myObject = new ExpandoObject();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                  
-                var result = connection.QueryMultiple("BAWebUserGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
-                var isAdmin = result.Read<Object>().ToList();
-                var role = result.Read<Object>().ToList();
-                 
-                myObject.is_admin = isAdmin;
-                myObject.role = role;
-                return myObject;
+                var resultSQL = connection.QueryMultiple("BAWebUserGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                
+                var role = resultSQL.Read<UserRole>().ToList();
+                var is_admin = param.Get<Boolean>("pis_admin");
+
+                result.is_admin= is_admin;
+                result.list= role;
+                result.is_error = false;
+
+                //var isAdmin = result.Read<Object>().ToList();
+                //myObject.is_admin = isAdmin;
+                //myObject.role = role;
+                //return myObject;
 
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            result.is_error = true;
+            result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
-        return myObject;
+        return result;
 
     }
      
-    public Object AddUser(DynamicParameters param)
+    public StoreResult<int> AddUser(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var result = new StoreResult<int>();
+        //dynamic myObject = new ExpandoObject();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                  
-                var customer = connection.Query("BAWebUserInsertSysUserInfo", param, commandType: CommandType.StoredProcedure);
-                var result = param.Get<Int64>("pret");
-                 
-                myObject.result = result;
+                var resultSQL = connection.Query("BAWebUserInsertSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                var isError = param.Get<Int64>("pret");
+                 if(isError == 0)
+                    result.is_success = true;
+                 else 
+                    result.is_success= false;
+                 result.is_error = false;   
+                //myObject.result = result;
                  
             }
         } catch (Exception ex)
         {
-            myObject.result = 99;
-            
-            myObject.exception = ex.Message;
+              result.is_error = true;
+            result.is_success = false;
+            result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
-        return myObject;
+        return result;
 
     }
 
-    public Object EditUser(DynamicParameters param)
+    public StoreResult<int> EditUser(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+
+        var myObject = new StoreResult<int>();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -160,24 +197,28 @@ public class UserRepository
                  
                 var table = connection.Query("BAWebUserUpdateSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-                 
-                myObject.result = result;
+                if (result == 0)
+                    myObject.is_success = true;
+                else
+                    myObject.is_success = false;
+                myObject.is_error = false;
                
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            myObject.is_success = false;
+            myObject.is_error = true;
+            myObject.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
     }
 
-    public Object ChangePass(DynamicParameters param)
+    public StoreResult<int> ChangePass(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var myObject = new StoreResult<int>();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -185,16 +226,20 @@ public class UserRepository
                  
                 var table = connection.Query("BAWebUserUpdatePassSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-                 
-                myObject.result = result;
-                return myObject;
+                if (result == 0)
+                    myObject.is_success = true;
+                else
+                    myObject.is_success = false;
+                myObject.is_error = false;
+
 
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            myObject.is_success = false;
+            myObject.is_error = true;
+            myObject.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
@@ -202,9 +247,9 @@ public class UserRepository
     }
 
 
-    public Object DeleteUser(DynamicParameters param)
+    public StoreResult<int> DeleteUser(DynamicParameters param)
     {
-        dynamic myObject = new ExpandoObject();
+        var myObject = new StoreResult<int>();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -212,16 +257,19 @@ public class UserRepository
                  
             var table = connection.Query("BAWebUserDeleteSysUserInfo", param, commandType: CommandType.StoredProcedure);
             var result = param.Get<Int64>("pret");
-                 
-            myObject.result = result;
-            return myObject;
+                myObject.list.Add((int)result);
+                if (result == 0)
+                    myObject.is_success = true;
+                else
+                    myObject.is_success = false;
+                myObject.is_error = false;
 
             }
         }
         catch (Exception ex)
         {
-            myObject.result = 99;
-            myObject.exception = ex.Message;
+            myObject.is_error = true;
+            myObject.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
