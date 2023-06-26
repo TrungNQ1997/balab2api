@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Newtonsoft;
-using Newtonsoft.Json.Linq;
 using BAWebLab2.Business;
-using System.Net.WebSockets;
 using System.Net;
-using Microsoft.AspNetCore.Cors;
 
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using BAWebLab2.DTO;
 
 [Route("user")]
 [ApiController]
@@ -25,207 +20,203 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("getListUserFilter")]
-    //[EnableCors]
+    
     public   IActionResult GetAllProducts([Microsoft.AspNetCore.Mvc.FromBody] JsonDocument data  )
     {
         
-        var t = _userBusiness.getAllUser(data);
-        var result = new ObjectResult(t)
+        var result = _userBusiness.GetAllUser(data);
+        ApiResponse response = new ApiResponse();
+       
+        if(result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
-            
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        } else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
+        
+        return Ok(response);
     }
      
     [HttpPost("login")]
-    [EnableCors]
+    
     public IActionResult Login([System.Web.Http.FromBody] JsonDocument data)
     {
          
-        var t = _userBusiness.login(data);
+        var result = _userBusiness.Login(data);
          
-        var result = new ObjectResult(t)
+        ApiResponse response = new ApiResponse();
+
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
+        return Ok(response);
+         
     }
-
-
+     
     [HttpPost("checklogingetrole")]
-    [EnableCors]
-    public IActionResult checkLoginAndRole([System.Web.Http.FromBody] JsonDocument data)
+    
+    public IActionResult CheckLoginAndRole([System.Web.Http.FromBody] JsonDocument data)
     {
         
-        var t = _userBusiness.checkLoginAndRole(data);
-         
-        var result = new ObjectResult(t)
+        var result = _userBusiness.CheckLoginAndRole(data);
+
+
+        ApiResponse response = new ApiResponse();
+
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
+        return Ok(response);
+         
     }
 
     [HttpPost("getrole")]
-    [EnableCors]
-    public IActionResult getRole([System.Web.Http.FromBody] JsonDocument data)
+    
+    public IActionResult GetRole([System.Web.Http.FromBody] JsonDocument data)
     {
 
-        var t = _userBusiness.getRole(data);
+        var result = _userBusiness.GetRole(data);
 
-        var result = new ObjectResult(t)
+        ApiResponse response = new ApiResponse();
+
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
+        return Ok(response);
+         
     }
-
-
-
+     
     [HttpPost("adduser")]
-    //[EnableCors]
-    public IActionResult addUser([FromBody] JsonDocument data)
+    
+    public IActionResult AddUser([FromBody] JsonDocument data)
     {
          
-        var t = _userBusiness.addUser(data);
-         
-        var result = new ObjectResult(t)
+        var result = _userBusiness.AddUser(data);
+        ApiResponse response = new ApiResponse();
+
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
+        return Ok(response);
+         
     }
-
-
+     
     [HttpPost("edituser")]
-    [EnableCors("MyPolicy")]
-    public IActionResult editUser([FromBody] JsonDocument data)
+   
+    public IActionResult EditUser([FromBody] JsonDocument data)
     {
-        var t = new object();
-        var result = new ObjectResult(1);
-        try
-        { 
-        t = _userBusiness.editUser(data);
-        } catch (Exception ex) {
-
-            result = new ObjectResult(ex.ToString())
-            {
-                StatusCode = (int)HttpStatusCode.Unauthorized,
-                Value = ex.ToString()
-            };
-
-            Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-            Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-            return result;
-
-
-        }
-        //var result = new ObjectResult(data)
-         result = new ObjectResult(t)
-        {
-            StatusCode = (int)HttpStatusCode.OK
-
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
-    }
-
-
-    [HttpPost("changepass")]
-    [EnableCors("MyPolicy")]
-    public IActionResult changePass([FromBody] JsonDocument data)
-    {
-        var t = new object();
-        var result = new ObjectResult(1);
-        try
-        {
-            t = _userBusiness.changePass(data);
-        }
-        catch (Exception ex)
-        {
-
-            result = new ObjectResult(ex.ToString())
-            {
-                StatusCode = (int)HttpStatusCode.Unauthorized,
-                Value = ex.ToString()
-            };
-
-            Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-            Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-            return result;
-
-
-        }
-        //var result = new ObjectResult(data)
-        result = new ObjectResult(t)
-        {
-            StatusCode = (int)HttpStatusCode.OK
-
-        };
-
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-        return result;
-    }
-
-
-    [HttpPost("deleteuser")]
-    //[EnableCors]
-    public IActionResult deleteUser([FromBody] JsonDocument data)
-    {
-         var t = _userBusiness.deleteUser(data);
+        var result = new object();
          
-        var result = new ObjectResult(t)
+        ApiResponse response = new ApiResponse();
+        result = _userBusiness.EditUser(data);
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
         {
-            StatusCode = (int)HttpStatusCode.OK
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        };
+        return Ok(response);
+         
+    }
+     
+    [HttpPost("changepass")]
+     
+    public IActionResult ChangePass([FromBody] JsonDocument data)
+    {
+        var result = new object();
+        ApiResponse response = new ApiResponse();
+        result = _userBusiness.ChangePass(data);
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
+        {
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
 
-        Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:43295");
-        Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        return Ok(response);
+        
+    }
+     
+    [HttpPost("deleteuser")]
+     
+    public IActionResult DeleteUser([FromBody] JsonDocument data)
+    {
+         var result = _userBusiness.DeleteUser(data);
+        ApiResponse response = new ApiResponse();
 
-        return result;
+        if (result.GetType() == typeof(System.Dynamic.ExpandoObject))
+        {
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
+
+        return Ok(response);
+         
     }
 
 

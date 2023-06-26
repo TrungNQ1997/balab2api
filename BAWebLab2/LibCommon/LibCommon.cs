@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace BAWebLab2.LibCommon
@@ -15,6 +16,16 @@ namespace BAWebLab2.LibCommon
                 hashSb.Append(b.ToString("X2"));
             }
             return hashSb.ToString();
+        }
+
+        public static void WriteLog(string text)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" \n  \n " + DateTime.Now.ToString() + "   " + text);
+
+            File.AppendAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Log/log.txt", sb.ToString());
+            sb.Clear();
         }
 
     }

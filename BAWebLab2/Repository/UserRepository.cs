@@ -1,13 +1,10 @@
-﻿using Dapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using BAWebLab2.LibCommon;
+using Dapper;
+ 
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
-using System.Reflection.PortableExecutable;
-using System.Text.Json;
-using System.Threading.Tasks;
+ 
 
 public class UserRepository
 {
@@ -20,22 +17,29 @@ public class UserRepository
 
     public  Object GetAllProducts(DynamicParameters param)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        dynamic myObject = new ExpandoObject();
+        try
         {
-             
-           
-            var customer = connection.QueryMultiple("getListUserPagination", param, commandType: CommandType.StoredProcedure) ;
-            var ProductListOne = customer.Read<Object>().ToList();
-            var ProductListTwo = customer.Read<Object>().ToList();
-
-            dynamic myObject = new ExpandoObject();
-            myObject.count = ProductListOne;
-            myObject.list = ProductListTwo;
-              
-            return myObject;
+            using (var connection = new SqlConnection(_connectionString))
+            {
                  
+                var results = connection.QueryMultiple("BAWebUserGetSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                var count = results.Read<Object>().ToList();
+                var list = results.Read<Object>().ToList();
+                 
+                myObject.count = count;
+                myObject.list = list;
+                 
+            }
         }
-         
+        catch (Exception ex)
+        {
+            myObject.result = 99;
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
+        }
+        return myObject;
+
     }
 
     public Object Login(DynamicParameters param)
@@ -45,22 +49,20 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-
-
-                var customer = connection.Query("UserLogin", param, commandType: CommandType.StoredProcedure);
+                 
+                var userInfo = connection.Query("BAWebUserLoginSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-
-                
+                 
                 myObject.result = result;
-                myObject.userInfo = customer;
-                return myObject;
-
+                myObject.userInfo = userInfo;
+                  
             }
         }
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
@@ -73,25 +75,23 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
         {
-
-
-            var customer = connection.QueryMultiple("CheckTokenLoginAndGetRole", param, commandType: CommandType.StoredProcedure);
-            var ProductListOne = customer.Read<Object>().ToList();
-            var ProductListTwo = customer.Read<Object>().ToList();
+                 
+            var tables = connection.QueryMultiple("BAWebUserCheckTokenLoginAndGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
+            var isAdmin = tables.Read<Object>().ToList();
+            var role = tables.Read<Object>().ToList();
             var result = param.Get<Int64>("pret");
-             
-            
+              
             myObject.is_login = result;
-            myObject.is_admin = ProductListOne;
-            myObject.role = ProductListTwo;
-            return myObject;
-
+            myObject.is_admin = isAdmin;
+            myObject.role = role;
+             
             }
         }
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
@@ -104,17 +104,13 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-
-
-                var customer = connection.QueryMultiple("GetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
-                var ProductListOne = customer.Read<Object>().ToList();
-                var ProductListTwo = customer.Read<Object>().ToList();
-                
-
-
-                
-                myObject.is_admin = ProductListOne;
-                myObject.role = ProductListTwo;
+                 
+                var result = connection.QueryMultiple("BAWebUserGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
+                var isAdmin = result.Read<Object>().ToList();
+                var role = result.Read<Object>().ToList();
+                 
+                myObject.is_admin = isAdmin;
+                myObject.role = role;
                 return myObject;
 
             }
@@ -122,13 +118,13 @@ public class UserRepository
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
     }
-
-
+     
     public Object AddUser(DynamicParameters param)
     {
         dynamic myObject = new ExpandoObject();
@@ -136,21 +132,19 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-
-
-                var customer = connection.Query("sysUserInfoAdd", param, commandType: CommandType.StoredProcedure);
+                 
+                var customer = connection.Query("BAWebUserInsertSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-
-                
+                 
                 myObject.result = result;
-                
-
+                 
             }
         } catch (Exception ex)
         {
             myObject.result = 99;
             
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
@@ -163,39 +157,35 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-
-
-                var customer = connection.Query("sysUserInfoUpd", param, commandType: CommandType.StoredProcedure);
+                 
+                var table = connection.Query("BAWebUserUpdateSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-
-                
+                 
                 myObject.result = result;
-                return myObject;
-
+               
             }
         }
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
     }
 
-    public Object changePass(DynamicParameters param)
+    public Object ChangePass(DynamicParameters param)
     {
         dynamic myObject = new ExpandoObject();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-
-
-                var customer = connection.Query("sysUserInfoChangePass", param, commandType: CommandType.StoredProcedure);
+                 
+                var table = connection.Query("BAWebUserUpdatePassSysUserInfo", param, commandType: CommandType.StoredProcedure);
                 var result = param.Get<Int64>("pret");
-
-
+                 
                 myObject.result = result;
                 return myObject;
 
@@ -204,7 +194,8 @@ public class UserRepository
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
 
@@ -218,12 +209,10 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
         {
-
-
-            var customer = connection.Query("sysUserInfoDel", param, commandType: CommandType.StoredProcedure);
+                 
+            var table = connection.Query("BAWebUserDeleteSysUserInfo", param, commandType: CommandType.StoredProcedure);
             var result = param.Get<Int64>("pret");
-
-            
+                 
             myObject.result = result;
             return myObject;
 
@@ -232,11 +221,11 @@ public class UserRepository
         catch (Exception ex)
         {
             myObject.result = 99;
-            myObject.exception = ex.ToString();
+            myObject.exception = ex.Message;
+            LibCommon.WriteLog(ex.ToString());
         }
         return myObject;
-
-
+         
     }
 
 }
