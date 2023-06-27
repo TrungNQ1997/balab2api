@@ -1,4 +1,7 @@
+//using BAWebLab2.Business;
 using BAWebLab2.Business;
+using BAWebLab2.BLL;
+using BAWebLab2.DAL;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 
@@ -11,8 +14,11 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 // Add services to the container.
 
-builder.Services.AddTransient<UserRepository>(provider => new UserRepository(configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IUserBusiness, UserBusinessImpl>();
+//builder.Services.AddTransient<UserRepository>(provider => new UserRepository(configuration.GetConnectionString("DefaultConnection")));
+ 
+
+
+
 
 builder.Services.AddCors(options =>
 {
@@ -30,6 +36,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.RegisterDALDependencies(builder.Configuration);
+builder.Services.RegisterBLLDependencies(builder.Configuration);
+
 
 var app = builder.Build();
 
