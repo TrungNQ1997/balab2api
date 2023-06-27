@@ -54,6 +54,9 @@ namespace BAWebLab2.Business
 
 
 
+        /// <summary>api kiểm tra username, pass có hợp lệ không</summary>
+        /// <param name="json">json chứa username, pass</param>
+        /// <returns>có đăng nhập hợp lệ không, thông tin user đăng nhập</returns>
         public StoreResult<User> Login(JsonDocument json)
         {
 
@@ -78,6 +81,9 @@ namespace BAWebLab2.Business
             return result;
         }
 
+        /// <summary>api kiểm tra đăng nhập theo token và get quyền theo menu_id</summary>
+        /// <param name="json">json chứa token và menu_id</param>
+        /// <returns>đăng nhập có hợp lệ không, user có phải admin không, danh sách quyền</returns>
         public StoreResult<UserRole> CheckLoginAndRole(JsonDocument json)
         {
 
@@ -103,6 +109,9 @@ namespace BAWebLab2.Business
             return result;
         }
 
+        /// <summary>lấy danh sách quyền theo user_id và menu_id</summary>
+        /// <param name="json">json chứa user_id và menu_id</param>
+        /// <returns>danh sách quyền</returns>
         public StoreResult<UserRole> GetRole(JsonDocument json)
         {
 
@@ -128,6 +137,9 @@ namespace BAWebLab2.Business
         }
 
 
+        /// <summary>thêm user</summary>
+        /// <param name="json">json chứa thông tin user cần thêm</param>
+        /// <returns>trạng thái thêm thành công hay không</returns>
         public StoreResult<int> AddUser(JsonDocument json)
         {
 
@@ -161,6 +173,9 @@ namespace BAWebLab2.Business
             return result;
         }
 
+        /// <summary>sửa user</summary>
+        /// <param name="json">json chứa thông tin user sửa</param>
+        /// <returns>trạng thái sửa thành công không</returns>
         public StoreResult<int> EditUser(JsonDocument json)
         {
 
@@ -195,6 +210,9 @@ namespace BAWebLab2.Business
             return result;
         }
 
+        /// <summary>đổi mật khẩu user đang đăng nhập</summary>
+        /// <param name="json">json chứa pass cũ và mới</param>
+        /// <returns>trạng thái đổi mật khẩu thành công không</returns>
         public StoreResult<int> ChangePass(JsonDocument json)
         {
 
@@ -222,8 +240,8 @@ namespace BAWebLab2.Business
         }
 
 
-        /// <summary>Deletes the user.</summary>
-        /// <param name="json">đối tượng jsondocument nhận từ api</param>
+        /// <summary>xóa nhiều user</summary>
+        /// <param name="json">json chứa list id user cần xóa và id user gọi api xóa</param>
         /// <returns>kết quả thực thi store xóa user</returns>
         public StoreResult<int> DeleteUser(JsonDocument json)
         {

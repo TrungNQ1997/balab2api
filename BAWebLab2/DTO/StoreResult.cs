@@ -1,5 +1,7 @@
 ﻿namespace BAWebLab2.DTO
 {
+    /// <summary>kết quả trả về của store</summary>
+    /// <typeparam name="T">kiểu danh sách đối tượng trả về</typeparam>
     public class StoreResult<T>
     {
 

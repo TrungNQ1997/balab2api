@@ -18,10 +18,12 @@ public class UserRepository
         _connectionString = connectionString;
     }
 
+    /// <summary>lấy danh sách user</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>số lượng user, list lấy theo offset</returns>
     public StoreResult<User> GetAllUsers(DynamicParameters param)
     {
-        //dynamic myObject = new ExpandoObject();
-        var result = new StoreResult<User>();
+         var result = new StoreResult<User>();
         try
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -32,14 +34,11 @@ public class UserRepository
                 var list = resultsExcute.Read<User>().ToList();
 
                 var count = param.Get<Int64>("pCount");
-
-                
+                 
                 result.count = (int)count;
                 result.list = list;
                 result.is_success = true;
                 result.is_error = false;
-                //myObject.count = count;
-                //myObject.list = list;
                  
             }
         }
@@ -54,25 +53,25 @@ public class UserRepository
 
     }
 
+    /// <summary>kiểm tra đăng nhập hợp lệ</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>trạng thái đăng nhập, thông tin user login</returns>
     public StoreResult<User> Login(DynamicParameters param)
     {
         var result = new StoreResult<User>();
-        //dynamic myObject = new ExpandoObject();
+         
         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                  
                 var userInfo = connection.Query<User>("BAWebUserLoginSysUserInfo", param, commandType: CommandType.StoredProcedure).AsList();
-                //var ret = param.Get<Int64>("pret");
-
+                 
                 result.list = userInfo;
                 var ret = param.Get<Int64>("pret");
                 result.count = (int)ret;
                 result.is_error = false;
-                //myObject.result = result;
-                //myObject.userInfo = userInfo;
-                  
+                
             }
         }
         catch (Exception ex)
@@ -85,11 +84,13 @@ public class UserRepository
 
     }
 
+    /// <summary>kiểm tra đăng nhập và lấy quyền</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>list quyền, token hợp lệ không, user có là admin không</returns>
     public StoreResult<UserRole> CheckLoginAndRole(DynamicParameters param)
     {
         var result = new StoreResult<UserRole>();
-        //dynamic myObject = new ExpandoObject();
-        try
+         try
         {
             using (var connection = new SqlConnection(_connectionString))
         {
@@ -97,35 +98,32 @@ public class UserRepository
             var tables = connection.QueryMultiple("BAWebUserCheckTokenLoginAndGetRoleSysUserInfo", param, commandType: CommandType.StoredProcedure);
             
             var role = tables.Read<UserRole>().ToList();
-            //var result = param.Get<Int64>("pret");
                 var is_admin = param.Get<Boolean>("pis_admin");
                 var ret = param.Get<Int64>("pret");
                 result.list = role;
                 result.is_success = ret == 0? false: true;
                 result.is_admin = is_admin;
                 result.is_error = false;
-            //    myObject.is_login = result;
-            //myObject.is_admin = isAdmin;
-            //myObject.role = role;
              
             }
         }
         catch (Exception ex)
         {
             result.is_error = true;
-            //result.message = 99;
-            result.message = ex.Message;
+             result.message = ex.Message;
             LibCommon.WriteLog(ex.ToString());
         }
         return result;
 
     }
 
+    /// <summary>lấy list quyền</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>list quyền, user có là admin không</returns>
     public StoreResult<UserRole> GetRole(DynamicParameters param)
     {
         var result = new StoreResult<UserRole>();
-        //dynamic myObject = new ExpandoObject();
-        try
+         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -138,12 +136,7 @@ public class UserRepository
                 result.is_admin= is_admin;
                 result.list= role;
                 result.is_error = false;
-
-                //var isAdmin = result.Read<Object>().ToList();
-                //myObject.is_admin = isAdmin;
-                //myObject.role = role;
-                //return myObject;
-
+ 
             }
         }
         catch (Exception ex)
@@ -155,12 +148,14 @@ public class UserRepository
         return result;
 
     }
-     
+
+    /// <summary>thêm user</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>trạng thái thêm user</returns>
     public StoreResult<int> AddUser(DynamicParameters param)
     {
         var result = new StoreResult<int>();
-        //dynamic myObject = new ExpandoObject();
-        try
+         try
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -172,8 +167,7 @@ public class UserRepository
                  else 
                     result.is_success= false;
                  result.is_error = false;   
-                //myObject.result = result;
-                 
+                  
             }
         } catch (Exception ex)
         {
@@ -186,6 +180,9 @@ public class UserRepository
 
     }
 
+    /// <summary>sửa user</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>trạng thái sửa user</returns>
     public StoreResult<int> EditUser(DynamicParameters param)
     {
 
@@ -216,6 +213,9 @@ public class UserRepository
 
     }
 
+    /// <summary>đổi pass user đang đăng nhập</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>kết quả đổi pass</returns>
     public StoreResult<int> ChangePass(DynamicParameters param)
     {
         var myObject = new StoreResult<int>();
@@ -247,6 +247,9 @@ public class UserRepository
     }
 
 
+    /// <summary>xóa 1 user</summary>
+    /// <param name="param">list param để chạy store</param>
+    /// <returns>trạng thái xóa</returns>
     public StoreResult<int> DeleteUser(DynamicParameters param)
     {
         var myObject = new StoreResult<int>();

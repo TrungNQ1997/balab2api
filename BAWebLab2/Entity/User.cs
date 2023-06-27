@@ -1,5 +1,6 @@
 ﻿namespace BAWebLab2.Entity
 {
+    /// <summary>đối tượng để lấy danh sách user</summary>
     public class User
     {
         public int id { get; set; }
@@ -23,8 +24,6 @@
         public int stt { get; set; }
 
         public int user_id { get; set; }
-        //public string sdt { get; set; }
-        //public string sdt { get; set; }
-        //public string sdt { get; set; }
+        
     }
 }
