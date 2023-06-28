@@ -1178,6 +1178,7 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BAWebLab2.DAL": "1.0.0",
+          "BAWebLab2.DTO": "1.0.0",
           "Dapper": "2.0.123"
         },
         "runtime": {
@@ -1186,6 +1187,7 @@
       },
       "BAWebLab2.DAL/1.0.0": {
         "dependencies": {
+          "BAWebLab2.DTO": "1.0.0",
           "Dapper": "2.0.123",
           "Microsoft.EntityFrameworkCore": "7.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.8",
@@ -1193,6 +1195,11 @@
         },
         "runtime": {
           "BAWebLab2.DAL.dll": {}
+        }
+      },
+      "BAWebLab2.DTO/1.0.0": {
+        "runtime": {
+          "BAWebLab2.DTO.dll": {}
         }
       }
     }
@@ -2077,6 +2084,11 @@
       "sha512": ""
     },
     "BAWebLab2.DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BAWebLab2.DTO/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

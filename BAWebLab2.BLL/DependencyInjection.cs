@@ -13,13 +13,7 @@ namespace BAWebLab2.BLL
     {
         public static void RegisterBLLDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
-            //services.AddAutoMapper(typeof(AutoMapperProfiles));
-            services.AddScoped<IUserBusiness, UserBusinessImpl>();
-            //services.AddScoped<IAuthService, AuthService>();
-
-            //services.AddFluentValidationAutoValidation();
-            //services.AddValidatorsFromAssemblyContaining<UserToLoginDTOValidator>();
-            //services.AddValidatorsFromAssemblyContaining<UserToRegisterDTOValidator>();
-        }
+              services.AddScoped<IUserBusiness, UserBusinessImpl>();
+                 }
     }
 }

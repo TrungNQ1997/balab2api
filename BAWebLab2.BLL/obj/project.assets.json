@@ -1299,6 +1299,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
+          "BAWebLab2.DTO": "1.0.0",
           "Dapper": "2.0.123",
           "Microsoft.EntityFrameworkCore": "7.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.8",
@@ -1309,6 +1310,16 @@
         },
         "runtime": {
           "bin/placeholder/BAWebLab2.DAL.dll": {}
+        }
+      },
+      "BAWebLab2.DTO/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/BAWebLab2.DTO.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BAWebLab2.DTO.dll": {}
         }
       }
     }
@@ -3724,12 +3735,18 @@
       "type": "project",
       "path": "../BAWebLab2.DAL/BAWebLab2.DAL.csproj",
       "msbuildProject": "../BAWebLab2.DAL/BAWebLab2.DAL.csproj"
+    },
+    "BAWebLab2.DTO/1.0.0": {
+      "type": "project",
+      "path": "../BAWebLab2.DTO/BAWebLab2.DTO.csproj",
+      "msbuildProject": "../BAWebLab2.DTO/BAWebLab2.DTO.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "BAWebLab2.DAL >= 1.0.0",
+      "BAWebLab2.DTO >= 1.0.0",
       "Dapper >= 2.0.123"
     ]
   },
@@ -3768,6 +3785,9 @@
           "projectReferences": {
             "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.DAL\\BAWebLab2.DAL.csproj": {
               "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.DAL\\BAWebLab2.DAL.csproj"
+            },
+            "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.DTO\\BAWebLab2.DTO.csproj": {
+              "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.DTO\\BAWebLab2.DTO.csproj"
             }
           }
         }

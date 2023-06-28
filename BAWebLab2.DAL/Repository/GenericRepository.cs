@@ -1,5 +1,6 @@
 ﻿using BAWebLab2.DAL.DataContext;
 using BAWebLab2.DAL.Repository.IRepository;
+using BAWebLab2.DTO.DTO;
 using BAWebLab2.Entity;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace BAWebLab2.DAL.Repository
 {
@@ -24,6 +26,13 @@ namespace BAWebLab2.DAL.Repository
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
+            _context.SaveChanges();
         }
 
         public void AddRange(IEnumerable<T> entities)
@@ -55,22 +64,18 @@ namespace BAWebLab2.DAL.Repository
         {
             _context.Set<T>().RemoveRange(entities);
         }
-
-        public IEnumerable<T> ExcuteStore(string procedureName , ref DynamicParameters param)
+ 
+        public MultipleResultDTO<T1> CallStoredProcedure<T1>(string storedProcedureName, ref DynamicParameters param)
         {
-
-            //using var connection = _context.Database.GetDbConnection();
             using var connection = _context.Database.GetDbConnection();
-
             connection.Open();
 
-            //string query = "SELECT * FROM Employees";
-
-           var resultsExcute =  connection.QueryMultiple(procedureName, param, commandType: CommandType.StoredProcedure);
-
-            var list = resultsExcute.Read<T>().ToList();
-
-            return list;
+            var multi = connection.QueryMultiple(storedProcedureName, param , commandType: CommandType.StoredProcedure);
+            
+                var resultList = multi.Read<T1>().ToList();
+                 connection.Close();
+                return new MultipleResultDTO<T1> { ListPrimary = resultList  };
+            
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace BAWebLab2.Entity
 {
-    /// <summary>đối tượng để lấy danh sách quyền</summary>
+    /// <summary>đối tượng map quyền với bảng sql</summary>
     public class UserRole
     {
         public int role_id { get; set; }

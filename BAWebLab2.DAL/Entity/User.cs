@@ -1,6 +1,9 @@
-﻿namespace BAWebLab2.Entity
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BAWebLab2.Entity
 {
-    /// <summary>đối tượng để lấy danh sách user</summary>
+    [Table("SysUserInfo")]
+    /// <summary>đối tượng map user với bảng sql</summary>
     public class User
     {
         public int id { get; set; }
@@ -18,12 +21,6 @@
         public int luser { get; set; }
         public DateTime cdate { get; set; }
         public DateTime ldate { get; set; }
-
-
-        public string gioi_tinh_text { get; set; }
-        public int stt { get; set; }
-
-        public int user_id { get; set; }
-        
+         
     }
 }
