@@ -1,0 +1,15 @@
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Core.deps.json
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Core.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Infrastructure.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Infrastructure.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.csproj.AssemblyReference.cache
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.AssemblyInfoInputs.cache
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.AssemblyInfo.cs
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.csproj.CoreCompileInputs.cache
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.csproj.CopyComplete
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\refint\BAWebLab2.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\ref\BAWebLab2.Core.dll

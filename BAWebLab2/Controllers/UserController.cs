@@ -14,9 +14,9 @@ using BAWebLab2.DTO.DTO;
 public class UserController : ControllerBase
 {
 
-    private readonly IUserBusiness _userBusiness;
+    private readonly IUserService _userBusiness;
 
-    public UserController(IUserBusiness userBusiness)
+    public UserController(IUserService userBusiness)
     {
 
         _userBusiness = userBusiness;

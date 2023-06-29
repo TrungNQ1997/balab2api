@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BAWebLab2.BLL\BAWebLab2.BLL.csproj" />
+    <ProjectReference Include="..\BAWebLab2.Core\BAWebLab2.Core.csproj" />
   </ItemGroup>
 
 </Project>

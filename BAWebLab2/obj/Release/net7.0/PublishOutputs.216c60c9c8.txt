@@ -92,9 +92,7 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.BLL.dll
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.DAL.dll
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.DTO.dll
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.BLL.pdb
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.DAL.pdb
-C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.DTO.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.Infrastructure.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.Core.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\BAWebLab2.Infrastructure.pdb
