@@ -48,7 +48,7 @@ public class UserController : ControllerBase
             response.Data = result;
         }
 
-        return Ok(result);
+        return Ok(response);
     }
 
     /// <summary>api kiểm tra đăng nhập vào hệ thống</summary>
