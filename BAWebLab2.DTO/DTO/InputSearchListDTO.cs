@@ -14,8 +14,8 @@ namespace BAWebLab2.DTO
         public int gioi_tinh_search { get; set; }
         public DateTime? birthday_to { get; set; }
         public DateTime? birthday_from { get; set; }
-        public string user_id { get; set; }
-        public string text_search { get; set; }
+        public string? user_id { get; set; }
+        public string? text_search { get; set; }
 
     }
 }
