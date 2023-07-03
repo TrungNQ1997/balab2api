@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using BAWebLab2.Business;
 using System.Net;
 
@@ -35,7 +34,7 @@ public class UserController : ControllerBase
         var result = _userBusiness.GetListUsersFilter(data);
         ApiResponseDTO<UserDTO> response = new ApiResponseDTO<UserDTO>();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -64,7 +63,7 @@ public class UserController : ControllerBase
 
         ApiResponseDTO<UserDTO> response = new ApiResponseDTO<UserDTO>();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -95,7 +94,7 @@ public class UserController : ControllerBase
 
         ApiResponseDTO<UserRole> response = new ApiResponseDTO<UserRole>  ();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -125,7 +124,7 @@ public class UserController : ControllerBase
 
         ApiResponseDTO<UserRole> response = new ApiResponseDTO<UserRole>();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -154,7 +153,7 @@ public class UserController : ControllerBase
         var result = _userBusiness.AddUser(data);
         ApiResponseDTO<int> response = new ApiResponseDTO<int>();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -183,7 +182,7 @@ public class UserController : ControllerBase
 
         ApiResponseDTO<int> response = new ApiResponseDTO<int>();
         result = _userBusiness.EditUser(data);
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -211,7 +210,7 @@ public class UserController : ControllerBase
         var result = new StoreResultDTO<int>();
         ApiResponseDTO<int> response = new ApiResponseDTO<int>();
         result = _userBusiness.ChangePass(data);
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();
@@ -239,7 +238,7 @@ public class UserController : ControllerBase
         var result = _userBusiness.DeleteUser(data);
         ApiResponseDTO<int> response = new ApiResponseDTO<int>();
 
-        if (result.is_error == false)
+        if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
             response.Message = HttpStatusCode.OK.ToString();

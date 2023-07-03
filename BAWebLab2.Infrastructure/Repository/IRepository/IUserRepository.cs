@@ -1,15 +1,9 @@
 ﻿using BAWebLab2.DTO;
 using BAWebLab2.Entity;
-using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.DAL.Repository.IRepository
 {
-    public interface   IUserRepository : IGenericRepository<User>
+	public interface   IUserRepository : IGenericRepository<User>
     {
 
         /// <summary>xóa danh sách user</summary>

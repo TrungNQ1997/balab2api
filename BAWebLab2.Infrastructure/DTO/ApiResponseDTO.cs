@@ -1,9 +1,7 @@
-﻿using BAWebLab2.Entity;
-
-namespace BAWebLab2.DTO
+﻿namespace BAWebLab2.DTO
 {
-    /// <summary>class dùng để trả về kết quả của api</summary>
-    public class ApiResponseDTO<T>
+	/// <summary>class dùng để trả về kết quả của api</summary>
+	public class ApiResponseDTO<T>
     {
         /// <summary>mã trạng thái</summary>
         /// <value>trường

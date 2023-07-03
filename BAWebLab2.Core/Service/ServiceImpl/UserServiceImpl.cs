@@ -5,12 +5,11 @@ using BAWebLab2.Entity;
 using Dapper;
 //using Newtonsoft.Json.Linq;
 using System.Data;
-using System.Text.Json;
 
 namespace BAWebLab2.Business
 {
-    /// <summary>class để xử lí  dữ liệu từ client</summary>
-    public class UserServiceImpl : IUserService
+	/// <summary>class để xử lí  dữ liệu từ client</summary>
+	public class UserServiceImpl : IUserService
     {
         private readonly IUserRepository _userRepository;
 
@@ -30,28 +29,28 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("pUser_id", int.Parse(input.user_id));
-                parameters.Add("pPage_number", input.page_number);
-                parameters.Add("pPage_size", input.page_size);
-                parameters.Add("pText_search", input.text_search);
-                parameters.Add("pBirthday_from", input.birthday_from);
-                parameters.Add("pBirthday_to", input.birthday_to);
-                parameters.Add("pGioi_tinh_search", input.gioi_tinh_search);
+                parameters.Add("pUser_id", int.Parse(input.UserId));
+                parameters.Add("pPage_number", input.PageNumber );
+                parameters.Add("pPage_size", input.PageSize  );
+                parameters.Add("pText_search", input.TextSearch  );
+                parameters.Add("pBirthday_from", input.BirthdayFrom  );
+                parameters.Add("pBirthday_to", input.BirthdayTo);
+                parameters.Add("pGioi_tinh_search", input.GioiTinhSearch  );
                 parameters.Add("pCount", 0,DbType.Int64,ParameterDirection.Output);
                  
                 var resultStore = _userRepository.CallStoredProcedure<UserDTO>("BAWebUserGetSysUserInfo",ref parameters);
-                result.list = resultStore.ListPrimary;
+                result.List = resultStore.ListPrimary;
                 var count = parameters.Get<Int64>("pCount");
 
-                result.count = (int)count;
+                result.Count = (int)count;
 
-                result.is_success = true;
-                result.is_error = false;
+                result.Success = true;
+                result.Error = false;
             }
             catch (Exception ex)
             {
-                result.message = ex.Message;
-                result.is_error = true;
+                result.Message = ex.Message;
+                result.Error = true;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
 
@@ -69,21 +68,21 @@ namespace BAWebLab2.Business
 
             try
             {
-                parameters.Add("pUsername", (input.username));
-                parameters.Add("pPass", (LibCommon.LibCommon.HashMD5(input.password)));
-                parameters.Add("pis_remember", (input.is_remember));
+                parameters.Add("pUsername", (input.Username));
+                parameters.Add("pPass", (LibCommon.LibCommon.HashMD5(input.Password)));
+                parameters.Add("pis_remember", (input.IsRemember  ));
                 parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
 
               var  resultStore = _userRepository.CallStoredProcedure<UserDTO>("BAWebUserLoginSysUserInfo", ref parameters);
 
-                result.list = resultStore.ListPrimary;
+                result.List = resultStore.ListPrimary;
                             var ret = parameters.Get<Int64>("pret");
-                          result.count = (int)ret;
-                            result.is_error = false;
+                          result.Count = (int)ret;
+                            result.Error = false;
             }
             catch (Exception ex)
             {
-                result.message = ex.Message;
+                result.Message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -97,9 +96,9 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("pToken", (input.token));
+                parameters.Add("pToken", (input.Token));
 
-                parameters.Add("pMenu_id", (int.Parse(input.menu_id)));
+                parameters.Add("pMenu_id", (int.Parse(input.MenuId  )));
                 parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
                 parameters.Add("pis_admin", false, DbType.Boolean, ParameterDirection.Output);
 
@@ -107,16 +106,16 @@ namespace BAWebLab2.Business
                  
                 var is_admin = parameters.Get<Boolean>("pis_admin");
                 var ret = parameters.Get<Int64>("pret");
-                result.list = resultStore.ListPrimary;
-                result.is_success = ret == 0 ? false : true;
-                result.is_admin = is_admin;
-                result.is_error = false;
+                result.List = resultStore.ListPrimary;
+                result.Success = ret == 0 ? false : true;
+                result.Admin = is_admin;
+                result.Error = false;
 
             }
             catch (Exception ex)
             {
-                result.message = ex.Message;
-                result.is_error = true;
+                result.Message = ex.Message;
+                result.Error = true;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -130,24 +129,24 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("puser_id", (input.user_id));
+                parameters.Add("puser_id", (input.UserId  ));
 
-                parameters.Add("pMenu_id", (int.Parse(input.menu_id)));
+                parameters.Add("pMenu_id", (int.Parse(input.MenuId  )));
                 parameters.Add("pis_admin", 0, DbType.Boolean, ParameterDirection.Output);
 
               var  resultStore = _userRepository.CallStoredProcedure<UserRole>("BAWebUserGetRoleSysUserInfo", ref parameters);
 
                  var is_admin = parameters.Get<Boolean>("pis_admin");
                  
-                    result.is_admin = is_admin;
+                    result.Admin = is_admin;
                
-                result.list = resultStore.ListPrimary;
-                result.is_error = false;
+                result.List = resultStore.ListPrimary;
+                result.Error = false;
             }
             catch (Exception ex)
             {
-                result.is_error = true;
-                result.message = ex.Message;
+                result.Error = true;
+                result.Message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -162,13 +161,13 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                  user.password = LibCommon.LibCommon.HashMD5(user.password);
+                  user.Password = LibCommon.LibCommon.HashMD5(user.Password);
                 _userRepository.Update(user);
             }
             catch (Exception ex)
             {
-                result.is_error = true;
-                result.message = ex.Message;
+                result.Error = true;
+                result.Message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -182,25 +181,25 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(input.password)));
-                parameters.Add("ppassword_old", (LibCommon.LibCommon.HashMD5(input.password_old)));
-                parameters.Add("puser_id", (int.Parse(input.user_id)));
-                parameters.Add("pusername", (input.username));
+                parameters.Add("ppassword", (LibCommon.LibCommon.HashMD5(input.Password)));
+                parameters.Add("ppassword_old", (LibCommon.LibCommon.HashMD5(input.PasswordOld)));
+                parameters.Add("puser_id", (int.Parse(input.UserId  )));
+                parameters.Add("pusername", (input.Username));
 
                 parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
 
               var  resultStore = _userRepository.CallStoredProcedure<int>("BAWebUserUpdatePassSysUserInfo", ref parameters);
                 var ret = parameters.Get<Int64>("pret");
                 if (ret == 0)
-                    result.is_success = true;
+                    result.Success = true;
                 else
-                    result.is_success = false;
-                result.is_error = false;
+                    result.Success = false;
+                result.Error = false;
             }
             catch (Exception ex)
             {
-                result.is_error = true;
-                result.message = ex.Message;
+                result.Error = true;
+                result.Message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;
@@ -211,9 +210,9 @@ namespace BAWebLab2.Business
              
             var result = new StoreResultDTO<int>();
              result = _userRepository.DeleteUser(input);
-            if (!result.list.Contains(0))
+            if (!result.List.Contains(0))
             {
-                result.is_error = true;
+                result.Error = true;
             }
             
             return result;
@@ -228,14 +227,14 @@ namespace BAWebLab2.Business
             try
             {
                
-                user.password=LibCommon.LibCommon.HashMD5(user.password);
+                user.Password =LibCommon.LibCommon.HashMD5(user.Password);
 
                _userRepository.Add(user);
             }
             catch (Exception ex)
             {
-                result.is_error = true;
-                result.message = ex.Message;
+                result.Error = true;
+                result.Message = ex.Message;
                 LibCommon.LibCommon.WriteLog(ex.ToString());
             }
             return result;

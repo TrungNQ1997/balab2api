@@ -5,15 +5,15 @@
     public class StoreResultDTO<T>
     {
 
-        public bool is_success { get; set; }
-        public bool is_admin { get; set; }
-        public bool is_error { get; set; }
-        public int count { get; set; }
-        public string message { get; set; }
-        public List<T> list { get; set; }
+        public bool Success { get; set; }
+        public bool Admin { get; set; }
+        public bool Error { get; set; }
+        public int Count { get; set; }
+        public string Message { get; set; }
+        public List<T> List { get; set; }
         public StoreResultDTO()
         {
-            list = new List<T>();
+            List = new List<T>();
         }
 
         

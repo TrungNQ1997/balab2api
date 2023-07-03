@@ -6,21 +6,21 @@ namespace BAWebLab2.Entity
     /// <summary>đối tượng map user với bảng sql</summary>
     public class User
     {
-        public int id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string ho_ten { get; set; }
-        public int gioi_tinh { get; set; }
-        public string sdt { get; set;}
-        public DateTime ngay_sinh { get; set; }
-        public string email { get; set; }
-        public bool is_delete { get; set; }
-        public bool is_active { get; set; }
-        public bool is_admin { get; set; }
-        public int cuser { get; set; }
-        public int luser { get; set; }
-        public DateTime cdate { get; set; }
-        public DateTime ldate { get; set; }
-         
-    }
+		public int Id { get; set; }
+		public string Username { get; set; }
+		public string? Password { get; set; }
+		public string? FullName { get; set; }
+		public int Sex { get; set; }
+		public string? Phone { get; set; }
+		public DateTime Birthday { get; set; }
+		public string? Email { get; set; }
+		public bool IsDelete { get; set; }
+		public bool IsActive { get; set; }
+		public bool IsAdmin { get; set; }
+		public int Creator { get; set; }
+		public int Editor { get; set; }
+		public DateTime DateCreated { get; set; }
+		public DateTime DateEdited { get; set; }
+
+	}
 }
