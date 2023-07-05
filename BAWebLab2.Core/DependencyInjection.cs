@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BAWebLab2.BLL
+namespace BAWebLab2.Core
 {
 	public static class DependencyInjection
     {
-        public static void RegisterBLLDependencies(this IServiceCollection services, IConfiguration Configuration)
+        public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
               services.AddScoped<IUserService, UserServiceImpl>();
                  }

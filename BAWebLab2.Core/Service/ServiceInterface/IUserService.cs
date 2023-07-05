@@ -1,10 +1,9 @@
 ﻿using BAWebLab2.DTO;
-using BAWebLab2.DTO.DTO;
 using BAWebLab2.Entity;
 
 namespace BAWebLab2.Business
 {
-	public interface IUserService
+    public interface IUserService
     {
         /// <summary>parce input lấy tham số truyền vào store lấy danh sách user</summary>
         /// <param name="input">đối tượng chứa tham số truyền vào store</param>

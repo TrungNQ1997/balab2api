@@ -1,7 +1,7 @@
 ﻿using BAWebLab2.DTO;
 using BAWebLab2.Entity;
 
-namespace BAWebLab2.DAL.Repository.IRepository
+namespace BAWebLab2.Infrastructure.Repository.IRepository
 {
 	public interface   IUserRepository : IGenericRepository<User>
     {

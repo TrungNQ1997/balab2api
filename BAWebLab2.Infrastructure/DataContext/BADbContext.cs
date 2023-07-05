@@ -1,7 +1,7 @@
 ﻿using BAWebLab2.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BAWebLab2.DAL.DataContext
+namespace BAWebLab2.Infrastructure.DataContext
 {
     /// <summary>class kết nối db</summary>
     public class BADbContext : DbContext

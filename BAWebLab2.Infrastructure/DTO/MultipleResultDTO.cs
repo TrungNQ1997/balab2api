@@ -1,4 +1,4 @@
-﻿namespace BAWebLab2.DTO.DTO
+﻿namespace BAWebLab2.DTO
 {
 	/// <summary>class để nhận list trả về từ store theo kiểu đối tượng T1</summary>
 	/// <typeparam name="T1">Kiểu đối tượng trả về list</typeparam>

@@ -1,4 +1,4 @@
-﻿namespace BAWebLab2.DTO.DTO
+﻿namespace BAWebLab2.DTO
 {
 	/// <summary>đối tượng nhận đầu vào các api login</summary>
 	public class InputLoginDTO

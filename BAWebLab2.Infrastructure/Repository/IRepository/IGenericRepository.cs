@@ -1,10 +1,10 @@
-﻿using BAWebLab2.DTO.DTO;
+﻿using BAWebLab2.DTO;
 using Dapper;
 using System.Linq.Expressions;
 
-namespace BAWebLab2.DAL.Repository.IRepository
+namespace BAWebLab2.Infrastructure.Repository.IRepository
 {
-	public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         /// <summary>Get đối tượng bằng id</summary>
         /// <param name="id">id đối tượng</param>

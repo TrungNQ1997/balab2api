@@ -1,15 +1,15 @@
-﻿using BAWebLab2.DAL.DataContext;
-using BAWebLab2.DAL.Repository.IRepository;
-using BAWebLab2.DTO.DTO;
+﻿using BAWebLab2.Infrastructure.DataContext;
+using BAWebLab2.Infrastructure.Repository.IRepository;
+using BAWebLab2.DTO;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Linq.Expressions;
 using static Dapper.SqlMapper;
 
-namespace BAWebLab2.DAL.Repository
+namespace BAWebLab2.Repository
 {
-	public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly BADbContext _context;
         public GenericRepository(BADbContext context)

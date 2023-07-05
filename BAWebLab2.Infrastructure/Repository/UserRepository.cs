@@ -4,9 +4,9 @@ using System.Data;
 using BAWebLab2.Entity;
 
 using BAWebLab2.DTO;
-using BAWebLab2.DAL.Repository;
-using BAWebLab2.DAL.Repository.IRepository;
-using BAWebLab2.DAL.DataContext;
+using BAWebLab2.Repository;
+using BAWebLab2.Infrastructure.Repository.IRepository;
+using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 
 public class UserRepository : GenericRepository<User>,IUserRepository
@@ -23,20 +23,20 @@ public class UserRepository : GenericRepository<User>,IUserRepository
         var myObject = new StoreResultDTO<int>();
         using (var connection = _context.Database.GetDbConnection())
         {
-                string  user_id = input.UserId;
+                string  userId = input.UserId;
                  
                 foreach (var item in input.Users)
                 {
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("pid", (item.Id));
-                    parameters.Add("pusername", (item.Username));
+                    parameters.Add("id", (item.Id));
+                    parameters.Add("username", (item.Username));
 
-                    parameters.Add("puser_id", (user_id));
+                    parameters.Add("userId", (userId));
 
-                    parameters.Add("pret", 0, DbType.Int64, ParameterDirection.Output);
+                    parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
 
-                connection.Query("BAWebUserDeleteSysUserInfo", parameters, commandType: CommandType.StoredProcedure);
-                var result = parameters.Get<Int64>("pret");
+                connection.Query("BAWeb_User_DeleteUserInfo", parameters, commandType: CommandType.StoredProcedure);
+                var result = parameters.Get<Int64>("ret");
                 myObject.List.Add((int)result);
  
             }

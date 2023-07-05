@@ -2,7 +2,7 @@
 
 namespace BAWebLab2.Entity
 {
-    [Table("SysUserInfo")]
+    [Table("UserInfo")]
     /// <summary>đối tượng map user với bảng sql</summary>
     public class User
     {
@@ -10,7 +10,7 @@ namespace BAWebLab2.Entity
 		public string Username { get; set; }
 		public string? Password { get; set; }
 		public string? FullName { get; set; }
-		public int Sex { get; set; }
+		public int SexId { get; set; }
 		public string? Phone { get; set; }
 		public DateTime Birthday { get; set; }
 		public string? Email { get; set; }

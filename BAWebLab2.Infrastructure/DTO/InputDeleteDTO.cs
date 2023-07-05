@@ -1,9 +1,7 @@
-﻿using BAWebLab2.Entity;
-
-namespace BAWebLab2.DTO
+﻿namespace BAWebLab2.DTO
 {
-	/// <summary>đối tượng nhận đầu vào api xóa user</summary>
-	public class InputDeleteDTO
+    /// <summary>đối tượng nhận đầu vào api xóa user</summary>
+    public class InputDeleteDTO
     {
         public string UserId { get; set; }
         public List<UserDTO> Users { get; set; }

@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\github\\balab2api\\BAWebLab2\\BAWebLab2.csproj": {}
+    "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj": {}
   },
   "projects": {
-    "D:\\github\\balab2api\\BAWebLab2.Core\\BAWebLab2.Core.csproj": {
+    "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\github\\balab2api\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
+        "projectUniqueName": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
         "projectName": "BAWebLab2.Core",
-        "projectPath": "D:\\github\\balab2api\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\github\\balab2api\\BAWebLab2.Core\\obj\\",
+        "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
+        "packagesPath": "C:\\Users\\trungnq3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\trungnq3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,15 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Users\\Admin\\Downloads": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj": {
-                "projectPath": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj"
+              "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj"
               }
             }
           }
@@ -73,24 +74,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.305\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj": {
+    "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
         "projectName": "BAWebLab2.Infrastructure",
-        "projectPath": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\trungnq3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\trungnq3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -98,7 +100,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Users\\Admin\\Downloads": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -150,24 +152,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.305\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\github\\balab2api\\BAWebLab2\\BAWebLab2.csproj": {
+    "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\github\\balab2api\\BAWebLab2\\BAWebLab2.csproj",
+        "projectUniqueName": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj",
         "projectName": "BAWebLab2",
-        "projectPath": "D:\\github\\balab2api\\BAWebLab2\\BAWebLab2.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\github\\balab2api\\BAWebLab2\\obj\\",
+        "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj",
+        "packagesPath": "C:\\Users\\trungnq3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\trungnq3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -175,16 +178,19 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.305\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
-          "C:\\Users\\Admin\\Downloads": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\github\\balab2api\\BAWebLab2.Core\\BAWebLab2.Core.csproj": {
-                "projectPath": "D:\\github\\balab2api\\BAWebLab2.Core\\BAWebLab2.Core.csproj"
+              "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj": {
+                "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj"
+              },
+              "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj"
               }
             }
           }
@@ -259,7 +265,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.305\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -9,6 +9,7 @@
       "BAWebLab2/1.0.0": {
         "dependencies": {
           "BAWebLab2.Core": "1.0.0",
+          "BAWebLab2.Infrastructure": "1.0.0",
           "Dapper": "2.0.123",
           "Microsoft.AspNet.WebApi.WebHost": "5.2.9",
           "Microsoft.AspNetCore.Cors": "2.2.0",

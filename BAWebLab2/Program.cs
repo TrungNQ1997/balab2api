@@ -1,7 +1,7 @@
 //using BAWebLab2.Business;
 using BAWebLab2.Business;
-using BAWebLab2.BLL;
-using BAWebLab2.DAL;
+using BAWebLab2.Core;
+using BAWebLab2.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 
@@ -36,8 +36,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.RegisterDALDependencies(builder.Configuration);
-builder.Services.RegisterBLLDependencies(builder.Configuration);
+builder.Services.RegisterInfrastructureDependencies(builder.Configuration);
+builder.Services.RegisterCoreDependencies(builder.Configuration);
 
 
 var app = builder.Build();

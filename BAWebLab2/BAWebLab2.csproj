@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BAWebLab2.Core\BAWebLab2.Core.csproj" />
+    <ProjectReference Include="..\BAWebLab2.Infrastructure\BAWebLab2.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

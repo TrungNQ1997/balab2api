@@ -5,7 +5,7 @@ using System.Net;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.DTO;
 using BAWebLab2.Entity;
-using BAWebLab2.DTO.DTO;
+ 
 
 /// <summary>api phân hệ người dùng với tiền tố là user/</summary>
 [Route("user")]
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     /// <returns>trạng thái thực hiện store và tổng phần tử của list và 1 list đối tượng select theo offset pagesize và page number thỏa mãn điều kiện tìm kiếm  </returns>
     [HttpPost("getListUserFilter")]
 
-    public IActionResult GetListUsersFilter([Microsoft.AspNetCore.Mvc.FromBody] InputSearchListDTO data)
+    public IActionResult GetListUsersFilter([ FromBody] InputSearchListDTO data)
     {
 
         var result = _userBusiness.GetListUsersFilter(data);
@@ -56,7 +56,7 @@ public class UserController : ControllerBase
     /// <returns>trạng thái có cho đăng nhập hay không? , thông tin của user đăng nhập</returns>
     [HttpPost("login")]
 
-    public IActionResult Login([System.Web.Http.FromBody] InputLoginDTO data)
+    public IActionResult Login([ FromBody] InputLoginDTO data)
     {
 
         var result = _userBusiness.Login(data);
@@ -86,7 +86,7 @@ public class UserController : ControllerBase
     /// <returns>đăng nhập có hợp lệ không?, list quyền theo user và menuid</returns>
     [HttpPost("checklogingetrole")]
 
-    public IActionResult CheckLoginAndRole([System.Web.Http.FromBody] InputLoginDTO data)
+    public IActionResult CheckLoginAndRole([FromBody] InputLoginDTO data)
     {
 
         var result = _userBusiness.CheckLoginAndRole(data);
@@ -117,7 +117,7 @@ public class UserController : ControllerBase
     /// <returns>list quyền theo user và menuid</returns>
     [HttpPost("getrole")]
 
-    public IActionResult GetRole([System.Web.Http.FromBody] InputLoginDTO data)
+    public IActionResult GetRole([FromBody] InputLoginDTO data)
     {
 
         var result = _userBusiness.GetRole(data);

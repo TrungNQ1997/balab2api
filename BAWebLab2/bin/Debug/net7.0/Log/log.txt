@@ -1014,4 +1014,64 @@ Error Number:2627,State:1,Class:14
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
    at BAWebLab2.DAL.Repository.GenericRepository`1.Update(T entity) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.DAL\Repository\GenericRepository.cs:line 35
-   at BAWebLab2.Business.UserBusinessImpl.EditUser(User user) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.BLL\Business\BusinessImpl\UserBusinessImpl.cs:line 202
+   at BAWebLab2.Business.UserBusinessImpl.EditUser(User user) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.BLL\Business\BusinessImpl\UserBusinessImpl.cs:line 202 
+  
+ 7/4/2023 1:32:57 PM   System.Data.DataException: Error parsing column 0 (token=501c98b4-7173-4b8b-bd76-a4d1eeceef9b - Object)
+ ---> System.InvalidCastException: Object must implement IConvertible.
+   at System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   --- End of inner exception stack trace ---
+   at Dapper.SqlMapper.ThrowDataException(Exception ex, Int32 index, IDataReader reader, Object value) in /_/Dapper/SqlMapper.cs:line 3706
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   at Dapper.SqlMapper.GridReader.ReadDeferred[T](Int32 index, Func`2 deserializer, Type effectiveType)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Dapper.SqlMapper.GridReader.ReadImpl[T](Type type, Boolean buffered)
+   at Dapper.SqlMapper.GridReader.Read[T](Boolean buffered)
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param)
+   at BAWebLab2.Business.UserServiceImpl.Login(InputLoginDTO input) 
+  
+ 7/4/2023 1:34:03 PM   System.Data.DataException: Error parsing column 0 (token=f162c3cf-2ef2-4b82-a857-9c602c1af895 - Object)
+ ---> System.InvalidCastException: Object must implement IConvertible.
+   at System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   --- End of inner exception stack trace ---
+   at Dapper.SqlMapper.ThrowDataException(Exception ex, Int32 index, IDataReader reader, Object value) in /_/Dapper/SqlMapper.cs:line 3706
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   at Dapper.SqlMapper.GridReader.ReadDeferred[T](Int32 index, Func`2 deserializer, Type effectiveType)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Dapper.SqlMapper.GridReader.ReadImpl[T](Type type, Boolean buffered)
+   at Dapper.SqlMapper.GridReader.Read[T](Boolean buffered)
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param)
+   at BAWebLab2.Business.UserServiceImpl.Login(InputLoginDTO input) 
+  
+ 7/4/2023 1:34:45 PM   System.Data.DataException: Error parsing column 0 (token=a02c7582-3e64-426c-a081-7df0bfa6a7c5 - Object)
+ ---> System.InvalidCastException: Object must implement IConvertible.
+   at System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   --- End of inner exception stack trace ---
+   at Dapper.SqlMapper.ThrowDataException(Exception ex, Int32 index, IDataReader reader, Object value) in /_/Dapper/SqlMapper.cs:line 3706
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   at Dapper.SqlMapper.GridReader.ReadDeferred[T](Int32 index, Func`2 deserializer, Type effectiveType)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Dapper.SqlMapper.GridReader.ReadImpl[T](Type type, Boolean buffered)
+   at Dapper.SqlMapper.GridReader.Read[T](Boolean buffered)
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param)
+   at BAWebLab2.Business.UserServiceImpl.Login(InputLoginDTO input) 
+  
+ 7/4/2023 1:36:10 PM   System.Data.DataException: Error parsing column 0 (token=081d8f7f-df01-4b18-8f3a-4abffa2fc25e - Object)
+ ---> System.InvalidCastException: Object must implement IConvertible.
+   at System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   --- End of inner exception stack trace ---
+   at Dapper.SqlMapper.ThrowDataException(Exception ex, Int32 index, IDataReader reader, Object value) in /_/Dapper/SqlMapper.cs:line 3706
+   at Deserialize5501e061-448f-4b35-8b6d-da3f0ab021be(IDataReader)
+   at Dapper.SqlMapper.GridReader.ReadDeferred[T](Int32 index, Func`2 deserializer, Type effectiveType)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Dapper.SqlMapper.GridReader.ReadImpl[T](Type type, Boolean buffered)
+   at Dapper.SqlMapper.GridReader.Read[T](Boolean buffered)
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param)
+   at BAWebLab2.Business.UserServiceImpl.Login(InputLoginDTO input)
