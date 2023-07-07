@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Linq.Expressions;
 using static Dapper.SqlMapper;
+using Microsoft.Data.SqlClient;
+using BAWebLab2.Entity;
 
 namespace BAWebLab2.Repository
 {
@@ -71,6 +73,18 @@ namespace BAWebLab2.Repository
                 return new MultipleResultDTO<T1> { ListPrimary = resultList  };
             
         }
+       // public MultipleResultDTO<T1> GetStoredProcedure<T1>(string storedProcedureName, ref List<SqlParameter> input, ref List<SqlParameter> output)
+       // {
+            
+       //     var t = _context.Set<T1>().FromSqlRaw("EXEC GetUserInfo @userId, @username, @email OUTPUT",
+       //input,output).ToList() ;
 
-    }
+
+       //     var result = _context.Set<T1>().FromSqlInterpolated($"SELECT * FROM {storedProcedureName}").FirstOrDefault();
+
+
+       //     return new MultipleResultDTO<T1> { ListPrimary = result };
+       // }
+
+        }
 }

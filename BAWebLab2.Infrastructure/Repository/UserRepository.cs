@@ -8,6 +8,8 @@ using BAWebLab2.Repository;
 using BAWebLab2.Infrastructure.Repository.IRepository;
 using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using BAWebLab2.Infrastructure.DTO;
 
 public class UserRepository : GenericRepository<User>,IUserRepository
 {
@@ -47,4 +49,50 @@ public class UserRepository : GenericRepository<User>,IUserRepository
 
     }
 
-}
+    public MultipleResultDTO<LoginResultDTO> GetListUserProcedure(string procedure, ref List<SqlParameter> input, ref List<SqlParameter> output)
+    {
+
+        var u = new SqlParameter();
+        string sql = "EXEC " + procedure;
+        for(int i = 0; i < input.Count; i++)
+        {
+            if (i == 0)
+            {
+                sql += (" " + input[i].ParameterName + " ");
+            } else
+            {
+                sql += (" , " + input[i].ParameterName + " ");
+            }
+            if (input[i].Direction == ParameterDirection.Output)
+            {
+                sql += (" output ");
+            }
+        }
+        //for (int i = 0; i < output.Count; i++)
+        //{
+        //    if (i == 0 && input.Count == 0)
+        //    {
+        //        sql += (" " + output[i].ParameterName + " ");
+        //    }
+        //    else
+        //    {
+        //        sql += (" , " + output[i].ParameterName + " OUTPUT ");
+        //    }
+        //}
+        var t = _context.Set<LoginResultDTO>().FromSqlRaw(sql,
+          input.ToArray()).ToList();
+
+        MultipleResultDTO<LoginResultDTO> resultDTO = new MultipleResultDTO<LoginResultDTO>();
+        resultDTO.ListPrimary = t;
+
+
+
+         
+
+        return resultDTO;
+    }
+
+
+
+
+    }

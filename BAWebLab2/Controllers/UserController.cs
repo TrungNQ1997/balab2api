@@ -5,7 +5,7 @@ using System.Net;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.DTO;
 using BAWebLab2.Entity;
- 
+using BAWebLab2.Infrastructure.DTO;
 
 /// <summary>api phân hệ người dùng với tiền tố là user/</summary>
 [Route("user")]

@@ -4,6 +4,8 @@ using BAWebLab2.Entity;
 using Dapper;
 
 using System.Data;
+using Microsoft.Data.SqlClient;
+using BAWebLab2.Infrastructure.DTO;
 
 namespace BAWebLab2.Business
 {
@@ -28,17 +30,47 @@ namespace BAWebLab2.Business
             DynamicParameters parameters = new DynamicParameters();
             try
             {
+
+                //var paramInput = new List<SqlParameter>();
+                //var param = new SqlParameter();
+                //param.ParameterName = "@username";
+                //param.Value = input.TextSearch;
+                //paramInput.Add(param);
+                //var param1 = new SqlParameter();
+                //param1.ParameterName = "@pass";
+                //param1.Value = LibCommon.LibCommon.HashMD5(input.UserId);
+                //paramInput.Add(param1);
+                //var param2 = new SqlParameter();
+                //param2.ParameterName = "@isRemember";
+                //param2.Value = input.PageNumber==0 ? false:true;
+                //paramInput.Add(param2);
+                //var param3 = new SqlParameter();
+                //param3.ParameterName = "@ret";
+                //param3.Value = 0;
+                //param3.Direction = ParameterDirection.Output;
+                //paramInput.Add(param3);
+                //var paramOutput = new List<SqlParameter>();
+
+
+
+                //var resultStore = _userRepository.GetListUserProcedure("BAWeb_User_Login",ref paramInput, ref  paramOutput);
+
+
                 parameters.Add("userId", int.Parse(input.UserId));
-                parameters.Add("pageNumber", input.PageNumber );
-                parameters.Add("pageSize", input.PageSize  );
-                parameters.Add("textSearch", input.TextSearch  );
-                parameters.Add("BirthdayFrom", input.BirthdayFrom  );
+                parameters.Add("pageNumber", input.PageNumber);
+                parameters.Add("pageSize", input.PageSize);
+                parameters.Add("textSearch", input.TextSearch);
+                parameters.Add("BirthdayFrom", input.BirthdayFrom);
                 parameters.Add("birthdayTo", input.BirthdayTo);
-                parameters.Add("gioiTinhSearch", input.GioiTinhSearch  );
-                parameters.Add("count", 0,DbType.Int64,ParameterDirection.Output);
-                 
+                parameters.Add("gioiTinhSearch", input.GioiTinhSearch);
+                parameters.Add("count", 0, DbType.Int64, ParameterDirection.Output);
+
                 var resultStore = _userRepository.CallStoredProcedure<UserDTO>("BAWeb_User_GetUserInfo", ref parameters);
-                result.List = resultStore.ListPrimary;
+
+                var u = resultStore.ListPrimary.Where(m => m.FullName.Contains("Trung")).ToList();
+                var list = new List<UserDTO>();
+                //list.Add(u);
+                result.List = u;
                 var count = parameters.Get<Int64>("count");
 
                 result.Count = (int)count;

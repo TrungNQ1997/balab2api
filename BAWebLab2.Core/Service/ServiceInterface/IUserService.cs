@@ -1,5 +1,6 @@
 ﻿using BAWebLab2.DTO;
 using BAWebLab2.Entity;
+using BAWebLab2.Infrastructure.DTO;
 
 namespace BAWebLab2.Business
 {
