@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using BAWebLab2.Infrastructure.DTO;
 
-public class UserRepository : GenericRepository<User>,IUserRepository
+public  class UserRepository : GenericRepository<User>,IUserRepository
 {
     private readonly BADbContext _bADbContext;
     public UserRepository(BADbContext bADbContext) 
@@ -47,6 +47,21 @@ public class UserRepository : GenericRepository<User>,IUserRepository
           
         return myObject;
 
+    }
+
+
+    public new void Add(User user)
+    {
+        user.DateCreated = DateTime.Now;
+        user.DateEdited = DateTime.Now;
+        base.Add(user);
+    }
+
+    public new void Update(User user)
+    {
+        
+        user.DateEdited = DateTime.Now;
+        base.Update(user);
     }
 
     public MultipleResultDTO<LoginResultDTO> GetListUserProcedure(string procedure, ref List<SqlParameter> input, ref List<SqlParameter> output)

@@ -6,11 +6,18 @@
     {
 
         public bool Success { get; set; }
+
+        
         public bool Admin { get; set; }
+
         public bool Error { get; set; }
+
         public int Count { get; set; }
+
         public string Message { get; set; }
+
         public List<T> List { get; set; }
+
         public StoreResultDTO()
         {
             List = new List<T>();

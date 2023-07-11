@@ -11,7 +11,7 @@ using BAWebLab2.Entity;
 
 namespace BAWebLab2.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly BADbContext _context;
         public GenericRepository(BADbContext context)
@@ -19,7 +19,7 @@ namespace BAWebLab2.Repository
             _context = context;
         }
 
-        public void Add(T entity)
+        public  void Add(T entity)
         {
             _context.Set<T>().Add(entity);
             _context.SaveChanges();
@@ -73,18 +73,7 @@ namespace BAWebLab2.Repository
                 return new MultipleResultDTO<T1> { ListPrimary = resultList  };
             
         }
-       // public MultipleResultDTO<T1> GetStoredProcedure<T1>(string storedProcedureName, ref List<SqlParameter> input, ref List<SqlParameter> output)
-       // {
-            
-       //     var t = _context.Set<T1>().FromSqlRaw("EXEC GetUserInfo @userId, @username, @email OUTPUT",
-       //input,output).ToList() ;
-
-
-       //     var result = _context.Set<T1>().FromSqlInterpolated($"SELECT * FROM {storedProcedureName}").FirstOrDefault();
-
-
-       //     return new MultipleResultDTO<T1> { ListPrimary = result };
-       // }
+      
 
         }
 }

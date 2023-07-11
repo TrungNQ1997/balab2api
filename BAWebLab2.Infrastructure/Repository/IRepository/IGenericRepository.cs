@@ -19,7 +19,7 @@ namespace BAWebLab2.Infrastructure.Repository.IRepository
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
         /// <summary>thêm mới đối tượng</summary>
         /// <param name="entity">đối tượng muốn thêm</param>
-        void Add(T entity);
+         void Add(T entity);
         /// <summary>sửa đối tượng</summary>
         /// <param name="entity">đối tượng muốn sửa</param>
         void Update(T entity);

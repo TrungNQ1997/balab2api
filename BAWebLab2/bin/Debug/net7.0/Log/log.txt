@@ -1372,4 +1372,73 @@ Error Number:137,State:2,Class:15
    at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
    at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
    at UserRepository.GetListUserProcedure(String procedure, List`1& input, List`1& output) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\Repository\UserRepository.cs:line 82
-   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Service\ServiceImpl\UserServiceImpl.cs:line 56
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Service\ServiceImpl\UserServiceImpl.cs:line 56 
+  
+ 7/10/2023 8:27:56 AM   System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:28:18 AM   System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:30:04 AM   System.InvalidOperationException: Sequence contains more than one matching element
+   at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:35:15 AM   System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:43:50 AM   System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:44:14 AM   System.ArgumentException: An item with the same key has already been added. Key: True
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](List`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:44:51 AM   System.ArgumentException: An item with the same key has already been added. Key: True
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](List`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:47:47 AM   System.ArgumentException: An item with the same key has already been added. Key: True
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](List`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:47:58 AM   System.ArgumentException: An item with the same key has already been added. Key: True
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](List`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:49:11 AM   System.ArgumentNullException: Value cannot be null. (Parameter 'source')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input) 
+  
+ 7/10/2023 8:50:20 AM   System.InvalidOperationException: Sequence contains no matching element
+   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at BAWebLab2.Business.UserServiceImpl.GetListUsersFilter(InputSearchListDTO input)
