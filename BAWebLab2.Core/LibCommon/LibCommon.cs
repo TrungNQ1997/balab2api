@@ -5,12 +5,20 @@ using System.Text;
 namespace BAWebLab2.LibCommon
 {
     /// <summary>class chứa các hàm chung</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/12/2023 created
+    /// </Modified>
     public class LibCommon
     {
         /// <summary>mã hóa md5 1 chuỗi</summary>
         /// <param name="text">The text.
         /// chuỗi cần mã hóa</param>
         /// <returns>chuỗi đã mã hóa</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/12/2023 created
+        /// </Modified>
         public static string HashMD5(string text)
         {
             MD5 md5 = MD5.Create();
@@ -25,6 +33,10 @@ namespace BAWebLab2.LibCommon
 
         /// <summary>ghi vào file log.txt</summary>
         /// <param name="text">nội dung cần ghi</param>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/12/2023 created
+        /// </Modified>
         public static void WriteLog(string text)
         {
             StringBuilder sb = new StringBuilder();

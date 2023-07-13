@@ -1,9 +1,6 @@
-//using BAWebLab2.Business;
-using BAWebLab2.Business;
+ 
 using BAWebLab2.Core;
 using BAWebLab2.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "MyPolicy";
@@ -16,10 +13,6 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 //builder.Services.AddTransient<UserRepository>(provider => new UserRepository(configuration.GetConnectionString("DefaultConnection")));
  
-
-
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,
