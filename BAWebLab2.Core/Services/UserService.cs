@@ -1,9 +1,9 @@
 ﻿using BAWebLab2.Infrastructure.Repository.IRepository;
 using BAWebLab2.Model;
-using BAWebLab2.Entity;
+using BAWebLab2.Entities;
 using Dapper; 
 using System.Data;
-using BAWebLab2.Business;
+using BAWebLab2.Service;
 
 namespace BAWebLab2.Core.Services
 {
@@ -71,7 +71,44 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-         
+
+
+        public StoreResult<Vehicles> GetVehicles()
+        {
+
+            var result = new StoreResult<Vehicles>();
+
+            
+            try
+            {
+
+               
+                var resultStore = _userRepository.GetVehicles<Vehicles>();
+
+                var list = resultStore.ListPrimary.Where(m=>m.FK_CompanyID== 15076).ToList();
+
+                //var e = list.Skip(20).Take(10).ToList().OrderBy(m=>m.Username).OrderBy(mbox=>);
+                 
+
+                //var count = parameters.Get<long>("count");
+                result.List = list;
+                //result.Count = (int)count;
+
+
+                result.Error = false;
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+                result.Error = true;
+                LibCommon.LibCommon.WriteLog(ex.ToString());
+            }
+
+            return result;
+        }
+
+
+
         /// <summary>api kiểm tra username, pass có hợp lệ không</summary>
         /// <param name="input">đối tượng chứa username, pass</param>
         /// <returns>có đăng nhập hợp lệ không, thông tin user đăng nhập</returns>

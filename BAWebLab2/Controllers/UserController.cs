@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BAWebLab2.Business;
+using BAWebLab2.Service;
 using System.Net; 
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.Model;
-using BAWebLab2.Entity;
-
+using BAWebLab2.Entities ;
+ 
 
 /// <summary>lớp nhận request từ client, api phân hệ người dùng với tiền tố là user</summary>
 /// <Modified>
@@ -16,12 +16,12 @@ using BAWebLab2.Entity;
 public class UserController : ControllerBase
 {
 
-    private readonly IUserService _userBusiness;
+    private readonly IUserService _userService;
 
-    public UserController(IUserService userBusiness)
+    public UserController(IUserService userService)
     {
 
-        _userBusiness = userBusiness;
+        _userService = userService;
     }
 
 
@@ -36,7 +36,7 @@ public class UserController : ControllerBase
     public IActionResult GetListUsersFilter([FromBody] InputSearchList data)
     {
 
-        var result = _userBusiness.GetListUsersFilter(data);
+        var result = _userService.GetListUsersFilter(data);
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
 
         if (result.Error == false)
@@ -55,6 +55,32 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+
+
+    [HttpGet("getVehicles")]
+    public IActionResult GetVehicles( )
+    {
+
+        var result = _userService.GetVehicles( );
+        ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
+
+        if (result.Error == false)
+        {
+            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+            response.Message = HttpStatusCode.OK.ToString();
+            response.Data = result;
+        }
+        else
+        {
+            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+            response.Message = HttpStatusCode.InternalServerError.ToString();
+            response.Data = result;
+        }
+
+        return Ok(response);
+    }
+
+
     /// <summary>api kiểm tra đăng nhập vào hệ thống</summary>
     /// <param name="data">The data.
     /// truyền vào đối tượng chứa tài khoản và mật khẩu của user</param>
@@ -67,7 +93,7 @@ public class UserController : ControllerBase
     public IActionResult Login([FromBody] InputLogin data)
     {
 
-        var result = _userBusiness.Login(data);
+        var result = _userService.Login(data);
 
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
 
@@ -100,7 +126,7 @@ public class UserController : ControllerBase
     public IActionResult CheckLoginAndRole([FromBody] InputLogin data)
     {
 
-        var result = _userBusiness.CheckLoginAndRole(data);
+        var result = _userService.CheckLoginAndRole(data);
 
 
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
@@ -134,7 +160,7 @@ public class UserController : ControllerBase
     public IActionResult GetRole([FromBody] InputLogin data)
     {
 
-        var result = _userBusiness.GetRole(data);
+        var result = _userService.GetRole(data);
 
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
 
@@ -167,7 +193,7 @@ public class UserController : ControllerBase
     public IActionResult AddUser([FromBody] User data)
     {
 
-        var result = _userBusiness.AddUser(data);
+        var result = _userService.AddUser(data);
         ApiResponse<int> response = new ApiResponse<int>();
 
         if (result.Error == false)
@@ -201,7 +227,7 @@ public class UserController : ControllerBase
         var result = new StoreResult<int>();
 
         ApiResponse<int> response = new ApiResponse<int>();
-        result = _userBusiness.EditUser(data);
+        result = _userService.EditUser(data);
         if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -232,7 +258,7 @@ public class UserController : ControllerBase
     {
         var result = new StoreResult<int>();
         ApiResponse<int> response = new ApiResponse<int>();
-        result = _userBusiness.ChangePass(data);
+        result = _userService.ChangePass(data);
         if (result.Error == false)
         {
             response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -261,7 +287,7 @@ public class UserController : ControllerBase
     [HttpPost("deleteuser")] 
     public IActionResult DeleteUser([FromBody] InputDelete data)
     {
-        var result = _userBusiness.DeleteUser(data);
+        var result = _userService.DeleteUser(data);
         ApiResponse<int> response = new ApiResponse<int>();
 
         if (result.Error == false)

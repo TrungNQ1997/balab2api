@@ -1,6 +1,7 @@
 ﻿using BAWebLab2.Model;
-using BAWebLab2.Entity;
 using Microsoft.EntityFrameworkCore;
+
+using BAWebLab2.Entities;
 
 namespace BAWebLab2.Infrastructure.DataContext
 {
@@ -14,11 +15,14 @@ namespace BAWebLab2.Infrastructure.DataContext
     {
         public BADbContext(DbContextOptions<BADbContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
-         
+        //public DbSet<User> Users { get; set; }
+        public DbSet<Vehicles> Vehicles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Vehicles>()
+            .HasKey(i => i.PK_VehicleID);
             modelBuilder.Entity<LoginResult>().HasNoKey();
             // Configuration code...
         }

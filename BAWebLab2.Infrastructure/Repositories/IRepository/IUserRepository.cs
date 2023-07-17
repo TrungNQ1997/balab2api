@@ -1,7 +1,9 @@
 ﻿using BAWebLab2.Model;
-using BAWebLab2.Entity;
+using BAWebLab2.Entities ;
 
 using Microsoft.Data.SqlClient;
+using Dapper;
+ 
 
 namespace BAWebLab2.Infrastructure.Repository.IRepository
 {
@@ -12,6 +14,8 @@ namespace BAWebLab2.Infrastructure.Repository.IRepository
     /// </Modified>
     public interface   IUserRepository : IGenericRepository<User>
     {
+
+        MultipleResult<Vehicles> GetVehicles<Vehicles>();
 
         /// <summary>xóa danh sách user</summary>
         /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>

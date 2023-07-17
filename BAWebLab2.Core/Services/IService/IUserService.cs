@@ -1,7 +1,7 @@
 ﻿using BAWebLab2.Model;
-using BAWebLab2.Entity;
+using BAWebLab2.Entities;
 
-namespace BAWebLab2.Business
+namespace BAWebLab2.Service
 {
     /// <summary>class interface của UserService</summary>
     /// <Modified>
@@ -19,6 +19,10 @@ namespace BAWebLab2.Business
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<UserModel> GetListUsersFilter(InputSearchList input);
+
+
+        public StoreResult<Vehicles> GetVehicles( );
+
 
         /// <summary>lấy danh sách quyền và quyền admin của user</summary>
         /// <param name="input">chứa user_id và menu_id</param>

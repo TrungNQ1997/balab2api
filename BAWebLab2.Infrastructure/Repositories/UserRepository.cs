@@ -1,13 +1,14 @@
 ﻿
 using Dapper;
 using System.Data;
-using BAWebLab2.Entity;
+using BAWebLab2.Entities;
 using BAWebLab2.Model;
 using BAWebLab2.Repository;
 using BAWebLab2.Infrastructure.Repository.IRepository;
 using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 
 /// <summary>class xử lí thao tác của phân hệ user với tầng Database</summary>
@@ -23,6 +24,21 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         _bADbContext = bADbContext;
     }
+
+    public MultipleResult<Vehicles> GetVehicles<Vehicles>()
+    {
+        var myObject = new MultipleResult<Vehicles>();
+         
+
+        using (var connection = _context.Database.GetDbConnection())
+        {
+            
+            myObject.ListPrimary = _context.Vehicles.Cast<Vehicles>().ToList();
+            
+        }
+        return myObject;
+    }
+
 
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>

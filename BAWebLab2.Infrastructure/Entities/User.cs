@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BAWebLab2.Entity
+namespace BAWebLab2.Entities
 {
     /// <summary>đối tượng map user với bảng sql</summary>
     /// <Modified>

@@ -1,4 +1,4 @@
-﻿namespace BAWebLab2.Entity
+﻿namespace BAWebLab2.Entities
 {
 
     /// <summary>đối tượng map quyền với bảng sql</summary>
