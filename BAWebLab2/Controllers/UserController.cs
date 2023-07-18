@@ -57,29 +57,7 @@ public class UserController : ControllerBase
 
 
 
-    [HttpGet("getVehicles")]
-    public IActionResult GetVehicles( )
-    {
-
-        var result = _userService.GetVehicles( );
-        ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
-
-        if (result.Error == false)
-        {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
-        }
-        else
-        {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
-        }
-
-        return Ok(response);
-    }
-
+   
 
     /// <summary>api kiểm tra đăng nhập vào hệ thống</summary>
     /// <param name="data">The data.

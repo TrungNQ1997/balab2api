@@ -15,8 +15,7 @@ namespace BAWebLab2.Infrastructure.Repository.IRepository
     public interface   IUserRepository : IGenericRepository<User>
     {
 
-        MultipleResult<Vehicles> GetVehicles<Vehicles>();
-
+      
         /// <summary>xóa danh sách user</summary>
         /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>
         /// <returns>chuỗi kết quả xóa: 0- thành công, khác 0- thất bại</returns>

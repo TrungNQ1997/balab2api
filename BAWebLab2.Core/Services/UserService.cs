@@ -73,40 +73,6 @@ namespace BAWebLab2.Core.Services
         }
 
 
-        public StoreResult<Vehicles> GetVehicles()
-        {
-
-            var result = new StoreResult<Vehicles>();
-
-            
-            try
-            {
-
-               
-                var resultStore = _userRepository.GetVehicles<Vehicles>();
-
-                var list = resultStore.ListPrimary.Where(m=>m.FK_CompanyID== 15076).ToList();
-
-                //var e = list.Skip(20).Take(10).ToList().OrderBy(m=>m.Username).OrderBy(mbox=>);
-                 
-
-                //var count = parameters.Get<long>("count");
-                result.List = list;
-                //result.Count = (int)count;
-
-
-                result.Error = false;
-            }
-            catch (Exception ex)
-            {
-                result.Message = ex.Message;
-                result.Error = true;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
-            }
-
-            return result;
-        }
-
 
 
         /// <summary>api kiểm tra username, pass có hợp lệ không</summary>

@@ -25,20 +25,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         _bADbContext = bADbContext;
     }
 
-    public MultipleResult<Vehicles> GetVehicles<Vehicles>()
-    {
-        var myObject = new MultipleResult<Vehicles>();
-         
-
-        using (var connection = _context.Database.GetDbConnection())
-        {
-            
-            myObject.ListPrimary = _context.Vehicles.Cast<Vehicles>().ToList();
-            
-        }
-        return myObject;
-    }
-
+   
 
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>

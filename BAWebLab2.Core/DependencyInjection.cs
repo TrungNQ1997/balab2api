@@ -1,5 +1,6 @@
 ﻿
 using BAWebLab2.Core.Services;
+using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace BAWebLab2.Core
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IReportVehicleSpeedViolationService, ReportVehicleSpeedViolationService>();
         }
     }
 }
