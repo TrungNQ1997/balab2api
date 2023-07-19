@@ -1926,4 +1926,19 @@ Error Number:137,State:2,Class:15
    at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
    at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
    at BAWebLab2.Infrastructure.Repositories.ReportVehicleSpeedViolationRepository.GetDataReport[ResultReportSpeed](InputReportSpeed input)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputReportSpeed input) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 67 
+  
+ 7/19/2023 8:54:45 AM   System.DivideByZeroException: Attempted to divide by zero.
+   at BAWebLab2.Infrastructure.Repositories.ReportVehicleSpeedViolationRepository.<>c__3`1.<GetDataReport>b__3_19(<>f__AnonymousType7`2 <>h__TransparentIdentifier1, Vehicles vehi) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\Repositories\ReportVehicleSpeedViolationRepository.cs:line 126
+   at System.Linq.Enumerable.JoinIterator[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector, IEqualityComparer`1 comparer)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at BAWebLab2.Infrastructure.Repositories.ReportVehicleSpeedViolationRepository.GetDataReport[ResultReportSpeed](InputReportSpeed input)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputReportSpeed input) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 67 
+  
+ 7/19/2023 9:12:41 AM   System.InvalidCastException: Unable to cast object of type '<>f__AnonymousType9`16[System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable`1[System.Double],System.Nullable`1[System.Double],System.Nullable`1[System.Double],System.Nullable`1[System.Double],System.Int32,System.Nullable`1[System.Int32],System.Nullable`1[System.Int32],System.String,System.String]' to type 'BAWebLab2.Infrastructure.Models.ResultReportSpeed'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at BAWebLab2.Infrastructure.Repositories.ReportVehicleSpeedViolationRepository.GetDataReport[ResultReportSpeed](InputReportSpeed input)
    at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputReportSpeed input) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 67

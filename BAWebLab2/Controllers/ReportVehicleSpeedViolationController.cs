@@ -20,10 +20,7 @@ namespace BAWebLab2.Controllers
 
             _reportVehicleSpeedViolationService = reportVehicleSpeedViolationService;
         }
-
-
-
-
+         
         [HttpGet("getVehicles")]
         public IActionResult GetVehicles()
         {

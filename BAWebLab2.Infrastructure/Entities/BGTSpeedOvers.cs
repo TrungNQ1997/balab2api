@@ -23,33 +23,33 @@ namespace BAWebLab2.Entities
 
         public int? VelocityAllow { get; set; }
 
-        public double? StartLongitude { get; set; }
+        //public double? StartLongitude { get; set; }
 
-        public double? StartLatitude { get; set; }
+        //public double? StartLatitude { get; set; }
 
-        public double? EndLongitude { get; set; }
+        //public double? EndLongitude { get; set; }
 
-        public double? EndLatitude { get; set; }
+        //public double? EndLatitude { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        //public DateTime CreatedDate { get; set; }
 
-        public string DriverName { get; set; }
+        //public string DriverName { get; set; }
 
-        public string DriverLicense { get; set; }
+        //public string DriverLicense { get; set; }
 
-        public byte SynCount { get; set; }
+        //public byte SynCount { get; set; }
 
-        public int? VelocityAverage { get; set; }
+        //public int? VelocityAverage { get; set; }
 
-        public string Description { get; set; }
+        //public string Description { get; set; }
 
-        public int? TotalTime { get; set; }
+        //public int? TotalTime { get; set; }
 
-        public DateTime? LastUpdateHighway { get; set; }
+        //public DateTime? LastUpdateHighway { get; set; }
 
-        public int? FK_LandmarkHighwayID { get; set; }
+        //public int? FK_LandmarkHighwayID { get; set; }
 
-        public double? Distances { get; set; }
+        //public double? Distances { get; set; }
 
         public double? StartKm { get; set; }
 

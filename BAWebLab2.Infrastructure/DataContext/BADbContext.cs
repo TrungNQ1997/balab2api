@@ -35,9 +35,9 @@ namespace BAWebLab2.Infrastructure.DataContext
            .HasKey(i => new { i.FK_VehicleID, i.StartTime });
 
 
-            modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.Description).IsRequired(required: false);
-            modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.TotalTime).IsRequired(required: false);
-            modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.Distances).IsRequired(required: false);
+            //modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.Description).IsRequired(required: false);
+            //modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.TotalTime).IsRequired(required: false);
+            //modelBuilder.Entity<BGTSpeedOvers>().Property(p => p.Distances).IsRequired(required: false);
 
             //modelBuilder.Entity<BGTSpeedOvers>().HasNoKey();
 
@@ -52,8 +52,8 @@ namespace BAWebLab2.Infrastructure.DataContext
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
 
-            modelBuilder.Entity<ReportActivitySummaries>().Property(p => p.UpdateDate).IsRequired(required: false);
-            modelBuilder.Entity<ReportActivitySummaries>().Property(p => p.ChangeType).IsRequired(required: false);
+            //modelBuilder.Entity<ReportActivitySummaries>().Property(p => p.UpdateDate).IsRequired(required: false);
+            //modelBuilder.Entity<ReportActivitySummaries>().Property(p => p.ChangeType).IsRequired(required: false);
 
             modelBuilder.Entity<LoginResult>().HasNoKey();
             // Configuration code...

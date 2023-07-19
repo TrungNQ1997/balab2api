@@ -30,18 +30,18 @@ namespace BAWebLab2.Infrastructure.Models
 
         public int SumTotal { get; set; }
 
-        public Double ViolatePer100Km { get; set; }
+        public Double? ViolatePer100Km { get; set; }
 
         public Double? ViolateKm { get; set; }
 
         public Double? TotalKm { get; set; }
 
-        public Double PercentRate { get; set; }
+        public Double? PercentRate { get; set; }
 
-        public DateTime ViolateTime { get; set; }
+        public int ViolateTime { get; set; }
 
         public int? TotalTime { get; set; }
 
-        public Double PercentRateTime { get; set; }
+        public Double? PercentRateTime { get; set; }
     }
 }
