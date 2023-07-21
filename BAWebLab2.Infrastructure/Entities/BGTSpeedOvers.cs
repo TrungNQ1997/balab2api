@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BAWebLab2.Entities
 {
+    /// <summary>class map đối tượng với bảng BGT.SpeedOvers trong database</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/20/2023 created
+    /// </Modified>
     [Table("BGT.SpeedOvers")]
     public class BGTSpeedOvers
     {

@@ -11,6 +11,8 @@ namespace BAWebLab2.Model
     public class MultipleResult<T1>
     {
         public List<T1> ListPrimary { get; set; }
-        
+
+        public IEnumerable<T1> IEnumerablePrimary { get; set; }
+
     }
 }

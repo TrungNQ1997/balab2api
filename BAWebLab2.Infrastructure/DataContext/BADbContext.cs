@@ -26,6 +26,31 @@ namespace BAWebLab2.Infrastructure.DataContext
 
         public DbSet<ReportActivitySummaries> ReportActivitySummaries { get; set; }
 
+        public IEnumerable<BGTSpeedOvers> GetAllBGTSpeedOvers()
+        {
+            return BGTSpeedOvers;
+        }
+
+        public IEnumerable<Vehicles> GetAllVehicles()
+        {
+            return Vehicles;
+        }
+
+        public IEnumerable<BGTTranportTypes> GetAllBGTTranportTypes()
+        {
+            return BGTTranportTypes;
+        }
+
+        public IEnumerable<BGTVehicleTransportTypes> GetAllBGTVehicleTransportTypes()
+        {
+            return BGTVehicleTransportTypes;
+        }
+
+        public IEnumerable<ReportActivitySummaries> GetAllReportActivitySummaries()
+        {
+            return ReportActivitySummaries;
+        }
+         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

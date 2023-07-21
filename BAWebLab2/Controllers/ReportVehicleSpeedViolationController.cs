@@ -8,6 +8,11 @@ using System.Net;
 
 namespace BAWebLab2.Controllers
 {
+    /// <summary>class nhận request từ client của báo cáo vi phạm tốc độ phương tiện</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/20/2023 created
+    /// </Modified>
     [Route("reportVehicleSpeedViolation")]
     [ApiController]
     public class ReportVehicleSpeedViolationController:ControllerBase
@@ -20,7 +25,13 @@ namespace BAWebLab2.Controllers
 
             _reportVehicleSpeedViolationService = reportVehicleSpeedViolationService;
         }
-         
+
+        /// <summary>api lấy danh sách vehicle</summary>
+        /// <returns>danh sách vehicle</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/20/2023 created
+        /// </Modified>
         [HttpGet("getVehicles")]
         public IActionResult GetVehicles()
         {
@@ -44,6 +55,13 @@ namespace BAWebLab2.Controllers
             return Ok(response);
         }
 
+        /// <summary>api lấy số liệu báo cáo vi phạm tốc độ phương tiện</summary>
+        /// <param name="input">đối tượng chứa tham số cần của báo cáo: từ ngày, đến ngày, danh sách xe</param>
+        /// <returns>số liệu báo cáo</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/20/2023 created
+        /// </Modified>
         [HttpPost("getDataReport")]
         public IActionResult GetDataReport([FromBody] InputReportSpeed input )
         {
