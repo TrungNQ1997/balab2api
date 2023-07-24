@@ -5,8 +5,11 @@ using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Model;
 using BAWebLab2.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace BAWebLab2.Infrastructure.Repositories
 {
@@ -18,10 +21,13 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class ReportVehicleSpeedViolationRepository : GenericRepository<User>, IReportVehicleSpeedViolationRepository
     {
         private readonly BADbContext _bADbContext;
-        public ReportVehicleSpeedViolationRepository(BADbContext bADbContext)
+        private readonly IDistributedCache _cache;
+
+        public ReportVehicleSpeedViolationRepository(BADbContext bADbContext, IDistributedCache cache)
             : base(bADbContext)
         {
             _bADbContext = bADbContext;
+            _cache = cache;
         }
 
         /// <summary>lấy danh sách vehicle</summary>
@@ -33,14 +39,11 @@ namespace BAWebLab2.Infrastructure.Repositories
         public MultipleResult<Vehicles> GetVehicles()
         {
             var myObject = new MultipleResult<Vehicles>();
+            
+            
+                    myObject.ListPrimary = _context.GetAllVehicles().Where(m => m.IsDeleted == false).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID).Cast<Vehicles>().ToList();
 
-
-            using (var connection = _context.Database.GetDbConnection())
-            {
-
-                myObject.ListPrimary = _context.Vehicles.Where(m => m.FK_CompanyID == 15076 && m.IsDeleted == false).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID).Cast<Vehicles>().ToList();
-
-            }
+               
             return myObject;
         }
 
@@ -56,25 +59,24 @@ namespace BAWebLab2.Infrastructure.Repositories
             var result = new StoreResult<ResultReportSpeed>();
             var multi = new MultipleResult<ResultReportSpeed>();
             var arrVehicle = input.TextSearch.Split(',');
+            //using (var connection = _context.Database.GetDbConnection())
+            //{
+                 
+                var bgtSpeed = _context.GetAllBGTSpeedOvers().Where(m => m.StartTime >= input.BirthdayFrom
+               && m.EndTime <= input.BirthdayTo && ((input.TextSearch == null || input.TextSearch == "") || arrVehicle.Contains(m.FK_VehicleID.ToString()))).Select(k => new
+               {
+                   FK_VehicleID = k.FK_VehicleID,
+                   VelocityAllow = k.VelocityAllow,
+                   VelocityGps = k.VelocityGps,
+                   StartKm = k.StartKm,
+                   StartTime = k.StartTime,
+                   EndKm = k.EndKm,
+                   EndTime = k.EndTime,
 
-            using (var connection = _context.Database.GetDbConnection())
-            {
-
-                var bgtSpeed = _context.BGTSpeedOvers.Where(m => m.StartTime >= input.BirthdayFrom
-                && m.EndTime <= input.BirthdayTo && m.FK_CompanyID == 15076 && ((input.TextSearch == null || input.TextSearch == "") || arrVehicle.Contains(m.FK_VehicleID.ToString()))).Select(k => new
-                {
-                    FK_VehicleID = k.FK_VehicleID,
-                    VelocityAllow = k.VelocityAllow,
-                    VelocityGps = k.VelocityGps,
-                    StartKm = k.StartKm,
-                    StartTime = k.StartTime,
-                    EndKm = k.EndKm,
-                    EndTime = k.EndTime,
-
-                });
-
-                var activity = _context.ReportActivitySummaries.Where(m => m.StartTime >= input.BirthdayFrom
-               && m.EndTime <= input.BirthdayTo && m.FK_CompanyID == 15076 && ((input.TextSearch == null || input.TextSearch == "") || arrVehicle.Contains(m.FK_VehicleID.ToString()))).Select(k => new
+               });
+                 
+                var activity = _context.GetAllReportActivitySummaries().Where(m => m.StartTime >= input.BirthdayFrom
+               && m.EndTime <= input.BirthdayTo && ((input.TextSearch == null || input.TextSearch == "") || arrVehicle.Contains(m.FK_VehicleID.ToString()))).Select(k => new
                {
                    VehicleID = k.FK_VehicleID,
                    ActivityTime = k.ActivityTime,
@@ -92,9 +94,9 @@ namespace BAWebLab2.Infrastructure.Repositories
                 //            };
 
 
-                var bGTTranportTypes = _context.BGTTranportTypes;
-                var bGTVehicleTransportTypes = _context.BGTVehicleTransportTypes.Where(m => m.FK_CompanyID == 15076);
-                var vehicles = _context.Vehicles.Where(m => m.FK_CompanyID == 15076 && m.IsDeleted == false);
+                var bGTTranportTypes = _context.GetAllBGTTranportTypes();
+                var bGTVehicleTransportTypes = _context.GetAllBGTVehicleTransportTypes() ;
+                var vehicles = _context.GetAllVehicles().Where(m =>  m.IsDeleted == false);
 
                 var activityGroup = activity.GroupBy(m => m.VehicleID).Select(k => new
                 {
@@ -136,9 +138,11 @@ namespace BAWebLab2.Infrastructure.Repositories
                   join vehicleTransportTypes in bGTVehicleTransportTypes on speed.VehicleID equals vehicleTransportTypes.FK_VehicleID
                   join tranportTypes in bGTTranportTypes on vehicleTransportTypes.FK_TransportTypeID equals tranportTypes.PK_TransportTypeID
                   join vehicle in vehicles on speed.VehicleID equals vehicle.PK_VehicleID
+                  
 
                   orderby vehicle.PrivateCode
-                  select new { speed = speed, vehicleTransportTypes = vehicleTransportTypes, acti = acti, tranportTypes = tranportTypes, vehicle = vehicle })
+                  select new { speed = speed, vehicleTransportTypes = vehicleTransportTypes,
+                      acti = acti, tranportTypes = tranportTypes, vehicle = vehicle })
                   .Select((item, Index) => new
                   {
                       Stt = Index + 1,
@@ -148,18 +152,10 @@ namespace BAWebLab2.Infrastructure.Repositories
                       Sum3 = item.speed.Sum3,
                       Sum4 = item.speed.Sum4,
                       SumTotal = item.speed.SumTotal,
-                      //ViolatePer100Km = Math.Round(((double)item.acti.TotalKm > 1000 ? (item.speed.SumTotal * 1000 / (double)item.acti.TotalKm) : item.speed.SumTotal), 2),
-
                       ViolateKm = Math.Round(item.speed.ViolateKm.HasValue ? (double)item.speed.ViolateKm : 0, 2),
                       TotalKm = Math.Round(item.acti.TotalKm.HasValue ? (double)item.acti.TotalKm : 0, 2),
-                      //PercentRate = Math.Round(item.acti.TotalKm == 0 ? 0 : (double)(item.speed.ViolateKm * 100 / item.acti.TotalKm), 2),
-                      //PercentRateTime = Math.Round(item.acti.SumActivityTime == 0 ? 0 : (double)((double)item.speed.ViolateTime * 100 / item.acti.SumActivityTime), 2),
-
-                      ViolatePer100Km = 0,
-
-                      //ViolateKm = 0,
-                      //TotalKm = 0,
-                      PercentRate = 0,
+                       ViolatePer100Km = 0,
+                       PercentRate = 0,
                       PercentRateTime = 0,
 
                       ViolateTime = item.speed.ViolateTime,
@@ -203,7 +199,7 @@ namespace BAWebLab2.Infrastructure.Repositories
 
                 //multi.ListPrimary = final.Cast<ResultReportSpeed>().ToList();
 
-            }
+            //}
             return result;
         }
 

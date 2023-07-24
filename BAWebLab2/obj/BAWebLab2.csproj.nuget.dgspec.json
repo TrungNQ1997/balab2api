@@ -150,6 +150,18 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.8, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "StackExchange.Redis.Extensions.Core": {
+              "target": "Package",
+              "version": "[9.1.0, )"
+            },
+            "StackExchange.Redis.Extensions.Newtonsoft": {
+              "target": "Package",
+              "version": "[9.1.0, )"
             }
           },
           "imports": [
@@ -225,6 +237,10 @@
               "target": "Package",
               "version": "[2.0.123, )"
             },
+            "EFCoreSecondLevelCacheInterceptor": {
+              "target": "Package",
+              "version": "[3.9.2, )"
+            },
             "Microsoft.AspNet.WebApi.WebHost": {
               "target": "Package",
               "version": "[5.2.9, )"
@@ -240,6 +256,22 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.5, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "Redis-64": {
+              "target": "Package",
+              "version": "[3.0.503, )"
+            },
+            "StackExchange.Redis.Extensions.Core": {
+              "target": "Package",
+              "version": "[9.1.0, )"
+            },
+            "StackExchange.Redis.Extensions.Newtonsoft": {
+              "target": "Package",
+              "version": "[9.1.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

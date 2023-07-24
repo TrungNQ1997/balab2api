@@ -117,3 +117,14 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\BAWebLab2.
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\BAWebLab2.Infrastructure.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\BAWebLab2.Core.pdb
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\BAWebLab2.Infrastructure.pdb
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\CacheManager.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\EasyCaching.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\EFCoreSecondLevelCacheInterceptor.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\AsyncLock.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\StackExchange.Redis.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\StackExchange.Redis.Extensions.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Release\net7.0\StackExchange.Redis.Extensions.Newtonsoft.dll

@@ -27,8 +27,12 @@ namespace BAWebLab2.Infrastructure
             services.AddDbContext<BADbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                
             });
-
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration["RedisCacheServerUrl"];
+            });
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReportVehicleSpeedViolationRepository, ReportVehicleSpeedViolationRepository>();
         }

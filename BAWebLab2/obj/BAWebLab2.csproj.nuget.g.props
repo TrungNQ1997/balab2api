@@ -20,5 +20,6 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">C:\Users\trungnq3\.nuget\packages\microsoft.extensions.apidescription.server\6.0.5</PkgMicrosoft_Extensions_ApiDescription_Server>
+    <Pkgredis-64 Condition=" '$(Pkgredis-64)' == '' ">C:\Users\trungnq3\.nuget\packages\redis-64\3.0.503</Pkgredis-64>
   </PropertyGroup>
 </Project>

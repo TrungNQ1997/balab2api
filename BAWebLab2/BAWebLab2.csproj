@@ -8,10 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.2" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.9" />
+    <PackageReference Include="Redis-64" Version="3.0.503" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="9.1.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="9.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
