@@ -24,6 +24,11 @@ namespace BAWebLab2.Core
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBGTSpeedOversService, BGTSpeedOversService>();
+            services.AddScoped<IBGTTranportTypesService, BGTTranportTypesService>();
+            services.AddScoped<IBGTVehicleTransportTypesService, BGTVehicleTransportTypesService>();
+            services.AddScoped<IVehiclesService, VehiclesService>();
+            services.AddScoped<IReportActivitySummariesService, ReportActivitySummariesService>();
             services.AddScoped<IReportVehicleSpeedViolationService, ReportVehicleSpeedViolationService>();
         }
     }

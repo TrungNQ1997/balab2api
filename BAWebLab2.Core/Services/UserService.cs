@@ -4,6 +4,7 @@ using BAWebLab2.Entities;
 using Dapper; 
 using System.Data;
 using BAWebLab2.Service;
+using log4net;
 
 namespace BAWebLab2.Core.Services
 {
@@ -15,9 +16,11 @@ namespace BAWebLab2.Core.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-         
+        private readonly ILog _logger;
+
         public UserService(IUserRepository userRepository)
         {
+            _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
 
             _userRepository = userRepository;
         }
@@ -42,9 +45,9 @@ namespace BAWebLab2.Core.Services
                 parameters.Add("pageNumber", input.PageNumber);
                 parameters.Add("pageSize", input.PageSize);
                 parameters.Add("textSearch", input.TextSearch);
-                parameters.Add("BirthdayFrom", input.BirthdayFrom);
-                parameters.Add("birthdayTo", input.BirthdayTo);
-                parameters.Add("gioiTinhSearch", input.GioiTinhSearch);
+                parameters.Add("BirthdayFrom", input.DayFrom);
+                parameters.Add("birthdayTo", input.DayTo);
+                parameters.Add("gioiTinhSearch", input.SexSearch);
                 parameters.Add("count", 0, DbType.Int64, ParameterDirection.Output);
 
                 var resultStore = _userRepository.CallStoredProcedure<UserModel>("BAWeb_User_GetUserInfo", ref parameters);
@@ -66,7 +69,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
 
             return result;
@@ -106,7 +109,7 @@ namespace BAWebLab2.Core.Services
             catch (Exception ex)
             {
                 result.Message = ex.Message;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }
@@ -146,7 +149,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }
@@ -184,7 +187,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Error = true;
                 result.Message = ex.Message;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }
@@ -212,7 +215,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Error = true;
                 result.Message = ex.Message;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }
@@ -249,7 +252,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Error = true;
                 result.Message = ex.Message;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }
@@ -298,7 +301,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Error = true;
                 result.Message = ex.Message;
-                LibCommon.LibCommon.WriteLog(ex.ToString());
+                _logger.Error(ex.ToString());
             }
             return result;
         }

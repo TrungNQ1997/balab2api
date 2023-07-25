@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Q12InSGSRztcOC3O00ZNz6qFQMNtyt/A7iFBlA//dCyHhwPP6o/7HImhb0iwxuJZROqZEO1dRsNngdXZ7Ry6ig==",
+  "dgSpecHash": "JcwIIP3D2TDmc0I5WixGt9ijS/9y9jPbW7K2WD1wll8GUK6V3/iKtJrr2kNQnnuyzl0Q7dO459Dc8LseC8HgJA==",
   "success": true,
   "projectFilePath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\log4net\\2.0.15\\log4net.2.0.15.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.2\\microsoft.data.sqlclient.5.0.2.nupkg.sha512",

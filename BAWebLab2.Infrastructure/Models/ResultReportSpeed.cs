@@ -11,7 +11,6 @@
         public ResultReportSpeed() {
         
         }
-        public int Stt { get; set; }
 
         public string PrivateCode { get; set; }
 
@@ -19,13 +18,13 @@
 
         public long VehicleID { get; set; }
 
-        public int Sum1 { get; set; }
+        public int Sum5To10 { get; set; }
 
-        public int Sum2 { get; set; }
+        public int Sum10To20 { get; set; }
 
-        public int Sum3 { get; set; }
+        public int Sum20To35 { get; set; }
          
-        public int Sum4 { get; set; }
+        public int SumFrom35 { get; set; }
 
         public int SumTotal { get; set; }
 

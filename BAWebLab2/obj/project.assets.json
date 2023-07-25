@@ -140,6 +140,22 @@
           }
         }
       },
+      "log4net/2.0.15": {
+        "type": "package",
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/log4net.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/log4net.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.9": {
         "type": "package",
         "dependencies": {
@@ -2307,7 +2323,8 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BAWebLab2.Infrastructure": "1.0.0",
-          "Dapper": "2.0.123"
+          "Dapper": "2.0.123",
+          "log4net": "2.0.15"
         },
         "compile": {
           "bin/placeholder/BAWebLab2.Core.dll": {}
@@ -2485,6 +2502,32 @@
         "lib/netstandard2.0/EFCoreSecondLevelCacheInterceptor.xml",
         "lib/netstandard2.1/EFCoreSecondLevelCacheInterceptor.dll",
         "lib/netstandard2.1/EFCoreSecondLevelCacheInterceptor.xml"
+      ]
+    },
+    "log4net/2.0.15": {
+      "sha512": "GahnO9ZgFka+xYcFwAfIFjW+k86P2nxFoaEpH6t3v4hiGj7tv2ksVZphxCVIHmJxoySS0HeU3dgCW+bSCcfD0A==",
+      "type": "package",
+      "path": "log4net/2.0.15",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/log4net.dll",
+        "lib/net20/log4net.xml",
+        "lib/net35/log4net.dll",
+        "lib/net35/log4net.xml",
+        "lib/net40-client/log4net.dll",
+        "lib/net40-client/log4net.xml",
+        "lib/net40/log4net.dll",
+        "lib/net40/log4net.xml",
+        "lib/net45/log4net.dll",
+        "lib/net45/log4net.xml",
+        "lib/netstandard1.3/log4net.dll",
+        "lib/netstandard1.3/log4net.xml",
+        "lib/netstandard2.0/log4net.dll",
+        "lib/netstandard2.0/log4net.xml",
+        "log4net.2.0.15.nupkg.sha512",
+        "log4net.nuspec",
+        "package-icon.png"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.9": {
@@ -6792,7 +6835,8 @@
       "System.Configuration.ConfigurationManager >= 7.0.0",
       "System.Data.SqlClient >= 4.8.5",
       "System.Security.Cryptography.Algorithms >= 4.3.1",
-      "System.Text.Json >= 7.0.2"
+      "System.Text.Json >= 7.0.2",
+      "log4net >= 2.0.15"
     ]
   },
   "packageFolders": {
@@ -6907,6 +6951,10 @@
           "System.Text.Json": {
             "target": "Package",
             "version": "[7.0.2, )"
+          },
+          "log4net": {
+            "target": "Package",
+            "version": "[2.0.15, )"
           }
         },
         "imports": [

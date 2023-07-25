@@ -90,43 +90,5 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         user.DateEdited = DateTime.Now;
         base.Update(user);
     }
-
-    /// <summary>lấy list user từ thủ tục</summary>
-    /// <param name="procedure">tên thủ tục</param>
-    /// <param name="input">danh sách tham số truyền vào</param>
-    /// <returns>list user</returns>
-    /// <Modified>
-    /// Name Date Comments
-    /// trungnq3 7/12/2023 created
-    /// </Modified>
-    public MultipleResult<LoginResult> GetListUserProcedure(string procedure, ref List<SqlParameter> input)
-    {
-
-        var u = new SqlParameter();
-        string sql = "EXEC " + procedure;
-        for (int i = 0; i < input.Count; i++)
-        {
-            if (i == 0)
-            {
-                sql += (" " + input[i].ParameterName + " ");
-            }
-            else
-            {
-                sql += (" , " + input[i].ParameterName + " ");
-            }
-            if (input[i].Direction == ParameterDirection.Output)
-            {
-                sql += (" output ");
-            }
-        }
-
-        var t = _context.Set<LoginResult>().FromSqlRaw(sql,
-          input.ToArray()).ToList();
-
-        MultipleResult<LoginResult> resultDTO = new MultipleResult<LoginResult>();
-        resultDTO.ListPrimary = t;
-
-        return resultDTO;
-    }
-
+ 
 }

@@ -34,7 +34,12 @@ namespace BAWebLab2.Infrastructure
                 options.Configuration = Configuration["RedisCacheServerUrl"];
             });
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IReportVehicleSpeedViolationRepository, ReportVehicleSpeedViolationRepository>();
+            services.AddScoped<IVehiclesRepository, VehiclesRepository>();
+            services.AddScoped<IBGTVehicleTransportTypesRepository, BGTVehicleTransportTypesRepository>();
+            services.AddScoped<IBGTTranportTypesRepository, BGTTranportTypesRepository>();
+            services.AddScoped<IBGTSpeedOversRepository, BGTSpeedOversRepository>();
+            services.AddScoped<IReportActivitySummariesRepository, ReportActivitySummariesRepository>();
+             
         }
     }
 }

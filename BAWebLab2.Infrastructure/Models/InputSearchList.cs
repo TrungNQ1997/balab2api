@@ -23,30 +23,30 @@
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public int PageSize { get; set; }
-
+         
         /// <summary>Gets or sets tìm kiếm giới tính</summary>
         /// <value>tìm kiếm giới tính 0-tất cả, 1-nam, 2-nữ, 3-tất cả</value>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public int GioiTinhSearch { get; set; }
+        public int SexSearch { get; set; }
 
-        /// <summary>Gets or sets ngày sinh đến</summary>
-        /// <value>tìm kiếm user theo ngày sinh đến</value>
+        /// <summary>Gets or sets ngày  đến</summary>
+        /// <value>tìm kiếm  theo ngày  đến</value>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public DateTime? BirthdayTo { get; set; }
+        public DateTime? DayTo { get; set; }
 
-        /// <summary>Gets or sets ngày sinh từ</summary>
-        /// <value>tìm kiếm user theo ngày sinh từ</value>
+        /// <summary>Gets or sets ngày  từ</summary>
+        /// <value>tìm kiếm  theo ngày  từ</value>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public DateTime? BirthdayFrom { get; set; }
+        public DateTime? DayFrom { get; set; }
 
         /// <summary>Gets or sets the user id.</summary>
         /// <value>id user gọi api</value>
@@ -63,6 +63,8 @@
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public string? TextSearch { get; set; }
+
+
 
     }
 }

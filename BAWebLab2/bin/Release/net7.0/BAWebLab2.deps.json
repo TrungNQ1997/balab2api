@@ -24,7 +24,8 @@
           "System.Configuration.ConfigurationManager": "7.0.0",
           "System.Data.SqlClient": "4.8.5",
           "System.Security.Cryptography.Algorithms": "4.3.1",
-          "System.Text.Json": "7.0.2"
+          "System.Text.Json": "7.0.2",
+          "log4net": "2.0.15"
         },
         "runtime": {
           "BAWebLab2.dll": {}
@@ -129,6 +130,17 @@
           "lib/net7.0/EFCoreSecondLevelCacheInterceptor.dll": {
             "assemblyVersion": "3.9.2.0",
             "fileVersion": "3.9.2.0"
+          }
+        }
+      },
+      "log4net/2.0.15": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "7.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/log4net.dll": {
+            "assemblyVersion": "2.0.15.0",
+            "fileVersion": "2.0.15.0"
           }
         }
       },
@@ -1323,7 +1335,8 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BAWebLab2.Infrastructure": "1.0.0",
-          "Dapper": "2.0.123"
+          "Dapper": "2.0.123",
+          "log4net": "2.0.15"
         },
         "runtime": {
           "BAWebLab2.Core.dll": {}
@@ -1407,6 +1420,13 @@
       "sha512": "sha512-DnSfYbor/xabO6TNfB1XU0FjWF8BMc7AtEnLIxAcPdZrsQ+1GnO3ZTLIvktPBe2Wle7JF/ua5w+nZ++AZsa/Ig==",
       "path": "efcoresecondlevelcacheinterceptor/3.9.2",
       "hashPath": "efcoresecondlevelcacheinterceptor.3.9.2.nupkg.sha512"
+    },
+    "log4net/2.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GahnO9ZgFka+xYcFwAfIFjW+k86P2nxFoaEpH6t3v4hiGj7tv2ksVZphxCVIHmJxoySS0HeU3dgCW+bSCcfD0A==",
+      "path": "log4net/2.0.15",
+      "hashPath": "log4net.2.0.15.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.9": {
       "type": "package",

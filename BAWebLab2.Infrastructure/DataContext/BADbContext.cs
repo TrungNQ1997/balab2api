@@ -1,5 +1,5 @@
 ﻿using BAWebLab2.Model;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using BAWebLab2.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -19,13 +19,13 @@ namespace BAWebLab2.Infrastructure.DataContext
         private readonly IDistributedCache _cache;
         private readonly DistributedCacheEntryOptions cacheOptions = new DistributedCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),  
-            SlidingExpiration = TimeSpan.FromMinutes(10) 
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            SlidingExpiration = TimeSpan.FromMinutes(10)
         };
-        public BADbContext(DbContextOptions<BADbContext> options, IDistributedCache cache) : base(options) {
-            
-            _cache = cache;
-            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        public BADbContext(DbContextOptions<BADbContext> options, IDistributedCache cache) : base(options)
+        {
+
+            _cache = cache; 
         }
 
         //public DbSet<User> Users { get; set; }
@@ -82,14 +82,16 @@ namespace BAWebLab2.Infrastructure.DataContext
             {
                 var cachedDataString = Encoding.UTF8.GetString(cachedData);
                 return JsonConvert.DeserializeObject<List<BGTSpeedOvers>>(cachedDataString);
-            } else {
+            }
+            else
+            {
                 var cachedDataString = JsonConvert.SerializeObject(BGTSpeedOvers.Where(m => m.FK_CompanyID == 15076));
                 var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
 
                 _cache.Set("BGTSpeedOvers", newDataToCache);
                 return BGTSpeedOvers.Where(m => m.FK_CompanyID == 15076);
             }
-             
+
         }
 
         /// <summary>lấy dữ liệu bảng Vehicle.Vehicles có companyid = 15076, nếu có cache thì lấy cache</summary>
@@ -100,7 +102,7 @@ namespace BAWebLab2.Infrastructure.DataContext
         /// </Modified>
         public IEnumerable<Vehicles> GetAllVehicles()
         {
-            
+
             var cachedData = _cache.Get("Vehicles");
             if (cachedData != null)
             {
@@ -109,12 +111,12 @@ namespace BAWebLab2.Infrastructure.DataContext
             }
             else
             {
-                 var cacheOptions = new DistributedCacheEntryOptions
-                 {
-                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                 };
+                var cacheOptions = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                };
                 var list = Vehicles.Where(m => m.FK_CompanyID == 15076);
-        var cachedDataString = JsonConvert.SerializeObject(list);
+                var cachedDataString = JsonConvert.SerializeObject(list);
                 var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
 
                 _cache.Set("Vehicles", newDataToCache, cacheOptions);
@@ -229,7 +231,7 @@ namespace BAWebLab2.Infrastructure.DataContext
             .HasKey(i => i.PK_VehicleID);
             modelBuilder.Entity<BGTSpeedOvers>()
            .HasKey(i => new { i.FK_VehicleID, i.StartTime });
-             
+
             modelBuilder.Entity<BGTTranportTypes>()
            .HasKey(i => new { i.PK_TransportTypeID })
             ;
@@ -242,12 +244,9 @@ namespace BAWebLab2.Infrastructure.DataContext
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
              
-            modelBuilder.Entity<LoginResult>().HasNoKey();
-            // Configuration code...
- 
         }
 
-        
+
 
     }
 }

@@ -17,7 +17,7 @@ namespace BAWebLab2.Core.Services.IService
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<Vehicles> GetVehicles();
+        public StoreResult<Vehicles> GetVehicles(int companyID);
 
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
@@ -26,6 +26,6 @@ namespace BAWebLab2.Core.Services.IService
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<ResultReportSpeed> GetDataReport(InputReportSpeed input);
+        public StoreResult<ResultReportSpeed> GetDataReport(InputSearchList input, int companyID);
     }
 }

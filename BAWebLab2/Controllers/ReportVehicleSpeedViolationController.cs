@@ -4,6 +4,7 @@ using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
 using BAWebLab2.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System.Net;
 
 namespace BAWebLab2.Controllers
@@ -35,8 +36,9 @@ namespace BAWebLab2.Controllers
         [HttpGet("getVehicles")]
         public IActionResult GetVehicles()
         {
-
-            var result = _reportVehicleSpeedViolationService.GetVehicles();
+            Request.Headers.TryGetValue("CompanyID", out StringValues headerValue);
+            var comID = int.Parse(headerValue.ToString());
+            var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
             ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
 
             if (result.Error == false)
@@ -63,10 +65,11 @@ namespace BAWebLab2.Controllers
         /// trungnq3 7/20/2023 created
         /// </Modified>
         [HttpPost("getDataReport")]
-        public IActionResult GetDataReport([FromBody] InputReportSpeed input )
-        {
-
-            var result = _reportVehicleSpeedViolationService.GetDataReport(input);
+        public IActionResult GetDataReport([FromBody] InputSearchList input )
+        { 
+            Request.Headers.TryGetValue("CompanyID", out StringValues headerValue);
+            var comID = int.Parse(headerValue.ToString());
+            var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
 
             if (result.Error == false)

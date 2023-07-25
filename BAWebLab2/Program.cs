@@ -1,6 +1,9 @@
  
 using BAWebLab2.Core;
 using BAWebLab2.Infrastructure;
+using log4net.Config;
+
+XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "MyPolicy";

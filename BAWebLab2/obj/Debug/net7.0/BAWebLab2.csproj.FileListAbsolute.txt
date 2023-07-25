@@ -128,3 +128,5 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Pipelines.So
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\StackExchange.Redis.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\StackExchange.Redis.Extensions.Core.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\StackExchange.Redis.Extensions.Newtonsoft.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\log4net.config
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\log4net.dll
