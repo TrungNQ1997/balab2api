@@ -78,7 +78,7 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return _context.Set<T>();
         }
 
         /// <summary>Get đối tượng bằng id</summary>

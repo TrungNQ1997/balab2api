@@ -1,4 +1,8 @@
-﻿using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,6 +15,7 @@ namespace BAWebLab2.LibCommon
     /// </Modified>
     public class LibCommon
     {
+        
         /// <summary>mã hóa md5 1 chuỗi</summary>
         /// <param name="text">The text.
         /// chuỗi cần mã hóa</param>
@@ -30,22 +35,6 @@ namespace BAWebLab2.LibCommon
             }
             return hashSb.ToString();
         }
-
-        /// <summary>ghi vào file log.txt</summary>
-        /// <param name="text">nội dung cần ghi</param>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 7/12/2023 created
-        /// </Modified>
-        public static void WriteLog(string text)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(" \n  \n " + DateTime.Now.ToString() + "   " + text);
-
-            File.AppendAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Log/log.txt", sb.ToString());
-            sb.Clear();
-        }
-
+          
     }
 }

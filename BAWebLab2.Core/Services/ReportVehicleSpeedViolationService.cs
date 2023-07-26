@@ -5,7 +5,13 @@ using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Model;
 using log4net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using StackExchange.Redis;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 
 namespace BAWebLab2.Core.Services
 {
@@ -24,11 +30,14 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
 
+        private readonly IDistributedCache _cache;
+        
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
-            IBGTVehicleTransportTypesService bGTVehicleTransportTypesService)
+            IBGTVehicleTransportTypesService bGTVehicleTransportTypesService, IDistributedCache cache)
         {
+            _cache = cache;
             _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
             _bGTSpeedOversService = bGTSpeedOversService;
             _vehiclesService = vehiclesService;
@@ -79,8 +88,10 @@ namespace BAWebLab2.Core.Services
             var result = new StoreResult<ResultReportSpeed>();
 
             try
-            { 
-                var final = GetIEnumerableAfterJoin(input,companyID);
+            {
+                var t = GetAllkeys();
+                _logger.Warn(t.ToString());
+                var final = GetIEnumerableCacheOrDB(input,companyID);
                 result.Count = final.Count();
                 result.List = final.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize).Select(m =>
                 {
@@ -122,6 +133,82 @@ namespace BAWebLab2.Core.Services
             return result;
         }
 
+
+        public List<string> GetAllkeys()
+        {
+            List<string> listKeys = new List<string>();
+            using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("127.0.0.1:6379,allowAdmin=true"))
+            {
+                var keys = redis.GetServer("127.0.0.1", 6379).Keys();
+                listKeys.AddRange(keys.Select(key => (string)key).ToList());
+
+            }
+
+            return listKeys;
+        }
+
+        /// <summary>check và lấy ienumerable từ  cache hoặc database.</summary>
+        /// <param name="input">tham số tìm kiếm gửi từ client</param>
+        /// <param name="companyID">mã công ty</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/26/2023 created
+        /// </Modified>
+        public IEnumerable<ResultReportSpeed> GetIEnumerableCacheOrDB(InputSearchList input, int companyID)
+        {
+            var key =  $"{companyID}_ReportSpeed_{input.DayFrom.ToString()}_{input.DayTo.ToString()}";
+            key = key.Replace(':', ';');
+            var cachedData = _cache.Get(key);
+            var listVehicleID = new List<long>();
+            if (!string.IsNullOrEmpty(input.TextSearch))
+            {
+                listVehicleID = input.TextSearch?.Split(',')?.Select(long.Parse)?.ToList();
+            }
+            
+            IEnumerable<ResultReportSpeed> results;
+            
+            if (cachedData != null)
+            {
+                var cachedDataString = Encoding.UTF8.GetString(cachedData);
+                 
+                 results =    JsonConvert.DeserializeObject<IEnumerable<ResultReportSpeed>>(cachedDataString);
+                 
+            }
+            else
+            {
+                results = GetIEnumerableAfterJoin(input, companyID);
+                var cacheOptions = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                };
+                
+                var cachedDataString = JsonConvert.SerializeObject(results);
+                var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
+
+                _cache.Set(key, newDataToCache, cacheOptions);
+                //return list;
+            }
+            if (string.IsNullOrEmpty(input.TextSearch))
+            {
+                return results;
+            }
+            else
+            {
+                return results.Where(m => listVehicleID.Contains(m.VehicleID));
+            }
+        }
+
+        /// <summary>lấy  ienumerable sau khi join 5 bảng</summary>
+        /// <param name="input">tham số tìm kiếm</param>
+        /// <param name="companyID">mã công ty</param>
+        /// <returns>ienumerable&lt;ResultReportSpeed&gt; sau khi join</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/26/2023 created
+        /// </Modified>
         public IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputSearchList input, int companyID)
         {
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();
@@ -129,7 +216,7 @@ namespace BAWebLab2.Core.Services
             var vehicles = _vehiclesService.Find(m => m.FK_CompanyID == companyID && m.IsDeleted == false);
 
             var arrVehicle = input.TextSearch.Split(',');
-
+            //var numbers = input.TextSearch?.Split(',')?.Select(long.Parse)?.ToList();
             var activityGroup = GetReportActivityGroup(input , arrVehicle,companyID);
             var bgtSpeedGroup = GetSpeedGroup(input, arrVehicle,companyID);
             var final =
@@ -164,10 +251,19 @@ namespace BAWebLab2.Core.Services
         }
 
 
+        /// <summary>lấy group của bảng report activity .</summary>
+        /// <param name="input">tham số tìm kiếm</param>
+        /// <param name="arrVehicle">list id vehicle</param>
+        /// <param name="companyID">mã công ty</param>
+        /// <returns> IEnumerable&lt;ReportActivitySummaries&gt; sau khi đã group</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/26/2023 created
+        /// </Modified>
         public IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputSearchList input, string[]? arrVehicle,int companyID)
         { 
             var activity = _reportActivitySummariesService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
-             && m.EndTime <= input.DayTo && (( string.IsNullOrEmpty(input.TextSearch)) || arrVehicle.Contains(m.FK_VehicleID.ToString())));
+             && m.EndTime <= input.DayTo );
 
             var activityGroup = activity.GroupBy(m => m.FK_VehicleID).Select(k => new ReportActivitySummaries
             {
@@ -178,10 +274,19 @@ namespace BAWebLab2.Core.Services
             return activityGroup;
         }
 
+        /// <summary>lấy group của bảng  speed over</summary>
+        /// <param name="input">tham số tìm kiếm</param>
+        /// <param name="arrVehicle">list id vehicle</param>
+        /// <param name="companyID">mã công ty</param>
+        /// <returns> IEnumerable&lt;ResultReportSpeed&gt; sau khi đã group</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/26/2023 created
+        /// </Modified>
         public IEnumerable<ResultReportSpeed> GetSpeedGroup(InputSearchList input, string[]? arrVehicle, int companyID)
         { 
             var bgtSpeed = _bGTSpeedOversService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
-              && m.EndTime <= input.DayTo && ((string.IsNullOrEmpty(input.TextSearch)) || arrVehicle.Contains(m.FK_VehicleID.ToString())));
+              && m.EndTime <= input.DayTo );
             var bgtSpeedGroup
                = bgtSpeed.GroupBy(m => m.FK_VehicleID).ToList().Select(k =>
                {
