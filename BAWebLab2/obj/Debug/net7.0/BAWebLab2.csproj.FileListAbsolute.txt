@@ -130,3 +130,6 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\StackExchang
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\StackExchange.Redis.Extensions.Newtonsoft.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\log4net.config
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\log4net.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\EntityFramework.SqlServer.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\EntityFramework.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\System.CodeDom.dll

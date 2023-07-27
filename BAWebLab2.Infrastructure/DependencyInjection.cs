@@ -1,7 +1,7 @@
 ﻿using BAWebLab2.Infrastructure.DataContext;
 using BAWebLab2.Infrastructure.Repositories;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
-using BAWebLab2.Infrastructure.Repository.IRepository;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

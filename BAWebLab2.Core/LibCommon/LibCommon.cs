@@ -35,6 +35,23 @@ namespace BAWebLab2.LibCommon
             }
             return hashSb.ToString();
         }
+
+        /// <summary>parse Strings thành  list&lt;long&gt;</summary>
+        /// <param name="text">string đầu vào</param>
+        /// <returns>list&lt;long&gt; đã parse</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/27/2023 created
+        /// </Modified>
+        public static List<long>? StringToListLong(string text)
+        {
+            var listVehicleID = new List<long>();
+            if (!string.IsNullOrEmpty(text))
+            {
+                listVehicleID = text?.Split(',')?.Select(long.Parse)?.ToList();
+            }
+            return listVehicleID;
+        }
           
     }
 }

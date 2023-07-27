@@ -2,14 +2,14 @@
 using BAWebLab2.Infrastructure.DataContext;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Infrastructure.Repositories
 {
+    /// <summary>Repository của BGTVehicleTransportTypes</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/27/2023 created
+    /// </Modified>
     public class BGTVehicleTransportTypesRepository:GenericRepository<BGTVehicleTransportTypes>, IBGTVehicleTransportTypesRepository
     {
         private readonly BADbContext _bADbContext;

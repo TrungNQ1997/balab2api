@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nHMFlLlleIOSTT0hc7ZlIj5StyMHQPIfonpjJOCFkit4YnwNS/rYFbTXD6k5TbIsp4IChy1ZBvVMFU6zQDeulg==",
+  "dgSpecHash": "4n2EgkaXRJKMoedSIYfB/h2uiGoLh0daTJy3PzYOKZMwXC1//vEzv3vcdSLZg6MS/LrSbRawqjnXLXtNJDtNUA==",
   "success": true,
   "projectFilePath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\easycaching.core\\1.8.0\\easycaching.core.1.8.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\efcoresecondlevelcacheinterceptor\\3.9.2\\efcoresecondlevelcacheinterceptor.3.9.2.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\log4net\\2.0.15\\log4net.2.0.15.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.9\\microsoft.aspnet.webapi.client.5.2.9.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.9\\microsoft.aspnet.webapi.core.5.2.9.nupkg.sha512",
@@ -99,8 +100,10 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\system.codedom\\4.7.0\\system.codedom.4.7.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.configuration.configurationmanager\\7.0.0\\system.configuration.configurationmanager.7.0.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.data.sqlclient\\4.8.5\\system.data.sqlclient.4.8.5.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",

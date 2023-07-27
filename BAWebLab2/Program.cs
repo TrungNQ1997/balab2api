@@ -13,16 +13,13 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
         .Build();
 
 // Add services to the container.
-
-//builder.Services.AddTransient<UserRepository>(provider => new UserRepository(configuration.GetConnectionString("DefaultConnection")));
  
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,
                           policy =>
                           {
-                              //policy.WithOrigins("http://10.1.11.110:4200")
-                              policy.AllowAnyOrigin()
+                               policy.AllowAnyOrigin()
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod();
                           });

@@ -3,13 +3,10 @@ using Dapper;
 using System.Data;
 using BAWebLab2.Entities;
 using BAWebLab2.Model;
-using BAWebLab2.Repository;
-using BAWebLab2.Infrastructure.Repository.IRepository;
+using BAWebLab2.Repository; 
 using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
-
+using BAWebLab2.Infrastructure.Repositories.IRepository;
 
 /// <summary>class xử lí thao tác của phân hệ user với tầng Database</summary>
 /// <Modified>

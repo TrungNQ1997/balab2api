@@ -1,7 +1,8 @@
 ﻿using BAWebLab2.Model;
 using BAWebLab2.Entities;
- 
-namespace BAWebLab2.Infrastructure.Repository.IRepository
+using BAWebLab2.Infrastructure.Repository.IRepository;
+
+namespace BAWebLab2.Infrastructure.Repositories.IRepository
 {
     /// <summary>class interface của UserRepository chứa hàm xử lí của phân hệ user</summary>
     /// <Modified>

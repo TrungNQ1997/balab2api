@@ -1,5 +1,4 @@
-﻿using BAWebLab2.Entities;
-namespace BAWebLab2.Model
+﻿namespace BAWebLab2.Model
 {
 
     /// <summary>class để nhận list trả về từ store theo kiểu đối tượng T1</summary>

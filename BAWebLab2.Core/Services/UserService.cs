@@ -1,10 +1,11 @@
-﻿using BAWebLab2.Infrastructure.Repository.IRepository;
+﻿ 
 using BAWebLab2.Model;
 using BAWebLab2.Entities;
 using Dapper; 
 using System.Data;
 using BAWebLab2.Service;
 using log4net;
+using BAWebLab2.Infrastructure.Repositories.IRepository;
 
 namespace BAWebLab2.Core.Services
 {
@@ -74,10 +75,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-
-
-
-
+         
         /// <summary>api kiểm tra username, pass có hợp lệ không</summary>
         /// <param name="input">đối tượng chứa username, pass</param>
         /// <returns>có đăng nhập hợp lệ không, thông tin user đăng nhập</returns>

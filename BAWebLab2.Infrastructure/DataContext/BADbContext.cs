@@ -21,47 +21,7 @@ namespace BAWebLab2.Infrastructure.DataContext
  
         }
 
-        ////public DbSet<User> Users { get; set; }
-        ///// <summary>dbset chứa vehicles từ db</summary>
-        ///// <value>The vehicles.</value>
-        ///// <Modified>
-        ///// Name Date Comments
-        ///// trungnq3 7/24/2023 created
-        ///// </Modified>
-        //public DbSet<Vehicles> Vehicles { get; set; }
-
-        ///// <summary>dbset chứa danh sách BGTspeedovers lấy từ db</summary>
-        ///// <value>BGTspeedovers.</value>
-        ///// <Modified>
-        ///// Name Date Comments
-        ///// trungnq3 7/24/2023 created
-        ///// </Modified>
-        //public DbSet<BGTSpeedOvers> BGTSpeedOvers { get; set; }
-
-        ///// <summary>dbset chứa danh sách BGTtranporttypes lấy từ db</summary>
-        ///// <value>BGTtranporttypes.</value>
-        ///// <Modified>
-        ///// Name Date Comments
-        ///// trungnq3 7/24/2023 created
-        ///// </Modified>
-        //public DbSet<BGTTranportTypes> BGTTranportTypes { get; set; }
-
-        ///// <summary>dbset chứa BGTvehicletransporttypes lấy từ db</summary>
-        ///// <value>BGTvehicletransporttypes.</value>
-        ///// <Modified>
-        ///// Name Date Comments
-        ///// trungnq3 7/24/2023 created
-        ///// </Modified>
-        //public DbSet<BGTVehicleTransportTypes> BGTVehicleTransportTypes { get; set; }
-
-        ///// <summary>dbset chứa danh sách report.activitysummaries lấy từ db</summary>
-        ///// <value>report.activitysummaries.</value>
-        ///// <Modified>
-        ///// Name Date Comments
-        ///// trungnq3 7/24/2023 created
-        ///// </Modified>
-        //public DbSet<ReportActivitySummaries> ReportActivitySummaries { get; set; }
-         
+        
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
         /// The builder being used to construct the model for this context. Databases (and other extensions) typically

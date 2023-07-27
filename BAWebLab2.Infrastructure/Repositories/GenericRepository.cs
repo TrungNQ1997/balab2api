@@ -4,8 +4,10 @@ using BAWebLab2.Model;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
 using static Dapper.SqlMapper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BAWebLab2.Repository
 {
@@ -67,7 +69,13 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression);
+            var query = 
+                _context.Set<T>().AsNoTracking().Where(expression);
+            var queryString = query.ToQueryString();
+            _context.Database.ExecuteSqlRaw($"SET ARITHABORT OFF; {queryString}");
+            //ObjectQuery oQuery = query as ObjectQuery;
+            //oQuery.EnablePlanCaching = false;
+            return query;
         }
 
         /// <summary>lấy tất cả đối tượng</summary>
@@ -78,7 +86,8 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>();
+            
+            return _context.Set<T>().AsNoTracking();
         }
 
         /// <summary>Get đối tượng bằng id</summary>

@@ -1,16 +1,14 @@
 ﻿using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
-using BAWebLab2.Infrastructure.Repository.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.Services
 {
+    /// <summary>service của Vehicles</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/27/2023 created
+    /// </Modified>
     public class VehiclesService:IVehiclesService
     {
         private readonly IVehiclesRepository _vehiclesRepository;
@@ -21,9 +19,16 @@ namespace BAWebLab2.Core.Services
             _vehiclesRepository = vehiclesRepository;
         }
 
-        public IEnumerable<Vehicles> Find(Expression<Func<Vehicles, bool>> expression)
+        /// <summary>tìm theo mã công ty và trạng thái chưa xóa</summary>
+        /// <param name="companyID">mã công ty</param>
+        /// <returns>ienumerable đã lọc</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/27/2023 created
+        /// </Modified>
+        public IEnumerable<Vehicles> FindByCompanyID(int companyID)
         {
-            return _vehiclesRepository.Find(expression);
+            return _vehiclesRepository.Find(m=> m.FK_CompanyID == companyID && m.IsDeleted == false);
         }
     }
 }

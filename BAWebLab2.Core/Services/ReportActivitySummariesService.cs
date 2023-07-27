@@ -1,15 +1,15 @@
 ﻿using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.Services
 {
+    /// <summary>service của ReportActivitySummaries</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/27/2023 created
+    /// </Modified>
     public class ReportActivitySummariesService:IReportActivitySummariesService
     {
         private readonly IReportActivitySummariesRepository _reportActivitySummariesRepository;
@@ -19,8 +19,15 @@ namespace BAWebLab2.Core.Services
 
             _reportActivitySummariesRepository = reportActivitySummariesRepository;
         }
-         
-        public IEnumerable<ReportActivitySummaries> Find(Expression<Func<ReportActivitySummaries, bool>> expression)
+
+        /// <summary>tìm theo điều kiện</summary>
+        /// <param name="expression">điều kiện lọc</param>
+        /// <returns>ienumerable sau khi đã lọc</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/27/2023 created
+        /// </Modified>
+       public IEnumerable<ReportActivitySummaries> Find(Expression<Func<ReportActivitySummaries, bool>> expression)
         {
             return _reportActivitySummariesRepository.Find(expression);
         }

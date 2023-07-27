@@ -1,13 +1,13 @@
 ﻿using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Repository.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Infrastructure.Repositories.IRepository
 {
+    /// <summary>class interface của BGTTranportTypesRepository</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 7/27/2023 created
+    /// </Modified>
     public interface IBGTTranportTypesRepository:IGenericRepository<BGTTranportTypes>
     {
     }
