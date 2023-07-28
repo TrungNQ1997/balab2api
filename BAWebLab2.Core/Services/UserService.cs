@@ -93,7 +93,7 @@ namespace BAWebLab2.Core.Services
             try
             {
                 parameters.Add("username", input.Username);
-                parameters.Add("pass", LibCommon.LibCommon.HashMD5(input.Password));
+                parameters.Add("pass", LibCommon.HashMD5(input.Password));
                 parameters.Add("isRemember", input.IsRemember);
                 parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
 
@@ -206,7 +206,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                user.Password = LibCommon.LibCommon.HashMD5(user.Password);
+                user.Password = LibCommon.HashMD5(user.Password);
                 _userRepository.Update(user);
             }
             catch (Exception ex)
@@ -233,8 +233,8 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("password", LibCommon.LibCommon.HashMD5(input.Password));
-                parameters.Add("passwordOld", LibCommon.LibCommon.HashMD5(input.PasswordOld));
+                parameters.Add("password", LibCommon.HashMD5(input.Password));
+                parameters.Add("passwordOld", LibCommon.HashMD5(input.PasswordOld));
                 parameters.Add("userId", int.Parse(input.UserId));
                 parameters.Add("username", input.Username);
 
@@ -291,7 +291,7 @@ namespace BAWebLab2.Core.Services
             try
             {
 
-                user.Password = LibCommon.LibCommon.HashMD5(user.Password);
+                user.Password = LibCommon.HashMD5(user.Password);
 
                 _userRepository.Add(user);
             }

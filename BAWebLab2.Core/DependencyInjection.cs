@@ -23,6 +23,11 @@ namespace BAWebLab2.Core
         /// </Modified>
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "127.0.0.1:6379";
+                //options.InstanceName = "e2";  
+            });
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBGTSpeedOversService, BGTSpeedOversService>();
             services.AddScoped<IBGTTranportTypesService, BGTTranportTypesService>();

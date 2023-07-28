@@ -18,6 +18,12 @@ namespace BAWebLab2.Entities
 
         public double? TotalKmGps { get; set; }
 
+        /// <summary>thời gian hoạt động</summary>
+        /// <value>The activity time.</value>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/28/2023 created
+        /// </Modified>
         public int? ActivityTime { get; set; }
 
        public DateTime? StartTime { get; set; }

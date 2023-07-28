@@ -12,6 +12,7 @@ namespace BAWebLab2.Core.Services.IService
     public interface   IReportVehicleSpeedViolationService
     {
         /// <summary>lấy danh sách vehicle</summary>
+        /// <param name="companyID">mã công ty</param>
         /// <returns>danh sách vehicle</returns>
         /// <Modified>
         /// Name Date Comments
@@ -21,6 +22,7 @@ namespace BAWebLab2.Core.Services.IService
 
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
+        /// <param name="companyID">mã công ty</param>
         /// <returns>dữ liệu báo cáo</returns>
         /// <Modified>
         /// Name Date Comments

@@ -13,3 +13,5 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWeb
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\refint\BAWebLab2.Core.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.pdb
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\ref\BAWebLab2.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\bin\Release\net7.0\BAWebLab2.Core.runtimeconfig.json
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\obj\Release\net7.0\BAWebLab2.Core.genruntimeconfig.cache

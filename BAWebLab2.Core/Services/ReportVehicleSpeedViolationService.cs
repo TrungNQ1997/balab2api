@@ -2,12 +2,6 @@
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
-using log4net;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
-using System.Data.Entity.Core.Objects;
-using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BAWebLab2.Core.Services
 {
@@ -17,24 +11,19 @@ namespace BAWebLab2.Core.Services
     /// trungnq3 7/20/2023 created
     /// </Modified>
     public class ReportVehicleSpeedViolationService : IReportVehicleSpeedViolationService
-    {
-        private readonly ILog _logger;
-
+    { 
         private readonly IBGTSpeedOversService _bGTSpeedOversService;
         private readonly IVehiclesService _vehiclesService;
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
-
-        private readonly IDistributedCache _cache;
-        
+         
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
-            IBGTVehicleTransportTypesService bGTVehicleTransportTypesService, IDistributedCache cache)
+            IBGTVehicleTransportTypesService bGTVehicleTransportTypesService )
         {
-            _cache = cache;
-            _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
+             
             _bGTSpeedOversService = bGTSpeedOversService;
             _vehiclesService = vehiclesService;
             _bGTTranportTypesService = bGTTranportTypesService;
@@ -43,11 +32,12 @@ namespace BAWebLab2.Core.Services
         }
 
         /// <summary>lấy danh sách vehicle</summary>
+        /// <param name="companyID">mã công ty</param>
         /// <returns>danh sách vehicle</returns>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
-        /// </Modified> 
+        /// </Modified>
         public StoreResult<Vehicles> GetVehicles(int companyID)
         {
             var result = new StoreResult<Vehicles>();
@@ -66,7 +56,7 @@ namespace BAWebLab2.Core.Services
                 
                 result.Message = ex.Message;
                 result.Error = true;
-                _logger.Error(ex.ToString());
+                LibCommon.LogError(ex.ToString());
             }
 
             return result;
@@ -74,15 +64,15 @@ namespace BAWebLab2.Core.Services
 
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
+        /// <param name="companyID">mã công ty</param>
         /// <returns>dữ liệu báo cáo</returns>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
-        /// </Modified> 
+        /// </Modified>
         public StoreResult<ResultReportSpeed> GetDataReport(InputSearchList input, int companyID)
         { 
-            var result = new StoreResult<ResultReportSpeed>();
-
+            var result = new StoreResult<ResultReportSpeed>(); 
             try
             { 
                 var final = GetListCacheOrDB(input,companyID, ref result);
@@ -95,7 +85,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                _logger.Error(ex.ToString());
+                LibCommon.LogError(ex.ToString());
                 
             }
 
@@ -153,56 +143,29 @@ namespace BAWebLab2.Core.Services
         public List<ResultReportSpeed> GetListCacheOrDB(InputSearchList input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
         {
              var keyBasic =  $"{companyID}:_ReportSpeed:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{LibCommon.LibCommon.HashMD5(input.TextSearch)}";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{LibCommon.HashMD5(input.TextSearch)}";
             keyInput = keyInput.Replace(':', ';');
             var keyList = keyBasic + "_List:" + keyInput + "_" + input.PageNumber.ToString() + "_" + input.PageSize.ToString() ;
             
-            var keyCount = keyBasic + "_Count:" + keyInput;
-            var cachedData = _cache.Get(keyList);
-            
+            var keyCount = keyBasic + "_Count:" + keyInput; 
+            var listCache = LibCommon.GetRedisCache<List<ResultReportSpeed>>(keyList);
             IEnumerable<ResultReportSpeed> results;
             
-            if (cachedData != null)
+            if (listCache != null)
             {
-                var cachedDataString = Encoding.UTF8.GetString(cachedData);
-                 var count = _cache.Get(keyCount);
-                storeResult.Count= JsonConvert.DeserializeObject<int>(Encoding.UTF8.GetString(count));
-                return   JsonConvert.DeserializeObject<List<ResultReportSpeed>>(cachedDataString);
-                 
+                 storeResult.Count = LibCommon.GetRedisCache<int>(keyCount);
+                  return listCache;
             }
             else
             {
                 results = GetIEnumerableAfterJoin(input, companyID);
                 storeResult.Count = results.Count();
                 var list = CalDataAndPaging(input, results);
-                PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
-                PushDataToCache(list, TimeSpan.FromMinutes(5), keyList);
+                LibCommon.PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
+                LibCommon.PushDataToCache(list, TimeSpan.FromMinutes(5), keyList);
                 return list;
             }
            
-        }
-
-        /// <summary>đẩy data vào redis cache</summary>
-        /// <param name="data">The data.
-        /// cần cache</param>
-        /// <param name="time">The time.
-        /// thời gian lưu cache</param>
-        /// <param name="key">key lưu cache</param>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 7/27/2023 created
-        /// </Modified>
-        public void PushDataToCache(object? data, TimeSpan time, string key)
-        {
-            var cacheOptions = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = time
-            };
-
-            var cachedDataString = JsonConvert.SerializeObject(data);
-            var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
-
-            _cache.Set(key, newDataToCache, cacheOptions);
         }
 
         /// <summary>lấy  ienumerable sau khi join 5 bảng</summary>
@@ -215,7 +178,7 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         public IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputSearchList input, int companyID)
         {
-            var listVehicleID = LibCommon.LibCommon.StringToListLong(input.TextSearch);
+            var listVehicleID = LibCommon.StringToListLong(input.TextSearch);
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();
             var bGTVehicleTransportTypes = _bGTVehicleTransportTypesService.GetByCompanyID(companyID);
             var vehicles = _vehiclesService.FindByCompanyID(companyID);
@@ -224,7 +187,7 @@ namespace BAWebLab2.Core.Services
             var bgtSpeedGroup = GetSpeedGroup(input, listVehicleID, companyID);
             var final =
              (from speed in bgtSpeedGroup
-              join acti in activityGroup on speed.VehicleID equals acti.FK_VehicleID
+              join acti in activityGroup on speed.VehicleID equals acti.FK_VehicleID 
               join vehicleTransportTypes in bGTVehicleTransportTypes on speed.VehicleID equals vehicleTransportTypes.FK_VehicleID
               join tranportTypes in bGTTranportTypes on vehicleTransportTypes.FK_TransportTypeID equals tranportTypes.PK_TransportTypeID
               join vehicle in vehicles on speed.VehicleID equals vehicle.PK_VehicleID
@@ -253,8 +216,7 @@ namespace BAWebLab2.Core.Services
 
             return final;
         }
-
-
+         
         /// <summary>lấy group của bảng report activity .</summary>
         /// <param name="input">tham số tìm kiếm</param>
         /// <param name="arrVehicle">list id vehicle</param>
