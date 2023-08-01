@@ -1,7 +1,8 @@
- 
+﻿ 
 using BAWebLab2.Core;
 using BAWebLab2.Infrastructure;
 using log4net.Config;
+using System.Configuration;
 
 XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
@@ -13,7 +14,8 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
         .Build();
 
 // Add services to the container.
- 
+builder.Services.AddSingleton<IConfiguration>(configuration);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,

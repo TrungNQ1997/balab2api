@@ -1,4 +1,5 @@
 ﻿
+using BAWebLab2.Core.LibCommon;
 using BAWebLab2.Core.Services;
 using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Service;
@@ -25,9 +26,15 @@ namespace BAWebLab2.Core
         {
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "127.0.0.1:6379";
-                //options.InstanceName = "e2";  
+                options.Configuration = Configuration.GetSection("RedisCacheServerUrl").Value;
+                
             });
+            //services.Configure();
+            services.AddScoped< ApiHandleService>();
+            services.AddScoped<CacheRedisService>();
+            services.AddScoped<FormatDataService>();
+            services.AddScoped<LogService>();
+            services.AddScoped<ReportService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBGTSpeedOversService, BGTSpeedOversService>();
             services.AddScoped<IBGTTranportTypesService, BGTTranportTypesService>();

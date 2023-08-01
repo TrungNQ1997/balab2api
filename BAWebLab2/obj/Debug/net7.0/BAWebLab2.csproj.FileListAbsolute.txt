@@ -133,3 +133,8 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\log4net.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\EntityFramework.SqlServer.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\EntityFramework.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\System.CodeDom.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll

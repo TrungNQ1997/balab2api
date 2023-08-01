@@ -14,7 +14,7 @@ namespace BAWebLab2.Entities
 
         public DateTime FK_Date { get; set; }
 
-        public int FK_CompanyID { get; set; }
+        public int? FK_CompanyID { get; set; }
 
         public double? TotalKmGps { get; set; }
 

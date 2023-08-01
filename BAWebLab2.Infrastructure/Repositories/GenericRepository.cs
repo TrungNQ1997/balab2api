@@ -71,10 +71,7 @@ namespace BAWebLab2.Repository
         {
             var query = 
                 _context.Set<T>().AsNoTracking().Where(expression);
-            var queryString = query.ToQueryString();
-            _context.Database.ExecuteSqlRaw($"SET ARITHABORT OFF; {queryString}");
-            //ObjectQuery oQuery = query as ObjectQuery;
-            //oQuery.EnablePlanCaching = false;
+            
             return query;
         }
 

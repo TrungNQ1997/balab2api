@@ -22,8 +22,13 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\System.Web.Http.WebHost.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.CodeAnalysis.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.CodeAnalysis.Razor.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.Data.Sqlite.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Microsoft.EntityFrameworkCore.dll

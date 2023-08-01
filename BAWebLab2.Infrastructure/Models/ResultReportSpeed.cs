@@ -12,21 +12,21 @@
         
         }
 
-        public string PrivateCode { get; set; }
+        public string? PrivateCode { get; set; }
 
-        public string TransportTypeName { get; set; }
+        public string? TransportTypeName { get; set; }
 
-        public long VehicleID { get; set; }
+        public long? VehicleID { get; set; }
 
-        public int Sum5To10 { get; set; }
+        public int? Sum5To10 { get; set; }
 
-        public int Sum10To20 { get; set; }
+        public int? Sum10To20 { get; set; }
 
-        public int Sum20To35 { get; set; }
+        public int? Sum20To35 { get; set; }
          
-        public int SumFrom35 { get; set; }
+        public int? SumFrom35 { get; set; }
 
-        public int SumTotal { get; set; }
+        public int? SumTotal { get; set; }
 
         public Double? ViolatePer100Km { get; set; }
 
@@ -36,13 +36,13 @@
 
         public Double? PercentRate { get; set; }
 
-        public double ViolateTime { get; set; }
+        public double? ViolateTime { get; set; }
 
-        public string ViolateTimeText { get; set; }
+        public string? ViolateTimeText { get; set; }
 
         public int? TotalTime { get; set; }
 
-        public string TotalTimeText { get; set; }
+        public string? TotalTimeText { get; set; }
 
         public Double? PercentRateTime { get; set; }
     }

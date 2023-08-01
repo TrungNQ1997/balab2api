@@ -1,9 +1,5 @@
-﻿using BAWebLab2.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using BAWebLab2.Entities;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace BAWebLab2.Infrastructure.DataContext
 {
@@ -15,13 +11,12 @@ namespace BAWebLab2.Infrastructure.DataContext
     /// </Modified>
     public class BADbContext : DbContext
     {
-         
+       
         public BADbContext(DbContextOptions<BADbContext> options ) : base(options)
         {
  
         }
-
-        
+         
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
         /// The builder being used to construct the model for this context. Databases (and other extensions) typically
