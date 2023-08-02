@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.LibCommon
 {
+    /// <summary>class format các kiểu dữ liệu</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/2/2023 created
+    /// </Modified>
     public class FormatDataService
     {
         private readonly IConfiguration _configuration;
@@ -17,42 +18,45 @@ namespace BAWebLab2.Core.LibCommon
             _configuration = configuration;
         }
 
-        public  double RoundDouble(double? number)
+        /// <summary>làm tròn số theo cấu hình config trong appsettings.json</summary>
+        /// <param name="number">số cần làm tròn</param>
+        /// <returns>số đã làm tròn</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/2/2023 created
+        /// </Modified>
+        public double RoundDouble(double? number)
         {
-            string setting2 = _configuration is null ? "0" : _configuration["NumberRoundDecimal"];
-
-            if (number is null)
-            {
-                return 0;
-            } else
-            {
-                return Math.Round((double)number, int.Parse(setting2 is null ? "0": setting2));
-            } 
-        }
-
-        public decimal RoundDecimal(decimal? number)
-        {
-            string setting2 = (_configuration)["NumberRoundDecimal"];
-
+            string? setting2 = _configuration["NumberRoundDecimal"];
             if (number is null)
             {
                 return 0;
             }
             else
             {
-                return Math.Round((decimal)number, int.Parse(setting2));
+                return Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
             }
         }
 
+        /// <summary>đổi số phút thành định dạng giờ hh:mm</summary>
+        /// <param name="number">số phút</param>
+        /// <returns>string định dạng hh:mm</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/2/2023 created
+        /// </Modified>
         public static string NumberMinuteToStringHour(double? number)
         {
-            if (number is null)
+            string stringReturn = "";
+            if (number is not null)
             {
-                return "";
-            } else
-            { 
-                return (Math.Floor(((double)number / 60))).ToString().PadLeft(2, '0') + ":" + (Math.Ceiling((double)number % 60)).ToString().PadLeft(2, '0');
+                stringReturn = (Math.Floor(((double)number / 60))).ToString().PadLeft(2, '0') + ":" + (Math.Ceiling((double)number % 60)).ToString().PadLeft(2, '0');
             }
+            if (stringReturn == "00:00")
+            {
+                stringReturn = "";
+            }
+            return stringReturn;
         }
 
 
@@ -91,7 +95,7 @@ namespace BAWebLab2.Core.LibCommon
                 listVehicleID = text?.Split(',')?.Select(long.Parse)?.ToList();
             }
 
-            if(listVehicleID is null)
+            if (listVehicleID is null)
             {
                 listVehicleID = new List<long>();
             }

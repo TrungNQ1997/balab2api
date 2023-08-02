@@ -1,0 +1,27 @@
+2023-08-02 08:45:28,165 [3] ERROR BAWebLab2.Core.LibCommon.LogService - System.FormatException: The input string 'cvbc' was not in a correct format.
+   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, ReadOnlySpan`1 value, TypeCode type)
+   at System.Int64.Parse(String s)
+   at System.Linq.Enumerable.SelectArrayIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.LibCommon.FormatDataService.StringToListLong(String text) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\LibCommon\FormatDataService.cs:line 90
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetIEnumerableAfterJoin(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 201
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 181
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 96
+2023-08-02 08:45:34,959 [20] ERROR BAWebLab2.Core.LibCommon.LogService - System.ArgumentNullException: Value cannot be null. (Parameter 'inner')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.Join[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetIEnumerableAfterJoin(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 212
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 181
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 96
+2023-08-02 08:47:35,945 [6] ERROR BAWebLab2.Core.LibCommon.LogService - System.ArgumentNullException: Value cannot be null. (Parameter 'inner')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.Join[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetIEnumerableAfterJoin(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 212
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 181
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 96
+2023-08-02 08:51:27,693 [8] ERROR BAWebLab2.Core.LibCommon.LogService - System.ArgumentNullException: Value cannot be null. (Parameter 'inner')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.Join[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetIEnumerableAfterJoin(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 212
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 181
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 96

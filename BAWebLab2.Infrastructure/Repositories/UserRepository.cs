@@ -3,7 +3,7 @@ using Dapper;
 using System.Data;
 using BAWebLab2.Entities;
 using BAWebLab2.Model;
-using BAWebLab2.Repository; 
+using BAWebLab2.Repository;
 using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
@@ -22,7 +22,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         _bADbContext = bADbContext;
     }
 
-   
+
 
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>
@@ -87,5 +87,5 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         user.DateEdited = DateTime.Now;
         base.Update(user);
     }
- 
+
 }

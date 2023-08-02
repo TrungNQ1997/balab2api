@@ -26,10 +26,10 @@ namespace BAWebLab2.Entities
         /// </Modified>
         public int? ActivityTime { get; set; }
 
-       public DateTime? StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
         public DateTime? EndTime { get; set; }
 
-        
+
     }
 }

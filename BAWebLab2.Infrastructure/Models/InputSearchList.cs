@@ -23,7 +23,7 @@
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public int PageSize { get; set; }
-         
+
         /// <summary>Gets or sets tìm kiếm giới tính</summary>
         /// <value>tìm kiếm giới tính 0-tất cả, 1-nam, 2-nữ, 3-tất cả</value>
         /// <Modified>

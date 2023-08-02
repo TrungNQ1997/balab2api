@@ -15,7 +15,7 @@ namespace BAWebLab2.Controllers
     /// </Modified>
     [Route("reportVehicleSpeedViolation")]
     [ApiController]
-    public class ReportVehicleSpeedViolationController:ControllerBase
+    public class ReportVehicleSpeedViolationController : ControllerBase
     {
 
         private readonly IReportVehicleSpeedViolationService _reportVehicleSpeedViolationService;
@@ -34,22 +34,32 @@ namespace BAWebLab2.Controllers
         /// </Modified>
         [HttpGet("getVehicles")]
         public IActionResult GetVehicles()
-        { 
-            var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
-            var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
+        {
             ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
+            try
+            {
+                var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
+                var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
 
-            if (result.Error == false)
-            {
-                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                response.Message = HttpStatusCode.OK.ToString();
-                response.Data = result;
+
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                LogService.LogError(ex.ToString());
                 response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                response.Message = HttpStatusCode.InternalServerError.ToString();
-                response.Data = result;
+                response.Message = ex.Message;
             }
 
             return Ok(response);
@@ -63,25 +73,34 @@ namespace BAWebLab2.Controllers
         /// trungnq3 7/20/2023 created
         /// </Modified>
         [HttpPost("getDataReport")]
-        public IActionResult GetDataReport([FromBody] InputSearchList input )
-        {  
-            var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
-            var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
+        public IActionResult GetDataReport([FromBody] InputSearchList input)
+        {
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
+            try
+            {
+                var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
+                var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
 
-            if (result.Error == false)
-            {
-                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                response.Message = HttpStatusCode.OK.ToString();
-                response.Data = result;
+
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                LogService.LogError(ex.ToString());
                 response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                response.Message = HttpStatusCode.InternalServerError.ToString();
-                response.Data = result;
+                response.Message = ex.Message;
             }
-
             return Ok(response);
         }
 

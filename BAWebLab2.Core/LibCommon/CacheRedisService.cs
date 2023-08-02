@@ -1,18 +1,15 @@
-﻿using BAWebLab2.Infrastructure.Models;
-using BAWebLab2.Model;
+﻿using BAWebLab2.Model;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BAWebLab2.Core.LibCommon
 {
+    /// <summary>class xử lí reidis cache</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/2/2023 created
+    /// </Modified>
     public class CacheRedisService
     {
         private static IDistributedCache _cache { get; set; }
@@ -32,17 +29,14 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-        public   void PushDataToCache(object? data, TimeSpan time, string key)
+        public void PushDataToCache(object? data, TimeSpan time, string key)
         {
-            //var db = Connection.GetDatabase();
-
             var cachedDataString = JsonConvert.SerializeObject(data);
             var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
             _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
-            //db.StringSet(key, newDataToCache, time);
 
         }
-         
+
         /// <summary>lấy dữ liệu từ redis cache.</summary>
         /// <typeparam name="T">ép kiểu data cần lấy</typeparam>
         /// <param name="key">key của data trong redis cache</param>
@@ -51,26 +45,39 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 7/28/2023 created
         /// </Modified>
-        public   T GetRedisCache<T>(string key)
+        public T? GetRedisCache<T>(string key)
         {
-            //var db = Connection.GetDatabase();
-            var serializedValue = _cache.Get(key);
-            if (!serializedValue.IsNullOrEmpty())
-            {
-                return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
-            }
-            return default;
+            var serializedValue = _cache.Get(key); 
+            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
+
         }
 
+        /// <summary>tạo key redis theo medule</summary>
+        /// <param name="moduleName">tên module</param>
+        /// <param name="companyId">tên công ty</param>
+        /// <returns>key redis</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/2/2023 created
+        /// </Modified>
         public string CreateKeyByModule(string moduleName, int companyId)
         {
             return $"{companyId}:_{moduleName}:";
         }
 
+        /// <summary>tạo key redis theo báo cáo</summary>
+        /// <param name="moduleName">mã báo cáo</param>
+        /// <param name="companyId">mã công ty</param>
+        /// <param name="input">tham số đầu vào của báo cáo</param>
+        /// <returns>key redis</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/2/2023 created
+        /// </Modified>
         public string CreateKeyReport(string moduleName, int companyId, InputSearchList input)
         {
             var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataService.HashMD5(input.TextSearch)}";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataService.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
             keyInput = keyInput.Replace(':', ';');
             var keyList = keyBasic + "_List:" + keyInput;
             return keyList;

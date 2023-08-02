@@ -9,7 +9,7 @@ namespace BAWebLab2.Core.Services.IService
     /// Name Date Comments
     /// trungnq3 7/20/2023 created
     /// </Modified>
-    public interface   IReportVehicleSpeedViolationService
+    public interface IReportVehicleSpeedViolationService
     {
         /// <summary>lấy danh sách vehicle</summary>
         /// <param name="companyID">mã công ty</param>

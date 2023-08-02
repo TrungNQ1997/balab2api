@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.LibCommon
 {
+    /// <summary>class chứa hàm chung xử lí dữ liệu api</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/2/2023 created
+    /// </Modified>
     public class ApiHandleService
     {
         /// <summary>lấy giá trị  header trong request</summary>

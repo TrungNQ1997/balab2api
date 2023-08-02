@@ -1,12 +1,12 @@
 ﻿using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.LibCommon
 {
+    /// <summary>class xử lí log</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/2/2023 created
+    /// </Modified>
     public class LogService
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LogService));

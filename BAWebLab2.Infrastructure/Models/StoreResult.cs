@@ -10,7 +10,7 @@
     public class StoreResult<T>
     {
 
-         
+
         /// <summary>Gets or sets kết quả trạng thái là admin output từ procedure</summary>
         /// <value>
         ///   <c>kết quả trạng thái là admin output từ procedure</c>
@@ -60,7 +60,7 @@
             List = new List<T>();
         }
 
-        
+
 
     }
 }

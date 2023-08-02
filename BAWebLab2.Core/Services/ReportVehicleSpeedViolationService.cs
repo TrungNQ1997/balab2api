@@ -2,8 +2,6 @@
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
-using BAWebLab2;
-using Newtonsoft.Json;
 using BAWebLab2.Core.LibCommon;
 
 namespace BAWebLab2.Core.Services
@@ -14,7 +12,7 @@ namespace BAWebLab2.Core.Services
     /// trungnq3 7/20/2023 created
     /// </Modified>
     public class ReportVehicleSpeedViolationService : IReportVehicleSpeedViolationService
-    { 
+    {
         private readonly IBGTSpeedOversService _bGTSpeedOversService;
         private readonly IVehiclesService _vehiclesService;
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
@@ -29,7 +27,7 @@ namespace BAWebLab2.Core.Services
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
             CacheRedisService cache, FormatDataService formatService)
         {
-            
+
             _cache = cache;
             _formatService = formatService;
             _bGTSpeedOversService = bGTSpeedOversService;
@@ -49,31 +47,30 @@ namespace BAWebLab2.Core.Services
         public StoreResult<Vehicles> GetVehicles(int companyID)
         {
             var result = new StoreResult<Vehicles>();
-         //var e =    _formatService.RoundDouble(3.423432);
             try
             {
+                // tạo key redis cache
                 var key = _cache.CreateKeyByModule("Vehicle", companyID);
-
                 var listCache = _cache.GetRedisCache<IEnumerable<Vehicles>>(key);
 
+                // check xem đã có cache vehicle chưa
+                // có rồi thì trả về list cache
                 if (listCache != null)
                 {
                     result.List = listCache.Cast<Vehicles>().ToList();
-                } else
+                }
+
+                // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
+                else
                 {
                     var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
                     _cache.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
-                     
                     result.List = list.Cast<Vehicles>().ToList();
                 }
-
-               
-
                 result.Error = false;
             }
             catch (Exception ex)
             {
-                
                 result.Message = ex.Message;
                 result.Error = true;
                 LogService.LogError(ex.ToString());
@@ -91,12 +88,12 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/20/2023 created
         /// </Modified>
         public StoreResult<ResultReportSpeed> GetDataReport(InputSearchList input, int companyID)
-        { 
-            var result = new StoreResult<ResultReportSpeed>(); 
+        {
+            var result = new StoreResult<ResultReportSpeed>();
             try
-            { 
-                var final = GetListCacheOrDB(input,companyID, ref result); 
-                result.List = final; 
+            {
+                var final = GetListCacheOrDB(input, companyID, ref result);
+                result.List = final;
                 result.Error = false;
             }
             catch (Exception ex)
@@ -104,7 +101,6 @@ namespace BAWebLab2.Core.Services
                 result.Message = ex.Message;
                 result.Error = true;
                 LogService.LogError(ex.ToString());
-                
             }
 
             return result;
@@ -121,38 +117,35 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         private List<ResultReportSpeed> CalDataAndPaging(InputSearchList input, IEnumerable<ResultReportSpeed> ienumReport)
         {
-            var listReturn = (ReportService.PagingIEnumerable<ResultReportSpeed>(input,ienumReport)).Select(m =>
+            var listReturn = (ReportService.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
             {
-                var violateTimeText = FormatDataService.NumberMinuteToStringHour(m.ViolateTime); 
+                var violateTimeText = FormatDataService.NumberMinuteToStringHour(m.ViolateTime);
 
                 var totalTimeText = FormatDataService.NumberMinuteToStringHour(m.TotalTime);
 
                 return new ResultReportSpeed
                 {
-
                     VehicleID = m.VehicleID,
                     Sum5To10 = m.Sum5To10,
                     Sum10To20 = m.Sum10To20,
                     Sum20To35 = m.Sum20To35,
                     SumFrom35 = m.SumFrom35,
                     SumTotal = m.SumTotal,
-                    ViolatePer100Km = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatService.RoundDouble(m.TotalKm > 1000 ? (m.SumTotal * 1000 / (double)m.TotalKm) : m.SumTotal), 
-
+                    ViolatePer100Km = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatService.RoundDouble(m.TotalKm > 1000 ? (m.SumTotal * 1000 / (double)m.TotalKm) : m.SumTotal),
                     ViolateKm = m.ViolateKm,
                     TotalKm = m.TotalKm,
-                    PercentRate =  m.TotalKm == 0 || m.TotalKm == null ? 0 :  _formatService.RoundDouble((m.ViolateKm * 100 / m.TotalKm)), //(double)(m.ViolateKm * 100 / m.TotalKm), 2),
-                    ViolateTimeText = violateTimeText ,
-                    TotalTimeText = totalTimeText ,
-                    PercentRateTime =  m.TotalTime == 0 || m.TotalTime == null ? 0 : _formatService.RoundDouble( ( m.ViolateTime * 100 / m.TotalTime)),
+                    PercentRate = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatService.RoundDouble((m.ViolateKm * 100 / m.TotalKm)),
+                    ViolateTimeText = violateTimeText,
+                    TotalTimeText = totalTimeText,
+                    PercentRateTime = m.TotalTime == 0 || m.TotalTime == null ? 0 : _formatService.RoundDouble((m.ViolateTime * 100 / m.TotalTime)),
                     PrivateCode = m.PrivateCode,
                     TransportTypeName = m.TransportTypeName
-
                 };
-            
+
             }).ToList();
             return listReturn;
         }
-  
+
         /// <summary>check và lấy ienumerable từ  cache hoặc database.</summary>
         /// <param name="input">tham số tìm kiếm gửi từ client</param>
         /// <param name="companyID">mã công ty</param>
@@ -170,25 +163,24 @@ namespace BAWebLab2.Core.Services
             var listReturn = new List<ResultReportSpeed>();
             var listCache = _cache.GetRedisCache<IEnumerable<ResultReportSpeed>>(keyList);
             IEnumerable<ResultReportSpeed> results;
-            
+
             // check có cache không?
             // đã có cache thì phân trang và trả về list
-            if (listCache != null) 
-            { 
+            if (listCache != null)
+            {
                 storeResult.Count = listCache.Count();
                 listReturn = CalDataAndPaging(input, listCache);
-                
             }
             // chưa có cache thì get lại db và lưu lại ienumable vào cache
             else
             {
-                results = GetIEnumerableAfterJoin(input, companyID); 
+                results = GetIEnumerableAfterJoin(input, companyID);
                 _cache.PushDataToCache(results, TimeSpan.FromMinutes(5), keyList);
                 storeResult.Count = results.Count();
-                var list = CalDataAndPaging(input, results); 
+                var list = CalDataAndPaging(input, results);
                 listReturn = list;
             }
-           return listReturn;
+            return listReturn;
         }
 
         /// <summary>lấy  ienumerable sau khi join 5 bảng</summary>
@@ -207,106 +199,44 @@ namespace BAWebLab2.Core.Services
             // lấy ra 5 bảng cần join đã lọc theo tham số đầu vào
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();
             var bGTVehicleTransportTypes = _bGTVehicleTransportTypesService.GetByCompanyID(companyID);
-            var vehicles = _vehiclesService.FindByCompanyID(companyID); 
-            var activityGroup = GetReportActivityGroup(input , listVehicleID, companyID);
-            var bgtSpeedGroup = GetSpeedGroup(input, listVehicleID, companyID);
-
-            // join 5 bảng lấy dữ liệu tổng hợp
-            var final =
-            (from speed in bgtSpeedGroup
-              join acti in activityGroup on speed.VehicleID equals acti.FK_VehicleID
-             join vehicleTransportTypes in bGTVehicleTransportTypes on speed.VehicleID equals vehicleTransportTypes.FK_VehicleID
-             join tranportTypes in bGTTranportTypes on vehicleTransportTypes.FK_TransportTypeID equals tranportTypes.PK_TransportTypeID
-             join vehicle in vehicles on speed.VehicleID equals vehicle.PK_VehicleID 
-             orderby vehicle.PrivateCode
-             select new ResultReportSpeed
-             {
-                 VehicleID = speed.VehicleID,
-                 Sum5To10 = speed.Sum5To10,
-                 Sum10To20 = speed.Sum10To20,
-                 Sum20To35 = speed.Sum20To35,
-                 SumFrom35 = speed.SumFrom35,
-                 SumTotal = speed.SumTotal,
-                 ViolateKm =  _formatService.RoundDouble(speed.ViolateKm),
-                 TotalKm = _formatService.RoundDouble(acti.TotalKmGps),
-                 ViolatePer100Km = 0,
-                 PercentRate = 0,
-                 PercentRateTime = 0, 
-                 ViolateTime = speed.ViolateTime,
-                 TotalTime = acti.ActivityTime, 
-                 PrivateCode = vehicle.PrivateCode,
-                 TransportTypeName = tranportTypes.DisplayName
-             });
-
-            return final;
-        }
-
-        /// <summary>lấy  ienumerable sau khi join 5 bảng viết kiểu lambda</summary>
-        /// <param name="input">tham số tìm kiếm</param>
-        /// <param name="companyID">mã công ty</param>
-        /// <returns>ienumerable&lt;ResultReportSpeed&gt; sau khi join</returns>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 7/26/2023 created
-        /// </Modified>
-        private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoinlambda(InputSearchList input, int companyID)
-        {
-            var listVehicleID = FormatDataService.StringToListLong(input.TextSearch);
-            var bGTTranportTypes = _bGTTranportTypesService.GetAll();
-            var bGTVehicleTransportTypes = _bGTVehicleTransportTypesService.GetByCompanyID(companyID);
             var vehicles = _vehiclesService.FindByCompanyID(companyID);
-
             var activityGroup = GetReportActivityGroup(input, listVehicleID, companyID);
             var bgtSpeedGroup = GetSpeedGroup(input, listVehicleID, companyID);
-            var final =
-             bgtSpeedGroup
-              .GroupJoin(activityGroup,
-              speed => speed.VehicleID,
-              acti => acti.FK_VehicleID,
-              (speed, acti) => new { acti = acti.DefaultIfEmpty(), speed = speed })
-              .SelectMany(m=>m.acti,(group, acti)=> new {acti = acti, speed = group.speed})
-               
-              .GroupJoin(bGTVehicleTransportTypes,
-              actiSpeed => actiSpeed.speed.VehicleID,
-              vehiTranType => vehiTranType.FK_VehicleID,
-              (actiSpeed, vehiTranType) => new { actiSpeed = actiSpeed, vehiTranType = vehiTranType.DefaultIfEmpty() })
-              .SelectMany(m => m.vehiTranType, (group, vehiTranType) => new { actiSpeed = group.actiSpeed, vehiTranType = vehiTranType })
-               
-              .GroupJoin(bGTTranportTypes,
-              actiSpeedVehiTranType => actiSpeedVehiTranType.vehiTranType == null ? 0 : actiSpeedVehiTranType.vehiTranType.FK_TransportTypeID,
-              tranType => tranType.PK_TransportTypeID,
-              (actiSpeedVehiTranType, tranType) => new { actiSpeedVehiTranType = actiSpeedVehiTranType, tranType = tranType })
-              .SelectMany(m=>m.tranType, (actiSpeedVehiTranType, tranType)=> new { actiSpeedVehiTranType = actiSpeedVehiTranType.actiSpeedVehiTranType,tranType = tranType} )
 
-              .GroupJoin(vehicles,
-               all => all.actiSpeedVehiTranType.actiSpeed.speed.VehicleID,
-               vehi => vehi.PK_VehicleID,
-               (all, vehi) => new { all = all, vehi = vehi.DefaultIfEmpty() })
-              .SelectMany(m=>m.vehi, (all, vehi)=> new { all = all.all , vehi = vehi} )
+            // left join và check null 5 bảng lấy dữ liệu tổng hợp
+            var final = (from speed in (bgtSpeedGroup is null ? new List<ResultReportSpeed>() : bgtSpeedGroup)
 
-               .OrderBy(m => m.vehi?.PrivateCode).Select( k=> 
-                 new ResultReportSpeed
-                 {
-                     VehicleID = k.all.actiSpeedVehiTranType.actiSpeed.speed.VehicleID,
-                     Sum5To10 = k.all.actiSpeedVehiTranType.actiSpeed.speed.Sum5To10,
-                     Sum10To20 = k.all.actiSpeedVehiTranType.actiSpeed.speed.Sum10To20,
-                     Sum20To35 = k.all.actiSpeedVehiTranType.actiSpeed.speed.Sum20To35,
-                     SumFrom35 = k.all.actiSpeedVehiTranType.actiSpeed.speed.SumFrom35,
-                     SumTotal = k.all.actiSpeedVehiTranType.actiSpeed.speed.SumTotal,
-                     ViolateKm = Math.Round(k.all.actiSpeedVehiTranType.actiSpeed.speed.ViolateKm.HasValue ? (double)k.all.actiSpeedVehiTranType.actiSpeed.speed.ViolateKm : 0, 2),
-                     TotalKm = k.all.actiSpeedVehiTranType.actiSpeed.acti == null ? 0 :  Math.Round(k.all.actiSpeedVehiTranType.actiSpeed.acti.TotalKmGps.HasValue ? (double)k.all.actiSpeedVehiTranType.actiSpeed.acti.TotalKmGps : 0, 2),
-                     ViolatePer100Km = 0,
-                     PercentRate = 0,
-                     PercentRateTime = 0,
+                         join acti in (activityGroup is null ? new List<ReportActivitySummaries>() : activityGroup) on speed?.VehicleID equals acti?.FK_VehicleID into speedActis
+                         from speedActi in speedActis.DefaultIfEmpty()
 
-                     ViolateTime = k.all.actiSpeedVehiTranType.actiSpeed.speed.ViolateTime,
-                     TotalTime = k.all.actiSpeedVehiTranType.actiSpeed.acti == null ? 0 : k.all.actiSpeedVehiTranType.actiSpeed.acti.ActivityTime,
+                         join vehicleTransportTypes in (bGTVehicleTransportTypes is null ? new List<BGTVehicleTransportTypes>() : bGTVehicleTransportTypes) on speed?.VehicleID equals vehicleTransportTypes?.FK_VehicleID into speedVehiTranTypes
+                         from speedVehiTranType in speedVehiTranTypes.DefaultIfEmpty()
 
-                     PrivateCode = k.vehi?.PrivateCode,
-                     TransportTypeName = k.all.tranType.DisplayName
-                 }
-                 );
- 
+                         join tranportTypes in (bGTTranportTypes is null ? new List<BGTTranportTypes>() : bGTTranportTypes) on speedVehiTranType?.FK_TransportTypeID equals tranportTypes?.PK_TransportTypeID into tranportTypesSpeeds
+                         from tranportTypesSpeed in tranportTypesSpeeds.DefaultIfEmpty()
+
+                         join vehicle in (vehicles is null ? new List<Vehicles>() : vehicles) on speed?.VehicleID equals vehicle?.PK_VehicleID
+
+                         orderby vehicle?.PrivateCode
+                         select new ResultReportSpeed
+                         {
+                             VehicleID = speed?.VehicleID,
+                             Sum5To10 = speed?.Sum5To10,
+                             Sum10To20 = speed?.Sum10To20,
+                             Sum20To35 = speed?.Sum20To35,
+                             SumFrom35 = speed?.SumFrom35,
+                             SumTotal = speed?.SumTotal,
+                             ViolateKm = _formatService.RoundDouble(speed?.ViolateKm),
+                             TotalKm = _formatService.RoundDouble(speedActi?.TotalKmGps),
+                             ViolatePer100Km = 0,
+                             PercentRate = 0,
+                             PercentRateTime = 0,
+                             ViolateTime = speed?.ViolateTime,
+                             TotalTime = speedActi?.ActivityTime,
+                             PrivateCode = vehicle?.PrivateCode,
+                             TransportTypeName = tranportTypesSpeed?.DisplayName
+                         });
+
             return final;
         }
 
@@ -319,7 +249,7 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputSearchList input, List<long> arrVehicle,int companyID)
+        private IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputSearchList input, List<long> arrVehicle, int companyID)
         {
             IEnumerable<ReportActivitySummaries> activity;
             // lọc bảng activity theo tham số đầu vào
@@ -331,7 +261,7 @@ namespace BAWebLab2.Core.Services
             else
             {
                 activity = _reportActivitySummariesService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
-           && m.EndTime <= input.DayTo &&   (arrVehicle).Contains(m.FK_VehicleID));
+           && m.EndTime <= input.DayTo && (arrVehicle).Contains(m.FK_VehicleID));
             }
 
             // gom nhóm bảng activity theo FK_VehicleID
@@ -381,16 +311,27 @@ namespace BAWebLab2.Core.Services
         private IEnumerable<ResultReportSpeed> GetSpeedGroup(InputSearchList input, List<long> arrVehicle, int companyID)
         {
             var bgtSpeed = GetSpeedFilter(input, arrVehicle, companyID);
-             
+
             var bgtSpeedGroup
                = bgtSpeed.GroupBy(m => m.FK_VehicleID).ToList().Select(k =>
                {
+                   // lấy tổng số lầm vi phạm tốc độ từ 5 đến 10km/h
                    int sum5To10 = k.Count(l => (l.VelocityAllow + 5) <= l.VelocityGps && (l.VelocityAllow + 10) > l.VelocityGps);
+
+                   // lấy tổng số lầm vi phạm tốc độ từ 10 đến 20km/h
                    int sum10To20 = k.Count(l => (l.VelocityAllow + 10) <= l.VelocityGps && (l.VelocityAllow + 20) > l.VelocityGps);
+
+                   // lấy tổng số lầm vi phạm tốc độ từ 20 đến 35km/h
                    int sum20To35 = k.Count(l => (l.VelocityAllow + 20) <= l.VelocityGps && (l.VelocityAllow + 35) > l.VelocityGps);
+
+                   // lấy tổng số lầm vi phạm tốc độ quá 35km/h
                    int sumFrom35 = k.Count(l => (l.VelocityAllow + 35) < l.VelocityGps);
                    int sumTotal = sum5To10 + sum10To20 + sum20To35 + sumFrom35;
+
+                   // lấy tổng thời gian vi phạm = tổng (EndTime - StartTime)
                    var sumTime = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(p => p.EndTime == null ? 0 : (((DateTime)p.EndTime).Subtract(p.StartTime).TotalSeconds));
+
+                   // lấy tổng quãng đường vi phạm = tổng (EndKm - StartKm)
                    double? sumKm = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(m => (m.EndKm - m.StartKm));
                    return new ResultReportSpeed
                    {
@@ -405,7 +346,7 @@ namespace BAWebLab2.Core.Services
                    };
 
                });
-             
+
             return bgtSpeedGroup;
 
         }

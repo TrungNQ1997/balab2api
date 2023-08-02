@@ -8,8 +8,9 @@
     public class ResultReportSpeed
     {
 
-        public ResultReportSpeed() {
-        
+        public ResultReportSpeed()
+        {
+
         }
 
         public string? PrivateCode { get; set; }
@@ -23,7 +24,7 @@
         public int? Sum10To20 { get; set; }
 
         public int? Sum20To35 { get; set; }
-         
+
         public int? SumFrom35 { get; set; }
 
         public int? SumTotal { get; set; }

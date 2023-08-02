@@ -35,7 +35,7 @@ namespace BAWebLab2.Entities
         /// </Modified>
         public int? VelocityAllow { get; set; }
 
-         public double? StartKm { get; set; }
+        public double? StartKm { get; set; }
 
         public double? EndKm { get; set; }
 

@@ -10,7 +10,7 @@ namespace BAWebLab2.Infrastructure.Repositories
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class BGTVehicleTransportTypesRepository:GenericRepository<BGTVehicleTransportTypes>, IBGTVehicleTransportTypesRepository
+    public class BGTVehicleTransportTypesRepository : GenericRepository<BGTVehicleTransportTypes>, IBGTVehicleTransportTypesRepository
     {
         private readonly BADbContext _bADbContext;
         public BGTVehicleTransportTypesRepository(BADbContext bADbContext)

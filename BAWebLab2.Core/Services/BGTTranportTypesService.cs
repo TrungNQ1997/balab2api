@@ -9,7 +9,7 @@ namespace BAWebLab2.Core.Services
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class BGTTranportTypesService:IBGTTranportTypesService
+    public class BGTTranportTypesService : IBGTTranportTypesService
     {
         private readonly IBGTTranportTypesRepository _bGTTranportTypesRepository;
 

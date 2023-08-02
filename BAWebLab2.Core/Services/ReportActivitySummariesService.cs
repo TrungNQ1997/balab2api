@@ -10,7 +10,7 @@ namespace BAWebLab2.Core.Services
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class ReportActivitySummariesService:IReportActivitySummariesService
+    public class ReportActivitySummariesService : IReportActivitySummariesService
     {
         private readonly IReportActivitySummariesRepository _reportActivitySummariesRepository;
 
@@ -27,7 +27,7 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-       public IEnumerable<ReportActivitySummaries> Find(Expression<Func<ReportActivitySummaries, bool>> expression)
+        public IEnumerable<ReportActivitySummaries> Find(Expression<Func<ReportActivitySummaries, bool>> expression)
         {
             return _reportActivitySummariesRepository.Find(expression);
         }

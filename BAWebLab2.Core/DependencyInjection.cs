@@ -5,6 +5,7 @@ using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace BAWebLab2.Core
 {
@@ -24,13 +25,17 @@ namespace BAWebLab2.Core
         /// </Modified>
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
+            string redisConnectionString = Configuration.GetSection("RedisCacheServerUrl").Value;
+
+            // Cấu hình Redis Cluster
+            ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisConnectionString);
+
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = Configuration.GetSection("RedisCacheServerUrl").Value;
-                
-            });
-            //services.Configure();
-            services.AddScoped< ApiHandleService>();
+                options.ConfigurationOptions = redisConfig;
+
+            }); 
+            services.AddScoped<ApiHandleService>();
             services.AddScoped<CacheRedisService>();
             services.AddScoped<FormatDataService>();
             services.AddScoped<LogService>();

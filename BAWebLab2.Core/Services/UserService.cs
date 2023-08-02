@@ -1,7 +1,7 @@
-﻿ 
+﻿
 using BAWebLab2.Model;
 using BAWebLab2.Entities;
-using Dapper; 
+using Dapper;
 using System.Data;
 using BAWebLab2.Service;
 using log4net;
@@ -26,7 +26,7 @@ namespace BAWebLab2.Core.Services
 
             _userRepository = userRepository;
         }
-         
+
         /// <summary>parce input lấy tham số truyền vào store lấy danh sách user</summary>
         /// <param name="input">đối tượng chứa tham số truyền vào store</param>
         /// <returns>length của list và list select theo offset thỏa mãn điều kiện filter</returns>
@@ -53,9 +53,9 @@ namespace BAWebLab2.Core.Services
                 parameters.Add("count", 0, DbType.Int64, ParameterDirection.Output);
 
                 var resultStore = _userRepository.CallStoredProcedure<UserModel>("BAWeb_User_GetUserInfo", ref parameters);
-                
+
                 var list = resultStore.ListPrimary;
-                 
+
                 //var e = list.Skip(20).Take(10).ToList().OrderBy(m=>m.Username).OrderBy(mbox=>);
                 var t = list.SingleOrDefault(m => m.Username.Contains("11"));
 
@@ -64,7 +64,7 @@ namespace BAWebLab2.Core.Services
                 result.List = list;
                 result.Count = (int)count;
 
-                
+
                 result.Error = false;
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-         
+
         /// <summary>api kiểm tra username, pass có hợp lệ không</summary>
         /// <param name="input">đối tượng chứa username, pass</param>
         /// <returns>có đăng nhập hợp lệ không, thông tin user đăng nhập</returns>
@@ -139,10 +139,10 @@ namespace BAWebLab2.Core.Services
                 var isAdmin = parameters.Get<bool>("isAdmin");
                 var ret = parameters.Get<long>("ret");
                 result.List = resultStore.ListPrimary;
-               
+
                 result.Error = ret == 0 ? true : false;
                 result.Admin = isAdmin;
-                  
+
             }
             catch (Exception ex)
             {
@@ -243,9 +243,9 @@ namespace BAWebLab2.Core.Services
 
                 var resultStore = _userRepository.CallStoredProcedure<int>("BAWeb_User_UpdatePassUserInfo", ref parameters);
                 var ret = parameters.Get<long>("ret");
-               
+
                 result.Error = ret == 0 ? false : true;
-                
+
             }
             catch (Exception ex)
             {

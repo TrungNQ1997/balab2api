@@ -1,0 +1,30 @@
+2023-08-02 13:14:17,458 [4] ERROR BAWebLab2.Core.LibCommon.LogService - StackExchange.Redis.RedisServerException: CLUSTERDOWN The cluster is down
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.HashGet(RedisKey key, RedisValue[] hashFields, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 408
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisExtensions.HashMemberGet(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefresh(String key, Boolean getData)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.Get(String key)
+   at BAWebLab2.Core.LibCommon.CacheRedisService.GetRedisCache[T](String key) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\LibCommon\CacheRedisService.cs:line 51
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 168
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 97
+2023-08-02 13:15:30,888 [6] ERROR BAWebLab2.Core.LibCommon.LogService - StackExchange.Redis.RedisServerException: CLUSTERDOWN The cluster is down
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.HashGet(RedisKey key, RedisValue[] hashFields, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 408
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisExtensions.HashMemberGet(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefresh(String key, Boolean getData)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.Get(String key)
+   at BAWebLab2.Core.LibCommon.CacheRedisService.GetRedisCache[T](String key) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\LibCommon\CacheRedisService.cs:line 51
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 168
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 97
+2023-08-02 13:21:25,879 [6] ERROR BAWebLab2.Core.LibCommon.LogService - StackExchange.Redis.RedisServerException: CLUSTERDOWN The cluster is down
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.HashGet(RedisKey key, RedisValue[] hashFields, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 408
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisExtensions.HashMemberGet(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefresh(String key, Boolean getData)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.Get(String key)
+   at BAWebLab2.Core.LibCommon.CacheRedisService.GetRedisCache[T](String key) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\LibCommon\CacheRedisService.cs:line 51
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 168
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 97

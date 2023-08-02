@@ -9,7 +9,7 @@ namespace BAWebLab2.Core.Services
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class VehiclesService:IVehiclesService
+    public class VehiclesService : IVehiclesService
     {
         private readonly IVehiclesRepository _vehiclesRepository;
 
@@ -28,7 +28,7 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         public IEnumerable<Vehicles> FindByCompanyID(int companyID)
         {
-            return _vehiclesRepository.Find(m=> m.FK_CompanyID == companyID && m.IsDeleted == false);
+            return _vehiclesRepository.Find(m => m.FK_CompanyID == companyID && m.IsDeleted == false);
         }
     }
 }

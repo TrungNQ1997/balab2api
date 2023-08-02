@@ -8,7 +8,7 @@ namespace BAWebLab2.Infrastructure.Repositories.IRepository
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public interface IBGTTranportTypesRepository:IGenericRepository<BGTTranportTypes>
+    public interface IBGTTranportTypesRepository : IGenericRepository<BGTTranportTypes>
     {
     }
 }

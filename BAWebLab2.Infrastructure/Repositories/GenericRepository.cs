@@ -69,9 +69,9 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
         {
-            var query = 
+            var query =
                 _context.Set<T>().AsNoTracking().Where(expression);
-            
+
             return query;
         }
 
@@ -83,7 +83,7 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public IEnumerable<T> GetAll()
         {
-            
+
             return _context.Set<T>().AsNoTracking();
         }
 
@@ -135,14 +135,14 @@ namespace BAWebLab2.Repository
             using var connection = _context.Database.GetDbConnection();
             connection.Open();
 
-            var multi = connection.QueryMultiple(storedProcedureName, param , commandType: CommandType.StoredProcedure);
-            
-                var resultList = multi.Read<T1>().ToList();
-                 connection.Close();
-                return new MultipleResult<T1> { ListPrimary = resultList  };
-            
-        }
-      
+            var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
+
+            var resultList = multi.Read<T1>().ToList();
+            connection.Close();
+            return new MultipleResult<T1> { ListPrimary = resultList };
 
         }
+
+
+    }
 }

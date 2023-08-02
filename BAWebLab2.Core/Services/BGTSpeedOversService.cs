@@ -27,9 +27,9 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-         public IEnumerable<BGTSpeedOvers> GetByCompanyID(int companyID)
+        public IEnumerable<BGTSpeedOvers> GetByCompanyID(int companyID)
         {
-            return _bGTSpeedOversRepository.Find(m=>m.FK_CompanyID == companyID);
+            return _bGTSpeedOversRepository.Find(m => m.FK_CompanyID == companyID);
         }
 
         /// <summary>tìm theo điều  kiện</summary>
@@ -39,7 +39,8 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-        public IEnumerable<BGTSpeedOvers> Find(Expression<Func<BGTSpeedOvers, bool>> expression) {
+        public IEnumerable<BGTSpeedOvers> Find(Expression<Func<BGTSpeedOvers, bool>> expression)
+        {
             return _bGTSpeedOversRepository.Find(expression);
         }
     }

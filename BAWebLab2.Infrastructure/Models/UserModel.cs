@@ -6,7 +6,7 @@
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    public class UserModel  
+    public class UserModel
     {
         public int? Id { get; set; }
 
@@ -37,9 +37,9 @@
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateEdited { get; set; }
-         
+
         public DateTime? ExpiredDate { get; set; }
-         
+
         public string? GioiTinhText { get; set; }
 
         public string? Token { get; set; }
@@ -47,6 +47,6 @@
         public int? Stt { get; set; }
 
         public int? UserId { get; set; }
-        
+
     }
 }

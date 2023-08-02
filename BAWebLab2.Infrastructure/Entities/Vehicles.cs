@@ -10,8 +10,8 @@ namespace BAWebLab2.Entities
     [Table("Vehicle.Vehicles")]
     public class Vehicles
     {
-        
-       public long PK_VehicleID { get; set; }
+
+        public long PK_VehicleID { get; set; }
 
         public int FK_CompanyID { get; set; }
 

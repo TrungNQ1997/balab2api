@@ -10,7 +10,7 @@ namespace BAWebLab2.Infrastructure.Repositories
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class BGTTranportTypesRepository:GenericRepository<BGTTranportTypes>, IBGTTranportTypesRepository
+    public class BGTTranportTypesRepository : GenericRepository<BGTTranportTypes>, IBGTTranportTypesRepository
     {
         private readonly BADbContext _bADbContext;
         public BGTTranportTypesRepository(BADbContext bADbContext)

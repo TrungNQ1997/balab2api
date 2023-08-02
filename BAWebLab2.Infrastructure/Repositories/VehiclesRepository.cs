@@ -5,7 +5,12 @@ using BAWebLab2.Repository;
 
 namespace BAWebLab2.Infrastructure.Repositories
 {
-    public class VehiclesRepository:GenericRepository<Vehicles> , IVehiclesRepository
+    /// <summary>class repository của Vehicle</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/2/2023 created
+    /// </Modified>
+    public class VehiclesRepository : GenericRepository<Vehicles>, IVehiclesRepository
     {
         private readonly BADbContext _bADbContext;
         public VehiclesRepository(BADbContext bADbContext)

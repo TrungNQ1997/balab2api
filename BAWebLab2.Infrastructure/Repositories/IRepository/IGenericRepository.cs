@@ -20,7 +20,7 @@ namespace BAWebLab2.Infrastructure.Repository.IRepository
         /// trungnq3 7/12/2023 created
         /// </Modified>
         T GetById(int id);
-         
+
         /// <summary>lấy tất cả đối tượng</summary>
         /// <returns>danh sách đối tượng</returns>
         /// <Modified>

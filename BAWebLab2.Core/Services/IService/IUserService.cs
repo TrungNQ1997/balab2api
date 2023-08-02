@@ -19,7 +19,7 @@ namespace BAWebLab2.Service
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<UserModel> GetListUsersFilter(InputSearchList input);
-         
+
         /// <summary>lấy danh sách quyền và quyền admin của user</summary>
         /// <param name="input">chứa user_id và menu_id</param>
         /// <returns>list quyền và trạng thái quyền admin</returns>

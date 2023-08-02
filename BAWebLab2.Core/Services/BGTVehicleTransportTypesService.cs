@@ -9,7 +9,7 @@ namespace BAWebLab2.Core.Services
     /// Name Date Comments
     /// trungnq3 7/27/2023 created
     /// </Modified>
-    public class BGTVehicleTransportTypesService: IBGTVehicleTransportTypesService
+    public class BGTVehicleTransportTypesService : IBGTVehicleTransportTypesService
     {
         private readonly IBGTVehicleTransportTypesRepository _bGTVehicleTransportTypesRepository;
 
@@ -26,9 +26,9 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-         public IEnumerable<BGTVehicleTransportTypes> GetByCompanyID(int companyID)
+        public IEnumerable<BGTVehicleTransportTypes> GetByCompanyID(int companyID)
         {
-            return _bGTVehicleTransportTypesRepository.Find(m=>m.FK_CompanyID == companyID);
+            return _bGTVehicleTransportTypesRepository.Find(m => m.FK_CompanyID == companyID);
         }
     }
 }

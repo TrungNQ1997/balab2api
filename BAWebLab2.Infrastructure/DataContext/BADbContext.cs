@@ -11,12 +11,12 @@ namespace BAWebLab2.Infrastructure.DataContext
     /// </Modified>
     public class BADbContext : DbContext
     {
-       
-        public BADbContext(DbContextOptions<BADbContext> options ) : base(options)
+
+        public BADbContext(DbContextOptions<BADbContext> options) : base(options)
         {
- 
+
         }
-         
+
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
         /// The builder being used to construct the model for this context. Databases (and other extensions) typically
@@ -56,7 +56,7 @@ namespace BAWebLab2.Infrastructure.DataContext
 
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
-             
+
         }
 
 
