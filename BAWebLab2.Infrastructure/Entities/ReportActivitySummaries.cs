@@ -29,7 +29,6 @@ namespace BAWebLab2.Entities
         public DateTime? StartTime { get; set; }
 
         public DateTime? EndTime { get; set; }
-
-
+         
     }
 }

@@ -21,9 +21,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         _bADbContext = bADbContext;
     }
-
-
-
+     
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>
     /// <returns>chuỗi kết quả xóa: 0- thành công, khác 0- thất bại</returns>
@@ -60,8 +58,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return myObject;
 
     }
-
-
+     
     /// <summary>thêm mới đối tượng</summary>
     /// <param name="user">user muốn thêm</param>
     /// <Modified>

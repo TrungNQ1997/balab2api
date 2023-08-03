@@ -46,14 +46,12 @@ namespace BAWebLab2.Infrastructure.DataContext
            .HasKey(i => new { i.FK_VehicleID, i.StartTime });
 
             modelBuilder.Entity<BGTTranportTypes>()
-           .HasKey(i => new { i.PK_TransportTypeID })
-            ;
+           .HasKey(i => new { i.PK_TransportTypeID });
 
             modelBuilder.Entity<BGTVehicleTransportTypes>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_TransportTypeID });
             modelBuilder.Entity<BGTVehicleTransportTypes>().Property(p => p.IsDeleted).IsRequired(required: false);
-
-
+             
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
 

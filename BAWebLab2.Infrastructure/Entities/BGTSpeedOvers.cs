@@ -9,8 +9,7 @@ namespace BAWebLab2.Entities
     /// </Modified>
     [Table("BGT.SpeedOvers")]
     public class BGTSpeedOvers
-    {
-
+    { 
         public long FK_VehicleID { get; set; }
 
         public DateTime StartTime { get; set; }
@@ -40,8 +39,5 @@ namespace BAWebLab2.Entities
         public double? EndKm { get; set; }
 
     }
-
-
-
-
+     
 }

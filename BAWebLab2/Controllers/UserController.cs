@@ -14,8 +14,7 @@ using BAWebLab2.Entities ;
 [Route("user")]
 [ApiController]
 public class UserController : ControllerBase
-{
-
+{ 
     private readonly IUserService _userService;
 
     public UserController(IUserService userService)
@@ -23,8 +22,7 @@ public class UserController : ControllerBase
 
         _userService = userService;
     }
-
-
+     
     /// <summary>lấy danh sách người dùng có phân trang và tìm kiếm theo điều kiện</summary>
     /// <param name="data">The data. đối tượng chứa thông tin tìm kiếm</param>
     /// <returns>trạng thái thực hiện store và tổng phần tử của list và 1 list đối tượng select theo offset pagesize và page number thỏa mãn điều kiện tìm kiếm</returns>
@@ -34,8 +32,7 @@ public class UserController : ControllerBase
     /// </Modified>
     [HttpPost("getListUserFilter")]
     public IActionResult GetListUsersFilter([FromBody] InputSearchList data)
-    {
-
+    { 
         var result = _userService.GetListUsersFilter(data);
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
 
@@ -54,11 +51,7 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
-
-
-
-   
-
+     
     /// <summary>api kiểm tra đăng nhập vào hệ thống</summary>
     /// <param name="data">The data.
     /// truyền vào đối tượng chứa tài khoản và mật khẩu của user</param>
@@ -69,8 +62,7 @@ public class UserController : ControllerBase
     /// </Modified>
     [HttpPost("login")] 
     public IActionResult Login([FromBody] InputLogin data)
-    {
-
+    { 
         var result = _userService.Login(data);
 
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
@@ -88,8 +80,7 @@ public class UserController : ControllerBase
             response.Data = result;
         }
 
-        return Ok(response);
-
+        return Ok(response); 
     }
 
     /// <summary>api check đăng nhập và ghet quyền theo menuid</summary>

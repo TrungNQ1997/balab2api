@@ -119,8 +119,7 @@ namespace BAWebLab2.Core.Services
         {
             var listReturn = (ReportHelper.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
             {
-                var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime);
-
+                var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime); 
                 var totalTimeText = FormatDataHelper.NumberMinuteToStringHour(m.TotalTime);
 
                 return new ResultReportSpeed

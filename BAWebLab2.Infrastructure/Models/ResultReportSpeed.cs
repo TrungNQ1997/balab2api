@@ -6,8 +6,7 @@
     /// trungnq3 7/20/2023 created
     /// </Modified>
     public class ResultReportSpeed
-    {
-
+    { 
         public ResultReportSpeed()
         {
 

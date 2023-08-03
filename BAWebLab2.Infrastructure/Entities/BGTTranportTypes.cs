@@ -10,7 +10,6 @@ namespace BAWebLab2.Entities
     [Table("BGT.TranportTypes")]
     public class BGTTranportTypes
     {
-
         public int PK_TransportTypeID { get; set; }
 
         public string DisplayName { get; set; }
@@ -20,7 +19,6 @@ namespace BAWebLab2.Entities
         public short SortOrder { get; set; }
 
         public bool IsActivated { get; set; }
-
 
     }
 }
