@@ -41,3 +41,11 @@
    at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefresh(String key, Boolean getData)
    at BAWebLab2.Core.LibCommon.CacheRedisService.GetRedisCache[T](String key) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\LibCommon\CacheRedisService.cs:line 50
    at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 54
+2023-08-03 15:48:49,875 [19] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). Error connecting right now. To allow this multiplexer to continue retrying until it's able to connect, use abortConnect=false in your connection string or AbortOnConnectFail=false; in your code.
+   at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(ConfigurationOptions configuration, TextWriter log, Nullable`1 serverType, EndPointCollection endpoints) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 708
+   at StackExchange.Redis.ConnectionMultiplexer.Connect(ConfigurationOptions configuration, TextWriter log) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 673
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.Connect()
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefresh(String key, Boolean getData)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.Get(String key)
+   at BAWebLab2.Core.LibCommon.CacheRedisHelper.GetRedisCache[T](String key) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Helper\CacheRedisHelper.cs:line 50
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 54

@@ -38,7 +38,7 @@ namespace BAWebLab2.Controllers
             ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
             try
             {
-                var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
+                var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                 var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
 
 
@@ -57,7 +57,7 @@ namespace BAWebLab2.Controllers
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex.ToString());
+                LogHelper.LogError(ex.ToString());
                 response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                 response.Message = ex.Message;
             }
@@ -78,7 +78,7 @@ namespace BAWebLab2.Controllers
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
             try
             {
-                var comID = int.Parse(ApiHandleService.GetHeader(Request, "CompanyID"));
+                var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                 var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
 
 
@@ -97,7 +97,7 @@ namespace BAWebLab2.Controllers
             }
             catch (Exception ex)
             {
-                LogService.LogError(ex.ToString());
+                LogHelper.LogError(ex.ToString());
                 response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                 response.Message = ex.Message;
             }

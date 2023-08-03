@@ -35,11 +35,11 @@ namespace BAWebLab2.Core
                 options.ConfigurationOptions = redisConfig;
 
             }); 
-            services.AddScoped<ApiHandleService>();
-            services.AddScoped<CacheRedisService>();
-            services.AddScoped<FormatDataService>();
-            services.AddScoped<LogService>();
-            services.AddScoped<ReportService>();
+            services.AddScoped<ApiHelper>();
+            services.AddScoped<CacheRedisHelper>();
+            services.AddScoped<FormatDataHelper>();
+            services.AddScoped<LogHelper>();
+            services.AddScoped<ReportHelper>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBGTSpeedOversService, BGTSpeedOversService>();
             services.AddScoped<IBGTTranportTypesService, BGTTranportTypesService>();

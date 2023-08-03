@@ -7,9 +7,9 @@ namespace BAWebLab2.Core.LibCommon
     /// Name Date Comments
     /// trungnq3 8/2/2023 created
     /// </Modified>
-    public class LogService
+    public class LogHelper
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(LogService));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(LogHelper));
         /// <summary>ghi lỗi vào log</summary>
         /// <param name="error">chuỗi lỗi</param>
         /// <Modified>

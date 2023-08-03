@@ -10,11 +10,11 @@ namespace BAWebLab2.Core.LibCommon
     /// Name Date Comments
     /// trungnq3 8/2/2023 created
     /// </Modified>
-    public class CacheRedisService
+    public class CacheRedisHelper
     {
         private static IDistributedCache _cache { get; set; }
 
-        public CacheRedisService(IDistributedCache cache)
+        public CacheRedisHelper(IDistributedCache cache)
         {
             _cache = cache;
         }
@@ -77,7 +77,7 @@ namespace BAWebLab2.Core.LibCommon
         public string CreateKeyReport(string moduleName, int companyId, InputSearchList input)
         {
             var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataService.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
             keyInput = keyInput.Replace(':', ';');
             var keyList = keyBasic + "_List:" + keyInput;
             return keyList;

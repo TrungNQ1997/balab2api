@@ -7,7 +7,7 @@ namespace BAWebLab2.Core.LibCommon
     /// Name Date Comments
     /// trungnq3 8/2/2023 created
     /// </Modified>
-    public class ReportService
+    public class ReportHelper
     {
         /// <summary>phân trang báo cáo</summary>
         /// <typeparam name="T">kiểu dữ liệu list báo cáo</typeparam>

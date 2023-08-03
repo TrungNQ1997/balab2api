@@ -9,11 +9,11 @@ namespace BAWebLab2.Core.LibCommon
     /// Name Date Comments
     /// trungnq3 8/2/2023 created
     /// </Modified>
-    public class FormatDataService
+    public class FormatDataHelper
     {
         private readonly IConfiguration _configuration;
 
-        public FormatDataService(IConfiguration configuration)
+        public FormatDataHelper(IConfiguration configuration)
         {
             _configuration = configuration;
         }

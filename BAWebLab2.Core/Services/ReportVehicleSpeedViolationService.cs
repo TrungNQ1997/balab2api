@@ -18,14 +18,14 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
-        private readonly CacheRedisService _cache;
-        private readonly FormatDataService _formatService;
+        private readonly CacheRedisHelper _cache;
+        private readonly FormatDataHelper _formatService;
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
-            CacheRedisService cache, FormatDataService formatService)
+            CacheRedisHelper cache, FormatDataHelper formatService)
         {
 
             _cache = cache;
@@ -73,7 +73,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LogService.LogError(ex.ToString());
+                LogHelper.LogError(ex.ToString());
             }
 
             return result;
@@ -100,7 +100,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LogService.LogError(ex.ToString());
+                LogHelper.LogError(ex.ToString());
             }
 
             return result;
@@ -117,11 +117,11 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         private List<ResultReportSpeed> CalDataAndPaging(InputSearchList input, IEnumerable<ResultReportSpeed> ienumReport)
         {
-            var listReturn = (ReportService.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
+            var listReturn = (ReportHelper.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
             {
-                var violateTimeText = FormatDataService.NumberMinuteToStringHour(m.ViolateTime);
+                var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime);
 
-                var totalTimeText = FormatDataService.NumberMinuteToStringHour(m.TotalTime);
+                var totalTimeText = FormatDataHelper.NumberMinuteToStringHour(m.TotalTime);
 
                 return new ResultReportSpeed
                 {
@@ -194,7 +194,7 @@ namespace BAWebLab2.Core.Services
         private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputSearchList input, int companyID)
         {
             // parce string truyền vào để lấy list id vehicle
-            var listVehicleID = FormatDataService.StringToListLong(input.TextSearch);
+            var listVehicleID = FormatDataHelper.StringToListLong(input.TextSearch);
 
             // lấy ra 5 bảng cần join đã lọc theo tham số đầu vào
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();

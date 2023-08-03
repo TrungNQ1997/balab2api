@@ -8,7 +8,7 @@ namespace BAWebLab2.Core.LibCommon
     /// Name Date Comments
     /// trungnq3 8/2/2023 created
     /// </Modified>
-    public class ApiHandleService
+    public class ApiHelper
     {
         /// <summary>lấy giá trị  header trong request</summary>
         /// <param name="request">request chưa header</param>

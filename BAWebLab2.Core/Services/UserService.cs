@@ -94,7 +94,7 @@ namespace BAWebLab2.Core.Services
             try
             {
                 parameters.Add("username", input.Username);
-                parameters.Add("pass", FormatDataService.HashMD5(input.Password));
+                parameters.Add("pass", FormatDataHelper.HashMD5(input.Password));
                 parameters.Add("isRemember", input.IsRemember);
                 parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
 
@@ -207,7 +207,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                user.Password = FormatDataService.HashMD5(user.Password);
+                user.Password = FormatDataHelper.HashMD5(user.Password);
                 _userRepository.Update(user);
             }
             catch (Exception ex)
@@ -234,8 +234,8 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("password", FormatDataService.HashMD5(input.Password));
-                parameters.Add("passwordOld", FormatDataService.HashMD5(input.PasswordOld));
+                parameters.Add("password", FormatDataHelper.HashMD5(input.Password));
+                parameters.Add("passwordOld", FormatDataHelper.HashMD5(input.PasswordOld));
                 parameters.Add("userId", int.Parse(input.UserId));
                 parameters.Add("username", input.Username);
 
@@ -292,7 +292,7 @@ namespace BAWebLab2.Core.Services
             try
             {
 
-                user.Password = FormatDataService.HashMD5(user.Password);
+                user.Password = FormatDataHelper.HashMD5(user.Password);
 
                 _userRepository.Add(user);
             }
