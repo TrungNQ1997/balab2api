@@ -18,18 +18,18 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
-        private readonly CacheRedisHelper _cache;
-        private readonly FormatDataHelper _formatService;
+        private readonly CacheRedisHelper _cacheHelper;
+        private readonly FormatDataHelper _formatDataHelper;
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
-            CacheRedisHelper cache, FormatDataHelper formatService)
+            CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper)
         {
 
-            _cache = cache;
-            _formatService = formatService;
+            _cacheHelper = cacheHelper;
+            _formatDataHelper = formatDataHelper;
             _bGTSpeedOversService = bGTSpeedOversService;
             _vehiclesService = vehiclesService;
             _bGTTranportTypesService = bGTTranportTypesService;
@@ -50,8 +50,8 @@ namespace BAWebLab2.Core.Services
             try
             {
                 // tạo key redis cache
-                var key = _cache.CreateKeyByModule("Vehicle", companyID);
-                var listCache = _cache.GetRedisCache<IEnumerable<Vehicles>>(key);
+                var key = _cacheHelper.CreateKeyByModule("Vehicle", companyID);
+                var listCache = _cacheHelper.GetRedisCache<IEnumerable<Vehicles>>(key);
 
                 // check xem đã có cache vehicle chưa
                 // có rồi thì trả về list cache
@@ -64,7 +64,7 @@ namespace BAWebLab2.Core.Services
                 else
                 {
                     var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
-                    _cache.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
+                    _cacheHelper.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
                     result.List = list.Cast<Vehicles>().ToList();
                 }
                 result.Error = false;
@@ -130,13 +130,13 @@ namespace BAWebLab2.Core.Services
                     Sum20To35 = m.Sum20To35,
                     SumFrom35 = m.SumFrom35,
                     SumTotal = m.SumTotal,
-                    ViolatePer100Km = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatService.RoundDouble(m.TotalKm > 1000 ? (m.SumTotal * 1000 / (double)m.TotalKm) : m.SumTotal),
+                    ViolatePer100Km = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatDataHelper.RoundDouble(m.TotalKm > 1000 ? (m.SumTotal * 1000 / (double)m.TotalKm) : m.SumTotal),
                     ViolateKm = m.ViolateKm,
                     TotalKm = m.TotalKm,
-                    PercentRate = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatService.RoundDouble((m.ViolateKm * 100 / m.TotalKm)),
+                    PercentRate = m.TotalKm == 0 || m.TotalKm == null ? 0 : _formatDataHelper.RoundDouble((m.ViolateKm * 100 / m.TotalKm)),
                     ViolateTimeText = violateTimeText,
                     TotalTimeText = totalTimeText,
-                    PercentRateTime = m.TotalTime == 0 || m.TotalTime == null ? 0 : _formatService.RoundDouble((m.ViolateTime * 100 / m.TotalTime)),
+                    PercentRateTime = m.TotalTime == 0 || m.TotalTime == null ? 0 : _formatDataHelper.RoundDouble((m.ViolateTime * 100 / m.TotalTime)),
                     PrivateCode = m.PrivateCode,
                     TransportTypeName = m.TransportTypeName
                 };
@@ -158,9 +158,9 @@ namespace BAWebLab2.Core.Services
         private List<ResultReportSpeed> GetListCacheOrDB(InputSearchList input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
         {
             // tạo key redis
-            var keyList = _cache.CreateKeyReport("ReportSpeed", companyID, input);
+            var keyList = _cacheHelper.CreateKeyReport("ReportSpeed", companyID, input);
             var listReturn = new List<ResultReportSpeed>();
-            var listCache = _cache.GetRedisCache<IEnumerable<ResultReportSpeed>>(keyList);
+            var listCache = _cacheHelper.GetRedisCache<IEnumerable<ResultReportSpeed>>(keyList);
             IEnumerable<ResultReportSpeed> results;
 
             // check có cache không?
@@ -174,7 +174,7 @@ namespace BAWebLab2.Core.Services
             else
             {
                 results = GetIEnumerableAfterJoin(input, companyID);
-                _cache.PushDataToCache(results, TimeSpan.FromMinutes(5), keyList);
+                _cacheHelper.PushDataToCache(results, TimeSpan.FromMinutes(5), keyList);
                 storeResult.Count = results.Count();
                 var list = CalDataAndPaging(input, results);
                 listReturn = list;
@@ -225,8 +225,8 @@ namespace BAWebLab2.Core.Services
                              Sum20To35 = speed?.Sum20To35,
                              SumFrom35 = speed?.SumFrom35,
                              SumTotal = speed?.SumTotal,
-                             ViolateKm = _formatService.RoundDouble(speed?.ViolateKm),
-                             TotalKm = _formatService.RoundDouble(speedActi?.TotalKmGps),
+                             ViolateKm = _formatDataHelper.RoundDouble(speed?.ViolateKm),
+                             TotalKm = _formatDataHelper.RoundDouble(speedActi?.TotalKmGps),
                              ViolatePer100Km = 0,
                              PercentRate = 0,
                              PercentRateTime = 0,
