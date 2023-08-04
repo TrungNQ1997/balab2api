@@ -188,7 +188,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                user.Password = FormatDataHelper.HashMD5(user.Password);
+                //user.Password = FormatDataHelper.HashMD5(user.Password);
                 _userRepository.Update(user);
             }
             catch (Exception ex)

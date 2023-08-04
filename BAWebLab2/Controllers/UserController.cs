@@ -4,7 +4,10 @@ using System.Net;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.Model;
 using BAWebLab2.Entities ;
- 
+using System.Text.RegularExpressions;
+using BAWebLab2.Core.LibCommon;
+using Microsoft.IdentityModel.Tokens;
+using Azure;
 
 /// <summary>lớp nhận request từ client, api phân hệ người dùng với tiền tố là user</summary>
 /// <Modified>
@@ -161,21 +164,22 @@ public class UserController : ControllerBase
     [HttpPost("adduser")] 
     public IActionResult AddUser([FromBody] User data)
     {
-
-        var result = _userService.AddUser(data);
         ApiResponse<int> response = new ApiResponse<int>();
-
-        if (result.Error == false)
+        if (ValidUser(data, ref response))
         {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
-        }
-        else
-        {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
+            var result = _userService.AddUser(data); 
+            if (result.Error == false)
+            {
+                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                response.Message = HttpStatusCode.OK.ToString();
+                response.Data = result;
+            }
+            else
+            {
+                response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                response.Message = HttpStatusCode.InternalServerError.ToString();
+                response.Data = result;
+            }
         }
 
         return Ok(response);
@@ -196,20 +200,23 @@ public class UserController : ControllerBase
         var result = new StoreResult<int>();
 
         ApiResponse<int> response = new ApiResponse<int>();
-        result = _userService.EditUser(data);
-        if (result.Error == false)
-        {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
+        if (ValidUser(data, ref response))
+        { 
+            result = _userService.EditUser(data);
+            if (result.Error == false)
+            {
+                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                response.Message = HttpStatusCode.OK.ToString();
+                response.Data = result;
+            }
+            else
+            {
+                response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                response.Message = HttpStatusCode.InternalServerError.ToString();
+                response.Data = result;
+            }
         }
-        else
-        {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
-        }
-
+         
         return Ok(response);
 
     }
@@ -276,6 +283,54 @@ public class UserController : ControllerBase
 
     }
 
+     private bool ValidUser(User user, ref ApiResponse<int> response)
+    { 
+        if (user.Username.IsNullOrEmpty() || !Regex.IsMatch(user.Username, @"^[a-zA-Z0-9]{1,50}$"))
+        { 
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest,"wrong username", ref response);
+            return false;
+        }
+        if (user.Phone.IsNullOrEmpty() || !Regex.IsMatch(user.Phone, @"^[0-9]{1,10}$"))
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong phone", ref response);
+            return false;
+        }
+        if(user.Email is not null)
+        {
+            if(!Regex.IsMatch(user.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong email", ref response);
+                return false;
+            }
+        }
+        if(user.Birthday is null)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null birthday", ref response);
+            return false;
+        } else
+        {
+            if(DateTime.Now.Year -  user.Birthday.Value.Year < 18){
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "user not 18 years old", ref response);
+                return false;
+            }
+        }
+        if (user.Password.IsNullOrEmpty() || !Regex.IsMatch(user.Password, @"^[a-zA-Z0-9]{6,100}$"))
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong pass", ref response);
+            return false;
+        }
+        if (user.FullName.IsNullOrEmpty())
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "empty fullname", ref response);
+            return false;
+        }
+            return true;
+    }
+
+    //private bool ValidUserEdit(User user, ref ApiResponse<int> response)
+    //{
+
+    //}
 
 
 }

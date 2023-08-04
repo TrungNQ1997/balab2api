@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿using BAWebLab2.Model;
+using log4net;
+using System.Net;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -20,6 +22,13 @@ namespace BAWebLab2.Core.LibCommon
         {
             _logger.Error(error);
 
+        }
+
+        public static void LogAndSetResponseError<T>(HttpStatusCode statusCode, string error, ref ApiResponse<T> response)
+        {
+            LogError(error);
+            response.Message = error;
+            response.StatusCode = ((int)statusCode).ToString();
         }
 
     }

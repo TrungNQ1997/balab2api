@@ -53,9 +53,12 @@
         /// </Modified>
         public List<T> List { get; set; }
 
+        public IEnumerable<T> iEnumerable { get; set; }
+
         public StoreResult()
         {
             List = new List<T>();
+            iEnumerable = new List<T>();
         }
          
     }

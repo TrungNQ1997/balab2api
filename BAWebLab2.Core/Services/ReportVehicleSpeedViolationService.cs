@@ -1,8 +1,11 @@
-﻿using BAWebLab2.Core.Services.IService;
+﻿using BAWebLab2.Core.LibCommon;
+using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
-using BAWebLab2.Core.LibCommon;
+using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
+using System.Configuration;
 
 namespace BAWebLab2.Core.Services
 {
@@ -20,14 +23,18 @@ namespace BAWebLab2.Core.Services
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
         private readonly CacheRedisHelper _cacheHelper;
         private readonly FormatDataHelper _formatDataHelper;
+        private readonly IConfiguration _configuration;
+        private readonly ConnectionMultiplexer _redisConnection;
+
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
-            CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper)
+            CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper, IConfiguration configuration)
         {
-
+            _configuration = configuration;
+            _redisConnection = ConnectionMultiplexer.Connect(_configuration["RedisCacheServerUrl"]);
             _cacheHelper = cacheHelper;
             _formatDataHelper = formatDataHelper;
             _bGTSpeedOversService = bGTSpeedOversService;
@@ -51,21 +58,24 @@ namespace BAWebLab2.Core.Services
             {
                 // tạo key redis cache
                 var key = _cacheHelper.CreateKeyByModule("Vehicle", companyID);
-                var listCache = _cacheHelper.GetRedisCache<IEnumerable<Vehicles>>(key);
+                var y = _cacheHelper.GetSortedSetMembers<Vehicles>(key,take:10);
+                //var listCache = _cacheHelper.GetRedisCache<IEnumerable<Vehicles>>(key);
 
                 // check xem đã có cache vehicle chưa
                 // có rồi thì trả về list cache
-                if (listCache != null)
+                if (y.Count() > 0)
                 {
-                    result.List = listCache.Cast<Vehicles>().ToList();
+                    result.iEnumerable = y.Cast<Vehicles>();
                 }
 
                 // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
                 else
                 {
                     var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
-                    _cacheHelper.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
-                    result.List = list.Cast<Vehicles>().ToList();
+                    //_cacheHelper.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
+                    result.iEnumerable = list.Cast<Vehicles>();
+                    AddEnumerableToSortedSet(key, list);
+                    
                 }
                 result.Error = false;
             }
@@ -78,6 +88,22 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
+
+        public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data)
+        {
+            IDatabase redisDb = _redisConnection.GetDatabase();
+            var sortedSetEntries = new List<SortedSetEntry>();
+            //sortedSetEntries.Add(new SortedSetEntry(data.ToString(), 1));
+            for (var i = 0; i < data.Count(); i++)//foreach (T item in data)
+            {
+                var o = data.ElementAt(i).ToString();
+                sortedSetEntries.Add(new SortedSetEntry(data.ElementAt(i).ToString(), i));
+            }
+
+            redisDb.SortedSetAdd(key, sortedSetEntries.ToArray());
+            _redisConnection.Dispose();
+        }
+
 
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
@@ -119,7 +145,7 @@ namespace BAWebLab2.Core.Services
         {
             var listReturn = (ReportHelper.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
             {
-                var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime); 
+                var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime);
                 var totalTimeText = FormatDataHelper.NumberMinuteToStringHour(m.TotalTime);
 
                 return new ResultReportSpeed
@@ -203,38 +229,39 @@ namespace BAWebLab2.Core.Services
             var bgtSpeedGroup = GetSpeedGroup(input, listVehicleID, companyID);
 
             // left join và check null 5 bảng lấy dữ liệu tổng hợp
-            var final = (from speed in (bgtSpeedGroup is null ? new List<ResultReportSpeed>() : bgtSpeedGroup)
+            var final =
+                (from speed in (bgtSpeedGroup is null ? new List<ResultReportSpeed>() : bgtSpeedGroup)
 
-                         join acti in (activityGroup is null ? new List<ReportActivitySummaries>() : activityGroup) on speed?.VehicleID equals acti?.FK_VehicleID into speedActis
-                         from speedActi in speedActis.DefaultIfEmpty()
+                 join acti in (activityGroup is null ? new List<ReportActivitySummaries>() : activityGroup) on speed?.VehicleID equals acti?.FK_VehicleID into speedActis
+                 from speedActi in speedActis.DefaultIfEmpty()
 
-                         join vehicleTransportTypes in (bGTVehicleTransportTypes is null ? new List<BGTVehicleTransportTypes>() : bGTVehicleTransportTypes) on speed?.VehicleID equals vehicleTransportTypes?.FK_VehicleID into speedVehiTranTypes
-                         from speedVehiTranType in speedVehiTranTypes.DefaultIfEmpty()
+                 join vehicleTransportTypes in (bGTVehicleTransportTypes is null ? new List<BGTVehicleTransportTypes>() : bGTVehicleTransportTypes) on speed?.VehicleID equals vehicleTransportTypes?.FK_VehicleID into speedVehiTranTypes
+                 from speedVehiTranType in speedVehiTranTypes.DefaultIfEmpty()
 
-                         join tranportTypes in (bGTTranportTypes is null ? new List<BGTTranportTypes>() : bGTTranportTypes) on speedVehiTranType?.FK_TransportTypeID equals tranportTypes?.PK_TransportTypeID into tranportTypesSpeeds
-                         from tranportTypesSpeed in tranportTypesSpeeds.DefaultIfEmpty()
+                 join tranportTypes in (bGTTranportTypes is null ? new List<BGTTranportTypes>() : bGTTranportTypes) on speedVehiTranType?.FK_TransportTypeID equals tranportTypes?.PK_TransportTypeID into tranportTypesSpeeds
+                 from tranportTypesSpeed in tranportTypesSpeeds.DefaultIfEmpty()
 
-                         join vehicle in (vehicles is null ? new List<Vehicles>() : vehicles) on speed?.VehicleID equals vehicle?.PK_VehicleID
+                 join vehicle in (vehicles is null ? new List<Vehicles>() : vehicles) on speed?.VehicleID equals vehicle?.PK_VehicleID
 
-                         orderby vehicle?.PrivateCode
-                         select new ResultReportSpeed
-                         {
-                             VehicleID = speed?.VehicleID,
-                             Sum5To10 = speed?.Sum5To10,
-                             Sum10To20 = speed?.Sum10To20,
-                             Sum20To35 = speed?.Sum20To35,
-                             SumFrom35 = speed?.SumFrom35,
-                             SumTotal = speed?.SumTotal,
-                             ViolateKm = _formatDataHelper.RoundDouble(speed?.ViolateKm),
-                             TotalKm = _formatDataHelper.RoundDouble(speedActi?.TotalKmGps),
-                             ViolatePer100Km = 0,
-                             PercentRate = 0,
-                             PercentRateTime = 0,
-                             ViolateTime = speed?.ViolateTime,
-                             TotalTime = speedActi?.ActivityTime,
-                             PrivateCode = vehicle?.PrivateCode,
-                             TransportTypeName = tranportTypesSpeed?.DisplayName
-                         });
+                 orderby vehicle?.PrivateCode
+                 select new ResultReportSpeed
+                 {
+                     VehicleID = speed?.VehicleID,
+                     Sum5To10 = speed?.Sum5To10,
+                     Sum10To20 = speed?.Sum10To20,
+                     Sum20To35 = speed?.Sum20To35,
+                     SumFrom35 = speed?.SumFrom35,
+                     SumTotal = speed?.SumTotal,
+                     ViolateKm = _formatDataHelper.RoundDouble(speed?.ViolateKm),
+                     TotalKm = _formatDataHelper.RoundDouble(speedActi?.TotalKmGps),
+                     ViolatePer100Km = 0,
+                     PercentRate = 0,
+                     PercentRateTime = 0,
+                     ViolateTime = speed?.ViolateTime,
+                     TotalTime = speedActi?.ActivityTime,
+                     PrivateCode = vehicle?.PrivateCode,
+                     TransportTypeName = tranportTypesSpeed?.DisplayName
+                 });
 
             return final;
         }

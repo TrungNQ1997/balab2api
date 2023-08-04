@@ -1,6 +1,9 @@
 ﻿using BAWebLab2.Model;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using StackExchange.Redis;
+using System.Configuration;
 using System.Text;
 
 namespace BAWebLab2.Core.LibCommon
@@ -13,10 +16,44 @@ namespace BAWebLab2.Core.LibCommon
     public class CacheRedisHelper
     {
         private static IDistributedCache _cache { get; set; }
+        private readonly IConfiguration _configuration;
+        private readonly ConnectionMultiplexer _redisConnection;
 
-        public CacheRedisHelper(IDistributedCache cache)
+
+
+        public CacheRedisHelper(IDistributedCache cache, IConfiguration configuration)
         {
             _cache = cache;
+            _configuration = configuration;
+            _redisConnection = ConnectionMultiplexer.Connect(_configuration["RedisCacheServerUrl"]);
+
+        }
+
+        public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data)
+        {
+            IDatabase redisDb = _redisConnection.GetDatabase();
+            var sortedSetEntries = new List<SortedSetEntry>();
+            //sortedSetEntries.Add(new SortedSetEntry(data.ToString(), 1));
+            for (var i = 0; i < data.Count(); i++)//foreach (T item in data)
+            {
+                sortedSetEntries.Add(new SortedSetEntry(data.ElementAt(i).ToString(), i));
+            }
+
+            redisDb.SortedSetAdd(key, sortedSetEntries.ToArray());
+        }
+
+        public IEnumerable<T> GetSortedSetMembers<T>(string key, Order order = Order.Ascending, long skip = 0, long take = -1)
+        {
+            IDatabase redisDb = _redisConnection.GetDatabase();
+            RedisValue[] redisValues = redisDb.SortedSetRangeByScore(key, order: order, skip: skip, take: take);
+            var e = redisValues.AsEnumerable().Cast<T>();
+            return e;
+        }
+
+
+        public void Dispose()
+        {
+            _redisConnection.Dispose();
         }
 
         /// <summary>đẩy data vào redis cache</summary>
@@ -34,7 +71,7 @@ namespace BAWebLab2.Core.LibCommon
             var cachedDataString = JsonConvert.SerializeObject(data);
             var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
             _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
-
+           
         }
 
         /// <summary>lấy dữ liệu từ redis cache.</summary>

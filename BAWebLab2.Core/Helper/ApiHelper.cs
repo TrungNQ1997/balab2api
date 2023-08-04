@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BAWebLab2.Entities;
+using BAWebLab2.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using System.Net;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -23,6 +26,20 @@ namespace BAWebLab2.Core.LibCommon
             request.Headers.TryGetValue(key, out StringValues headerValue);
             return headerValue.ToString();
 
+        }
+
+        public static bool CheckValidHeader<T>(HttpRequest request, ref ApiResponse<T> response)
+        { 
+            try
+            {
+                var comID = int.Parse(ApiHelper.GetHeader(request, "CompanyID"));
+            }
+            catch (Exception ex)
+            { 
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format header CompanyID", ref response);
+                return false;
+            }
+            return true;
         }
 
     }
