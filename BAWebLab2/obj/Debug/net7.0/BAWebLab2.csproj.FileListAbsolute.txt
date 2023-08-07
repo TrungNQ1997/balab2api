@@ -138,3 +138,4 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.As
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\CachingFramework.Redis.dll

@@ -3,9 +3,6 @@ using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
-using Microsoft.Extensions.Configuration;
-using StackExchange.Redis;
-using System.Configuration;
 
 namespace BAWebLab2.Core.Services
 {
@@ -22,19 +19,14 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
         private readonly CacheRedisHelper _cacheHelper;
-        private readonly FormatDataHelper _formatDataHelper;
-        private readonly IConfiguration _configuration;
-        private readonly ConnectionMultiplexer _redisConnection;
-
+        private readonly FormatDataHelper _formatDataHelper; 
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
-            CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper, IConfiguration configuration)
-        {
-            _configuration = configuration;
-            _redisConnection = ConnectionMultiplexer.Connect(_configuration["RedisCacheServerUrl"]);
+            CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper)
+        { 
             _cacheHelper = cacheHelper;
             _formatDataHelper = formatDataHelper;
             _bGTSpeedOversService = bGTSpeedOversService;
@@ -58,24 +50,20 @@ namespace BAWebLab2.Core.Services
             {
                 // tạo key redis cache
                 var key = _cacheHelper.CreateKeyByModule("Vehicle", companyID);
-                var y = _cacheHelper.GetSortedSetMembers<Vehicles>(key,take:10);
-                //var listCache = _cacheHelper.GetRedisCache<IEnumerable<Vehicles>>(key);
+                var y = _cacheHelper.GetSortedSetMembers<Vehicles>(key); 
 
                 // check xem đã có cache vehicle chưa
                 // có rồi thì trả về list cache
-                if (y.Count() > 0)
+                if (y is not null)
                 {
-                    result.iEnumerable = y.Cast<Vehicles>();
-                }
-
+                    result.iEnumerable = y;
+                } 
                 // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
                 else
                 {
-                    var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
-                    //_cacheHelper.PushDataToCache(list, TimeSpan.FromMinutes(5), key);
-                    result.iEnumerable = list.Cast<Vehicles>();
-                    AddEnumerableToSortedSet(key, list);
-                    
+                    var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID); 
+                    result.iEnumerable = list;
+                    _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5)); 
                 }
                 result.Error = false;
             }
@@ -88,23 +76,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-
-        public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data)
-        {
-            IDatabase redisDb = _redisConnection.GetDatabase();
-            var sortedSetEntries = new List<SortedSetEntry>();
-            //sortedSetEntries.Add(new SortedSetEntry(data.ToString(), 1));
-            for (var i = 0; i < data.Count(); i++)//foreach (T item in data)
-            {
-                var o = data.ElementAt(i).ToString();
-                sortedSetEntries.Add(new SortedSetEntry(data.ElementAt(i).ToString(), i));
-            }
-
-            redisDb.SortedSetAdd(key, sortedSetEntries.ToArray());
-            _redisConnection.Dispose();
-        }
-
-
+         
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
         /// <param name="companyID">mã công ty</param>
@@ -119,7 +91,7 @@ namespace BAWebLab2.Core.Services
             try
             {
                 var final = GetListCacheOrDB(input, companyID, ref result);
-                result.List = final;
+                result.iEnumerable = final;
                 result.Error = false;
             }
             catch (Exception ex)
@@ -131,8 +103,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-
-
+         
         /// <summary>tính toán dữ liệu, phân trang</summary>
         /// <param name="input">tham số tìm kiếm</param>
         /// <param name="ienum">ienumerable sau khi đã join</param>
@@ -141,9 +112,9 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-        private List<ResultReportSpeed> CalDataAndPaging(InputSearchList input, IEnumerable<ResultReportSpeed> ienumReport)
+        private IEnumerable<ResultReportSpeed> CalData(IEnumerable<ResultReportSpeed> ienumReport)
         {
-            var listReturn = (ReportHelper.PagingIEnumerable<ResultReportSpeed>(input, ienumReport)).Select(m =>
+            var listReturn = ienumReport.Select(m =>
             {
                 var violateTimeText = FormatDataHelper.NumberMinuteToStringHour(m.ViolateTime);
                 var totalTimeText = FormatDataHelper.NumberMinuteToStringHour(m.TotalTime);
@@ -167,7 +138,7 @@ namespace BAWebLab2.Core.Services
                     TransportTypeName = m.TransportTypeName
                 };
 
-            }).ToList();
+            });
             return listReturn;
         }
 
@@ -181,28 +152,28 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private List<ResultReportSpeed> GetListCacheOrDB(InputSearchList input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
+        private IEnumerable<ResultReportSpeed> GetListCacheOrDB(InputSearchList input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
         {
             // tạo key redis
             var keyList = _cacheHelper.CreateKeyReport("ReportSpeed", companyID, input);
-            var listReturn = new List<ResultReportSpeed>();
-            var listCache = _cacheHelper.GetRedisCache<IEnumerable<ResultReportSpeed>>(keyList);
+            IEnumerable<ResultReportSpeed> listReturn;
+            var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList,input, ref storeResult); 
             IEnumerable<ResultReportSpeed> results;
 
             // check có cache không?
             // đã có cache thì phân trang và trả về list
-            if (listCache != null)
-            {
-                storeResult.Count = listCache.Count();
-                listReturn = CalDataAndPaging(input, listCache);
+            if (listCache is not null)
+            { 
+                listReturn = CalData(listCache);
             }
             // chưa có cache thì get lại db và lưu lại ienumable vào cache
             else
             {
                 results = GetIEnumerableAfterJoin(input, companyID);
-                _cacheHelper.PushDataToCache(results, TimeSpan.FromMinutes(5), keyList);
+                _cacheHelper.AddEnumerableToSortedSet(keyList, results, TimeSpan.FromMinutes(5)); 
                 storeResult.Count = results.Count();
-                var list = CalDataAndPaging(input, results);
+                var listPaged = ReportHelper.PagingIEnumerable(input, results);
+                var list = CalData(listPaged);
                 listReturn = list;
             }
             return listReturn;

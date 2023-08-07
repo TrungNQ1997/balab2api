@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XuMxRidvBiWvhMc+VnqnMS5l4+i7c8RSCam/wPlYfTPzYWASKB1cI3mpBELG2s7g43XkqVQO49vO4g5UqNbvrQ==",
+  "dgSpecHash": "ipcOR27EkAcmRaiB8E0L6/RstEZlCjCAucyURC9JYJ0wW19lxU8N+IvXcBRchwGbSi2J7rfzhSFFGziuaKiHhA==",
   "success": true,
   "projectFilePath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Core\\BAWebLab2.Core.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\cachingframework.redis\\15.0.2\\cachingframework.redis.15.0.2.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\log4net\\2.0.15\\log4net.2.0.15.nupkg.sha512",
@@ -182,6 +183,7 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.resources.resourcemanager\\4.3.0\\system.resources.resourcemanager.4.3.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime.caching\\5.0.0\\system.runtime.caching.5.0.0.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime.extensions\\4.3.0\\system.runtime.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime.handles\\4.3.0\\system.runtime.handles.4.3.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\system.runtime.interopservices\\4.3.0\\system.runtime.interopservices.4.3.0.nupkg.sha512",

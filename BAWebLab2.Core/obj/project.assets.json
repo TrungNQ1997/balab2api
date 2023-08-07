@@ -75,6 +75,23 @@
           }
         }
       },
+      "CachingFramework.Redis/15.0.2": {
+        "type": "package",
+        "dependencies": {
+          "StackExchange.Redis": "2.6.90",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/CachingFramework.Redis.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/CachingFramework.Redis.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Dapper/2.0.123": {
         "type": "package",
         "compile": {
@@ -3100,6 +3117,22 @@
           }
         }
       },
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
+        }
+      },
       "System.Runtime.Extensions/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3948,6 +3981,28 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "CachingFramework.Redis/15.0.2": {
+      "sha512": "b3EB8AFHPJlODjyDeJkuYMv2pY2GM0kEFbDBvp/E5uh6z2sDE/EFAUa/EkODaRbutf9+j+UTFcIuFkF/VworMA==",
+      "type": "package",
+      "path": "cachingframework.redis/15.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE/LICENSE.md",
+        "cachingframework.redis.15.0.2.nupkg.sha512",
+        "cachingframework.redis.nuspec",
+        "lib/net461/CachingFramework.Redis.dll",
+        "lib/net461/CachingFramework.Redis.xml",
+        "lib/net5.0/CachingFramework.Redis.dll",
+        "lib/net5.0/CachingFramework.Redis.xml",
+        "lib/net6.0/CachingFramework.Redis.dll",
+        "lib/net6.0/CachingFramework.Redis.xml",
+        "lib/netstandard2.0/CachingFramework.Redis.dll",
+        "lib/netstandard2.0/CachingFramework.Redis.xml",
+        "lib/netstandard2.1/CachingFramework.Redis.dll",
+        "lib/netstandard2.1/CachingFramework.Redis.xml"
       ]
     },
     "Dapper/2.0.123": {
@@ -8775,6 +8830,31 @@
         "version.txt"
       ]
     },
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "sha512": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "type": "package",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.targets",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "System.Runtime.Extensions/4.3.0": {
       "sha512": "guW0uK0fn5fcJJ1tJVXYd7/1h5F+pea1r7FLSOz/f8vPEqbR2ZAknuRDvTQ8PzAilDveOxNjSfr0CHfIQfFk8g==",
       "type": "package",
@@ -10608,6 +10688,7 @@
     "net7.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "BAWebLab2.Infrastructure >= 1.0.0",
+      "CachingFramework.Redis >= 15.0.2",
       "Dapper >= 2.0.123",
       "EntityFramework >= 6.4.4",
       "Microsoft.AspNetCore.Mvc >= 2.2.0",
@@ -10666,6 +10747,10 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
             "version": "[12.0.1, )"
+          },
+          "CachingFramework.Redis": {
+            "target": "Package",
+            "version": "[15.0.2, )"
           },
           "Dapper": {
             "target": "Package",

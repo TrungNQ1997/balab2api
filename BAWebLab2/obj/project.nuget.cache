@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rVtDKH32TPuT1zdbFmexbe6KX3fSRq914Q6guxO5bN3465HImSZvQbaLfmXvDUammYlT9P/0lcYathIqXmrZUg==",
+  "dgSpecHash": "Op0htHaiXtZ+N/CFBr8bxwELTnQQ3g3EFgt1Gq7hW7Az1qsLoSY3v2JeQ7oq3D1Ebofl0Z6ZDrXeMG9Pk7wgUg==",
   "success": true,
   "projectFilePath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2\\BAWebLab2.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\cachemanager.core\\1.2.0\\cachemanager.core.1.2.0.nupkg.sha512",
+    "C:\\Users\\trungnq3\\.nuget\\packages\\cachingframework.redis\\15.0.2\\cachingframework.redis.15.0.2.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\easycaching.core\\1.8.0\\easycaching.core.1.8.0.nupkg.sha512",
     "C:\\Users\\trungnq3\\.nuget\\packages\\efcoresecondlevelcacheinterceptor\\3.9.2\\efcoresecondlevelcacheinterceptor.3.9.2.nupkg.sha512",

@@ -1,0 +1,89 @@
+2023-08-07 08:11:26,817 [19] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'BAWebLab2.Entities.Vehicles'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 67
+2023-08-07 08:13:41,597 [3] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'BAWebLab2.Entities.Vehicles'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID)
+2023-08-07 08:14:09,615 [39] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'System.String'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID)
+2023-08-07 08:30:27,658 [12] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'System.String'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 68
+2023-08-07 08:31:27,422 [12] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'BAWebLab2.Entities.Vehicles' to type 'StackExchange.Redis.RedisValue'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.AddEnumerableToSortedSet[T](String key, IEnumerable`1 data) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 104
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 79
+2023-08-07 09:14:10,258 [19] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'System.String'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 69
+2023-08-07 09:14:44,761 [36] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'System.String'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 69
+2023-08-07 09:15:31,285 [19] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.ArgumentNullException: Value cannot be null. (Parameter 'source')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID)
+2023-08-07 09:16:25,592 [39] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'BAWebLab2.Entities.Vehicles'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID)
+2023-08-07 09:18:52,890 [6] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'BAWebLab2.Entities.Vehicles'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 69
+2023-08-07 09:25:53,542 [4] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.InvalidCastException: Unable to cast object of type 'StackExchange.Redis.RedisValue' to type 'BAWebLab2.Entities.Vehicles'.
+   at System.Linq.Enumerable.CastIterator[TResult](IEnumerable source)+MoveNext()
+   at System.Linq.Enumerable.Count[TSource](IEnumerable`1 source)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 69
+2023-08-07 09:42:47,205 [28] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisServerException: WRONGTYPE Operation against a key holding the wrong kind of value
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.SortedSetRangeByScore(RedisKey key, Double start, Double stop, Exclude exclude, Order order, Int64 skip, Int64 take, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2143
+   at BAWebLab2.Core.LibCommon.CacheRedisHelper.GetSortedSetMembers[T](String key, Order order, Int64 skip, Int64 take) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Helper\CacheRedisHelper.cs:line 48
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 66
+2023-08-07 10:48:29,413 [56] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisServerException: WRONGTYPE Operation against a key holding the wrong kind of value
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.SortedSetRangeByScore(RedisKey key, Double start, Double stop, Exclude exclude, Order order, Int64 skip, Int64 take, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2143
+   at BAWebLab2.Core.LibCommon.CacheRedisHelper.GetSortedSetMembers[T](String key, Order order, Int64 skip, Int64 take) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Helper\CacheRedisHelper.cs:line 48
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 66
+2023-08-07 10:48:30,733 [56] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisServerException: WRONGTYPE Operation against a key holding the wrong kind of value
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.SortedSetRangeByScore(RedisKey key, Double start, Double stop, Exclude exclude, Order order, Int64 skip, Int64 take, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2143
+   at BAWebLab2.Core.LibCommon.CacheRedisHelper.GetSortedSetMembers[T](String key, Order order, Int64 skip, Int64 take) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Helper\CacheRedisHelper.cs:line 48
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 66
+2023-08-07 11:30:27,566 [8] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisServerException: WRONGTYPE Operation against a key holding the wrong kind of value
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.ListLength(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 1220
+   at CachingFramework.Redis.RedisObjects.RedisList`1.get_Count()
+   at CachingFramework.Redis.RedisObjects.RedisList`1.System.Collections.Generic.ICollection<T>.get_Count()
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 72
+2023-08-07 11:30:28,575 [4] ERROR BAWebLab2.Core.LibCommon.LogHelper - StackExchange.Redis.RedisServerException: WRONGTYPE Operation against a key holding the wrong kind of value
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1986
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisDatabase.ListLength(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 1220
+   at CachingFramework.Redis.RedisObjects.RedisList`1.get_Count()
+   at CachingFramework.Redis.RedisObjects.RedisList`1.System.Collections.Generic.ICollection<T>.get_Count()
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetVehicles(Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 72
+2023-08-07 14:31:54,430 [8] ERROR BAWebLab2.Core.LibCommon.LogHelper - System.ObjectDisposedException: Cannot access a disposed object.
+Object name: 'PM-TRUONGDV(SE.Redis-v2.6.90.64945)'.
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteAsyncImpl[T](Message message, ResultProcessor`1 processor, Object state, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2056
+   at StackExchange.Redis.RedisBase.ExecuteAsync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.CursorEnumerable`1.GetNextPageAsync(IScanningCursor obj, RedisValue cursor, Message& message) in /_/src/StackExchange.Redis/CursorEnumerable.cs:line 74
+   at StackExchange.Redis.CursorEnumerable`1.Enumerator.SlowNextAsync() in /_/src/StackExchange.Redis/CursorEnumerable.cs:line 220
+   at StackExchange.Redis.CursorEnumerable`1.Enumerator.SlowNextSync() in /_/src/StackExchange.Redis/CursorEnumerable.cs:line 193
+   at StackExchange.Redis.CursorEnumerable`1.Enumerator.MoveNext() in /_/src/StackExchange.Redis/CursorEnumerable.cs:line 189
+   at CachingFramework.Redis.RedisObjects.RedisSortedSet`1.GetEnumerator()+MoveNext()
+   at System.Linq.Enumerable.EnumerablePartition`1.SkipAndCount(UInt32 index, IEnumerator`1 en)
+   at System.Linq.Enumerable.EnumerablePartition`1.GetCount(Boolean onlyIfCheap)
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetListCacheOrDB(InputSearchList input, Int32 companyID, StoreResult`1& storeResult) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 184
+   at BAWebLab2.Core.Services.ReportVehicleSpeedViolationService.GetDataReport(InputSearchList input, Int32 companyID) in C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Core\Services\ReportVehicleSpeedViolationService.cs:line 109

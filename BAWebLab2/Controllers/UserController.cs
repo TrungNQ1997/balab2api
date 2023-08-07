@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BAWebLab2.Service;
-using System.Net; 
+using System.Net;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.Model;
-using BAWebLab2.Entities ;
+using BAWebLab2.Entities;
 using System.Text.RegularExpressions;
 using BAWebLab2.Core.LibCommon;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +17,7 @@ using Azure;
 [Route("user")]
 [ApiController]
 public class UserController : ControllerBase
-{ 
+{
     private readonly IUserService _userService;
 
     public UserController(IUserService userService)
@@ -25,7 +25,7 @@ public class UserController : ControllerBase
 
         _userService = userService;
     }
-     
+
     /// <summary>lấy danh sách người dùng có phân trang và tìm kiếm theo điều kiện</summary>
     /// <param name="data">The data. đối tượng chứa thông tin tìm kiếm</param>
     /// <returns>trạng thái thực hiện store và tổng phần tử của list và 1 list đối tượng select theo offset pagesize và page number thỏa mãn điều kiện tìm kiếm</returns>
@@ -35,26 +35,34 @@ public class UserController : ControllerBase
     /// </Modified>
     [HttpPost("getListUserFilter")]
     public IActionResult GetListUsersFilter([FromBody] InputSearchList data)
-    { 
-        var result = _userService.GetListUsersFilter(data);
+    {
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
-
-        if (result.Error == false)
+        try
         {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
+            if (ValidInputSearch(data, ref response))
+            {
+                var result = _userService.GetListUsersFilter(data);
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
+            }
         }
-        else
+        catch (Exception ex)
         {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
+            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
         }
-
         return Ok(response);
     }
-     
+
     /// <summary>api kiểm tra đăng nhập vào hệ thống</summary>
     /// <param name="data">The data.
     /// truyền vào đối tượng chứa tài khoản và mật khẩu của user</param>
@@ -63,27 +71,32 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("login")] 
+    [HttpPost("login")]
     public IActionResult Login([FromBody] InputLogin data)
-    { 
-        var result = _userService.Login(data);
-
+    {
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
-
-        if (result.Error == false)
+        try
         {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
+            if (ValidLogin(data, ref response))
+            { 
+                var result = _userService.Login(data);
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
+            }
+        } catch (Exception ex) {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
         }
-        else
-        {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
-        }
-
-        return Ok(response); 
+        return Ok(response);
     }
 
     /// <summary>api check đăng nhập và ghet quyền theo menuid</summary>
@@ -94,30 +107,33 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("checklogingetrole")] 
+    [HttpPost("checklogingetrole")]
     public IActionResult CheckLoginAndRole([FromBody] InputLogin data)
     {
-
-        var result = _userService.CheckLoginAndRole(data);
-
-
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
-
-        if (result.Error == false)
-        {
-            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-            response.Message = HttpStatusCode.OK.ToString();
-            response.Data = result;
+        try { 
+        if (ValidCheckLoginAndRole(data, ref response))
+        { 
+            var result = _userService.CheckLoginAndRole(data); 
+            if (result.Error == false)
+            {
+                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                response.Message = HttpStatusCode.OK.ToString();
+                response.Data = result;
+            }
+            else
+            {
+                response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                response.Message = HttpStatusCode.InternalServerError.ToString();
+                response.Data = result;
+            }
         }
-        else
-        {
-            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-            response.Message = HttpStatusCode.InternalServerError.ToString();
-            response.Data = result;
         }
-
-        return Ok(response);
-
+        catch (Exception ex)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+        }
+        return Ok(response); 
     }
 
     /// <summary>get list quyền theo user và menuid</summary>
@@ -128,7 +144,7 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("getrole")] 
+    [HttpPost("getrole")]
     public IActionResult GetRole([FromBody] InputLogin data)
     {
 
@@ -161,27 +177,33 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("adduser")] 
+    [HttpPost("adduser")]
     public IActionResult AddUser([FromBody] User data)
     {
         ApiResponse<int> response = new ApiResponse<int>();
-        if (ValidUser(data, ref response))
+        try
         {
-            var result = _userService.AddUser(data); 
-            if (result.Error == false)
+            if (ValidUserAdd(data, ref response))
             {
-                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                response.Message = HttpStatusCode.OK.ToString();
-                response.Data = result;
-            }
-            else
-            {
-                response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                response.Message = HttpStatusCode.InternalServerError.ToString();
-                response.Data = result;
+                var result = _userService.AddUser(data);
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
             }
         }
-
+        catch (Exception ex)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+        }
         return Ok(response);
 
     }
@@ -194,29 +216,34 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("edituser")] 
+    [HttpPost("edituser")]
     public IActionResult EditUser([FromBody] User data)
     {
-        var result = new StoreResult<int>();
-
+        var result = new StoreResult<int>(); 
         ApiResponse<int> response = new ApiResponse<int>();
-        if (ValidUser(data, ref response))
+        try
         { 
-            result = _userService.EditUser(data);
-            if (result.Error == false)
+            if (ValidUserEdit(data, ref response))
             {
-                response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                response.Message = HttpStatusCode.OK.ToString();
-                response.Data = result;
-            }
-            else
-            {
-                response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                response.Message = HttpStatusCode.InternalServerError.ToString();
-                response.Data = result;
+                result = _userService.EditUser(data);
+                if (result.Error == false)
+                {
+                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                    response.Message = HttpStatusCode.OK.ToString();
+                    response.Data = result;
+                }
+                else
+                {
+                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                    response.Message = HttpStatusCode.InternalServerError.ToString();
+                    response.Data = result;
+                }
             }
         }
-         
+        catch (Exception ex)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+        }
         return Ok(response);
 
     }
@@ -229,7 +256,7 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("changepass")] 
+    [HttpPost("changepass")]
     public IActionResult ChangePass([FromBody] InputLogin data)
     {
         var result = new StoreResult<int>();
@@ -260,7 +287,7 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 7/12/2023 created
     /// </Modified>
-    [HttpPost("deleteuser")] 
+    [HttpPost("deleteuser")]
     public IActionResult DeleteUser([FromBody] InputDelete data)
     {
         var result = _userService.DeleteUser(data);
@@ -283,54 +310,178 @@ public class UserController : ControllerBase
 
     }
 
-     private bool ValidUser(User user, ref ApiResponse<int> response)
-    { 
-        if (user.Username.IsNullOrEmpty() || !Regex.IsMatch(user.Username, @"^[a-zA-Z0-9]{1,50}$"))
-        { 
-            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest,"wrong username", ref response);
+    private bool ValidUsername(string username, ref ApiResponse<int> response)
+    {
+        if (username.IsNullOrEmpty() || !Regex.IsMatch(username, @"^[a-zA-Z0-9]{1,50}$"))
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong username", ref response);
             return false;
         }
-        if (user.Phone.IsNullOrEmpty() || !Regex.IsMatch(user.Phone, @"^[0-9]{1,10}$"))
+        return true;
+    }
+
+    private bool ValidPhone(string? phone, ref ApiResponse<int> response)
+    {
+        if (phone.IsNullOrEmpty() || !Regex.IsMatch(phone, @"^[0-9]{1,10}$"))
         {
             LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong phone", ref response);
             return false;
         }
-        if(user.Email is not null)
+        return true;
+    }
+
+    private bool ValidMail(string? mail, ref ApiResponse<int> response)
+    {
+        if (mail is not null)
         {
-            if(!Regex.IsMatch(user.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
+            if (!Regex.IsMatch(mail, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong email", ref response);
                 return false;
             }
         }
-        if(user.Birthday is null)
+        return true;
+    }
+
+    private bool ValidBirthday(DateTime? birthday, ref ApiResponse<int> response)
+    {
+        if (birthday is null)
         {
             LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null birthday", ref response);
             return false;
-        } else
+        }
+        else
         {
-            if(DateTime.Now.Year -  user.Birthday.Value.Year < 18){
+            if (DateTime.Now.Year - birthday.Value.Year < 18)
+            {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "user not 18 years old", ref response);
                 return false;
             }
         }
-        if (user.Password.IsNullOrEmpty() || !Regex.IsMatch(user.Password, @"^[a-zA-Z0-9]{6,100}$"))
+        return true;
+    }
+
+    private bool ValidPass(string? pass, ref ApiResponse<int> response)
+    {
+        if (pass.IsNullOrEmpty() || !Regex.IsMatch(pass, @"^[a-zA-Z0-9]{6,100}$"))
         {
             LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong pass", ref response);
             return false;
         }
-        if (user.FullName.IsNullOrEmpty())
+        return true;
+    }
+
+    private bool ValidFullName(string? fullName, ref ApiResponse<int> response)
+    {
+        if (fullName.IsNullOrEmpty())
         {
             LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "empty fullname", ref response);
             return false;
         }
-            return true;
+        return true;
     }
 
-    //private bool ValidUserEdit(User user, ref ApiResponse<int> response)
-    //{
+    private bool ValidUserAdd(User user, ref ApiResponse<int> response)
+    {
+        var validUsername = ValidUsername(user.Username, ref response);
+        var validPhone = ValidPhone(user.Phone, ref response);
+        var validMail = ValidMail(user.Email, ref response);
+        var validBirthday = ValidBirthday(user.Birthday, ref response);
+        var validPass = ValidPass(user.Password, ref response);
+        var validFullName = ValidFullName(user.FullName, ref response);
 
-    //}
+        if (validBirthday && validFullName && validMail && validPass && validPhone && validUsername)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
+    }
 
+    private bool ValidUserEdit(User user, ref ApiResponse<int> response)
+    {
+        var validUsername = ValidUsername(user.Username, ref response);
+        var validPhone = ValidPhone(user.Phone, ref response);
+        var validMail = ValidMail(user.Email, ref response);
+        var validBirthday = ValidBirthday(user.Birthday, ref response);
+        var validFullName = ValidFullName(user.FullName, ref response);
+
+        if (validBirthday && validFullName && validMail && validPhone && validUsername)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    private bool ValidInputSearch(InputSearchList input, ref ApiResponse<UserModel> response)
+    {
+        if (input.DayFrom.HasValue && input.DayTo.HasValue)
+        {
+            if (input.DayFrom > input.DayTo)
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
+                return false;
+            }
+        }
+
+        try
+        {
+            int.Parse(input.UserId);
+        }
+        catch (Exception ex)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong userid", ref response);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool ValidCheckLoginAndRole(InputLogin input, ref ApiResponse<UserRole> response)
+    {
+        if (input.Token.IsNullOrEmpty())
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong token", ref response);
+            return false;
+        }
+
+        try
+        {
+            int.Parse(input.MenuId);
+        }
+        catch (Exception ex)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong MenuId", ref response);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool ValidLogin(InputLogin data, ref ApiResponse<UserModel> response)
+    {
+        if (data.Username.IsNullOrEmpty())
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null Username", ref response);
+            return false;
+        }
+        if (data.Password.IsNullOrEmpty())
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null Password", ref response);
+            return false;
+        }
+        if (!data.IsRemember.HasValue)
+        {
+            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null IsRemember", ref response);
+            return false;
+        }
+        return true;
+    }
 }

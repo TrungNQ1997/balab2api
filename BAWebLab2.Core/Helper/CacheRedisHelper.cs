@@ -1,10 +1,12 @@
 ﻿using BAWebLab2.Model;
+using CachingFramework.Redis.Contracts.RedisObjects;
+using CachingFramework.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using StackExchange.Redis;
-using System.Configuration;
 using System.Text;
+using CachingFramework.Redis.Contracts;
+using BAWebLab2.Infrastructure.Models;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -16,46 +18,84 @@ namespace BAWebLab2.Core.LibCommon
     public class CacheRedisHelper
     {
         private static IDistributedCache _cache { get; set; }
-        private readonly IConfiguration _configuration;
-        private readonly ConnectionMultiplexer _redisConnection;
-
-
-
+        private readonly IConfiguration _configuration; 
+         
         public CacheRedisHelper(IDistributedCache cache, IConfiguration configuration)
         {
             _cache = cache;
-            _configuration = configuration;
-            _redisConnection = ConnectionMultiplexer.Connect(_configuration["RedisCacheServerUrl"]);
-
+            _configuration = configuration; 
         }
-
-        public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data)
-        {
-            IDatabase redisDb = _redisConnection.GetDatabase();
-            var sortedSetEntries = new List<SortedSetEntry>();
-            //sortedSetEntries.Add(new SortedSetEntry(data.ToString(), 1));
-            for (var i = 0; i < data.Count(); i++)//foreach (T item in data)
+         
+        /// <summary>thêm  enumerable vào sorted set.</summary>
+        /// <typeparam name="T">kiểu dữ liệu đối tượng trả về</typeparam>
+        /// <param name="key">key redis</param>
+        /// <param name="data">dữ liệu muốn thêm vào redis</param>
+        /// <param name="time">thời gian hết hạn</param>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/7/2023 created
+        /// </Modified>
+        public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data, TimeSpan time)
+        { 
+            int i = 1; 
+            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+            IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);  
+            sortedSet.AddRange(data.Select((m) => new SortedMember<T>(i, m)
             {
-                sortedSetEntries.Add(new SortedSetEntry(data.ElementAt(i).ToString(), i));
+                Value = m,
+                Score = i++
+            })); 
+            sortedSet.TimeToLive = time; 
+            context.Dispose(); 
+        }
+         
+        /// <summary>lấy sorted set</summary>
+        /// <typeparam name="T">kiểu đối tượng lưu vào sorted set</typeparam>
+        /// <param name="key">key redis</param>
+        /// <returns>nếu có dữ liệu trả về ienumerable&lt;T&gt;, không có trả về null</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/7/2023 created
+        /// </Modified>
+        public IEnumerable<T>? GetSortedSetMembers<T>(string key)
+        {
+            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+            if (context.Cache.KeyExists(key))
+            {
+                return context.Collections.GetRedisSortedSet<T>(key);
+               
+            } else
+            {
+                return null;
+            }; 
+        }
+
+        /// <summary>lấy ra sorted set và phân trang</summary>
+        /// <typeparam name="T">kiểu đối tượng đẩy vào sorted set</typeparam>
+        /// <param name="key">key redis</param>
+        /// <param name="input">tham số đầu và phân trang</param>
+        /// <param name="storeResult">đối tượng chứa biến count toàn bộ danh sách chưa phân trang</param>
+        /// <returns>ienumerable đã phân trang</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/7/2023 created
+        /// </Modified>
+        public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputSearchList input, ref StoreResult<ResultReportSpeed> storeResult)
+        {
+            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+            if (context.Cache.KeyExists(key))
+            {
+                IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
+                storeResult.Count = sortedSet.Count(); 
+                return sortedSet.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
             }
-
-            redisDb.SortedSetAdd(key, sortedSetEntries.ToArray());
+            else
+            {
+                storeResult.Count = 0;
+                return null;
+            }; 
         }
-
-        public IEnumerable<T> GetSortedSetMembers<T>(string key, Order order = Order.Ascending, long skip = 0, long take = -1)
-        {
-            IDatabase redisDb = _redisConnection.GetDatabase();
-            RedisValue[] redisValues = redisDb.SortedSetRangeByScore(key, order: order, skip: skip, take: take);
-            var e = redisValues.AsEnumerable().Cast<T>();
-            return e;
-        }
-
-
-        public void Dispose()
-        {
-            _redisConnection.Dispose();
-        }
-
+         
         /// <summary>đẩy data vào redis cache</summary>
         /// <param name="data">The data.
         /// cần cache</param>
@@ -70,8 +110,7 @@ namespace BAWebLab2.Core.LibCommon
         {
             var cachedDataString = JsonConvert.SerializeObject(data);
             var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
-            _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
-           
+            _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time }); 
         }
 
         /// <summary>lấy dữ liệu từ redis cache.</summary>
@@ -85,8 +124,7 @@ namespace BAWebLab2.Core.LibCommon
         public T? GetRedisCache<T>(string key)
         {
             var serializedValue = _cache.Get(key); 
-            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
-
+            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue)); 
         }
 
         /// <summary>tạo key redis theo medule</summary>

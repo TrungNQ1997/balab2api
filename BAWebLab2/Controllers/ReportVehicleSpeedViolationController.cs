@@ -36,11 +36,12 @@ namespace BAWebLab2.Controllers
         [HttpGet("getVehicles")]
         public IActionResult GetVehicles()
         {
-            ApiResponse<Vehicles> response = new ApiResponse<Vehicles>(); 
-            if (ApiHelper.CheckValidHeader(Request, ref response))
+            ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
+            try
             {
-                try
-                {
+                if (ApiHelper.CheckValidHeader(Request, ref response))
+            {
+                
                     var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                     var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
 
@@ -57,14 +58,14 @@ namespace BAWebLab2.Controllers
                         response.Message = HttpStatusCode.InternalServerError.ToString();
                         response.Data = result;
                     }
-                }
-                catch (Exception ex)
-                { 
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError,ex.ToString(), ref response); 
-                }
+               
 
             }
-
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            }
 
             return Ok(response);
         }
@@ -80,11 +81,12 @@ namespace BAWebLab2.Controllers
         public IActionResult GetDataReport([FromBody] InputSearchList input)
         {
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
-            var valid = validGetDataReport(input, ref response);
+            try
+            {
+                var valid = validGetDataReport(input, ref response);
             if (valid)
             {
-                try
-                {
+               
                     var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                     var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
 
@@ -101,11 +103,12 @@ namespace BAWebLab2.Controllers
                         response.Message = HttpStatusCode.InternalServerError.ToString();
                         response.Data = result;
                     }
+
                 }
-                catch (Exception ex)
-                {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError,ex.ToString(),ref response); 
-                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
             }
             return Ok(response);
         }

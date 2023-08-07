@@ -22,5 +22,6 @@ namespace BAWebLab2.Core.LibCommon
         {
             return list.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
         }
+         
     }
 }
