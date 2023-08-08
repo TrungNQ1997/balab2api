@@ -7,6 +7,12 @@
     /// </Modified>
     public class ApiResponse<T>
     {
+
+        public ApiResponse() {
+            Message = new List<string>();
+        }
+
+
         /// <summary>mã trạng thái</summary>
         /// <value>trường
         /// thể hiện trạng thái api có thực hiện thành công không</value>
@@ -22,7 +28,7 @@
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public string Message { get; set; }
+        public List<string>  Message { get; set; }
 
         /// <summary>kết quả trả về của store</summary>
         /// <value> dữ liệu trả về sau khi thực thi store</value>
@@ -31,5 +37,6 @@
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<T> Data { get; set; }
+ 
     }
 }

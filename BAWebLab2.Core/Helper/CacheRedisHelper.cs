@@ -18,14 +18,14 @@ namespace BAWebLab2.Core.LibCommon
     public class CacheRedisHelper
     {
         private static IDistributedCache _cache { get; set; }
-        private readonly IConfiguration _configuration; 
-         
+        private readonly IConfiguration _configuration;
+
         public CacheRedisHelper(IDistributedCache cache, IConfiguration configuration)
         {
             _cache = cache;
-            _configuration = configuration; 
+            _configuration = configuration;
         }
-         
+
         /// <summary>thêm  enumerable vào sorted set.</summary>
         /// <typeparam name="T">kiểu dữ liệu đối tượng trả về</typeparam>
         /// <param name="key">key redis</param>
@@ -36,19 +36,19 @@ namespace BAWebLab2.Core.LibCommon
         /// trungnq3 8/7/2023 created
         /// </Modified>
         public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data, TimeSpan time)
-        { 
-            int i = 1; 
+        {
+            int i = 1;
             var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
-            IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);  
+            IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
             sortedSet.AddRange(data.Select((m) => new SortedMember<T>(i, m)
             {
                 Value = m,
                 Score = i++
-            })); 
-            sortedSet.TimeToLive = time; 
-            context.Dispose(); 
+            }));
+            sortedSet.TimeToLive = time;
+            context.Dispose();
         }
-         
+
         /// <summary>lấy sorted set</summary>
         /// <typeparam name="T">kiểu đối tượng lưu vào sorted set</typeparam>
         /// <param name="key">key redis</param>
@@ -63,11 +63,12 @@ namespace BAWebLab2.Core.LibCommon
             if (context.Cache.KeyExists(key))
             {
                 return context.Collections.GetRedisSortedSet<T>(key);
-               
-            } else
+
+            }
+            else
             {
                 return null;
-            }; 
+            };
         }
 
         /// <summary>lấy ra sorted set và phân trang</summary>
@@ -86,16 +87,16 @@ namespace BAWebLab2.Core.LibCommon
             if (context.Cache.KeyExists(key))
             {
                 IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
-                storeResult.Count = sortedSet.Count(); 
+                storeResult.Count = sortedSet.Count();
                 return sortedSet.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
             }
             else
             {
                 storeResult.Count = 0;
                 return null;
-            }; 
+            };
         }
-         
+
         /// <summary>đẩy data vào redis cache</summary>
         /// <param name="data">The data.
         /// cần cache</param>
@@ -110,7 +111,7 @@ namespace BAWebLab2.Core.LibCommon
         {
             var cachedDataString = JsonConvert.SerializeObject(data);
             var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
-            _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time }); 
+            _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
         }
 
         /// <summary>lấy dữ liệu từ redis cache.</summary>
@@ -123,8 +124,8 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public T? GetRedisCache<T>(string key)
         {
-            var serializedValue = _cache.Get(key); 
-            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue)); 
+            var serializedValue = _cache.Get(key);
+            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
         }
 
         /// <summary>tạo key redis theo medule</summary>

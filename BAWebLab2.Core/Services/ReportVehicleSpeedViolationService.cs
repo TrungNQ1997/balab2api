@@ -19,14 +19,14 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
         private readonly CacheRedisHelper _cacheHelper;
-        private readonly FormatDataHelper _formatDataHelper; 
+        private readonly FormatDataHelper _formatDataHelper;
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
             CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper)
-        { 
+        {
             _cacheHelper = cacheHelper;
             _formatDataHelper = formatDataHelper;
             _bGTSpeedOversService = bGTSpeedOversService;
@@ -50,20 +50,20 @@ namespace BAWebLab2.Core.Services
             {
                 // tạo key redis cache
                 var key = _cacheHelper.CreateKeyByModule("Vehicle", companyID);
-                var y = _cacheHelper.GetSortedSetMembers<Vehicles>(key); 
+                var ienumerable = _cacheHelper.GetSortedSetMembers<Vehicles>(key);
 
                 // check xem đã có cache vehicle chưa
                 // có rồi thì trả về list cache
-                if (y is not null)
+                if (ienumerable is not null)
                 {
-                    result.iEnumerable = y;
-                } 
+                    result.iEnumerable = ienumerable;
+                }
                 // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
                 else
                 {
-                    var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID); 
+                    var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
                     result.iEnumerable = list;
-                    _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5)); 
+                    _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5));
                 }
                 result.Error = false;
             }
@@ -76,7 +76,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-         
+
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
         /// <param name="companyID">mã công ty</param>
@@ -103,7 +103,7 @@ namespace BAWebLab2.Core.Services
 
             return result;
         }
-         
+
         /// <summary>tính toán dữ liệu, phân trang</summary>
         /// <param name="input">tham số tìm kiếm</param>
         /// <param name="ienum">ienumerable sau khi đã join</param>
@@ -157,20 +157,20 @@ namespace BAWebLab2.Core.Services
             // tạo key redis
             var keyList = _cacheHelper.CreateKeyReport("ReportSpeed", companyID, input);
             IEnumerable<ResultReportSpeed> listReturn;
-            var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList,input, ref storeResult); 
+            var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList, input, ref storeResult);
             IEnumerable<ResultReportSpeed> results;
 
             // check có cache không?
             // đã có cache thì phân trang và trả về list
             if (listCache is not null)
-            { 
+            {
                 listReturn = CalData(listCache);
             }
             // chưa có cache thì get lại db và lưu lại ienumable vào cache
             else
             {
                 results = GetIEnumerableAfterJoin(input, companyID);
-                _cacheHelper.AddEnumerableToSortedSet(keyList, results, TimeSpan.FromMinutes(5)); 
+                _cacheHelper.AddEnumerableToSortedSet(keyList, results, TimeSpan.FromMinutes(5));
                 storeResult.Count = results.Count();
                 var listPaged = ReportHelper.PagingIEnumerable(input, results);
                 var list = CalData(listPaged);

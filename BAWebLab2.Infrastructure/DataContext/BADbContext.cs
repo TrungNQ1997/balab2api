@@ -17,6 +17,8 @@ namespace BAWebLab2.Infrastructure.DataContext
 
         }
 
+        DbSet<User> Users { get; set; }
+
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
         /// The builder being used to construct the model for this context. Databases (and other extensions) typically

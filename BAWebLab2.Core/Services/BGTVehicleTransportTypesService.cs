@@ -14,8 +14,7 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTVehicleTransportTypesRepository _bGTVehicleTransportTypesRepository;
 
         public BGTVehicleTransportTypesService(IBGTVehicleTransportTypesRepository bGTVehicleTransportTypesRepository)
-        {
-
+        { 
             _bGTVehicleTransportTypesRepository = bGTVehicleTransportTypesRepository;
         }
 

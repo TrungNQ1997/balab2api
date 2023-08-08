@@ -53,6 +53,13 @@
         /// </Modified>
         public List<T> List { get; set; }
 
+        /// <summary>Gets or sets  enumerable
+        /// đối tượng trả về</summary>
+        /// <value>enumerable đối tượng trả về</value>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
         public IEnumerable<T> iEnumerable { get; set; }
 
         public StoreResult()

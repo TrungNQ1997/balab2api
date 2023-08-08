@@ -40,27 +40,23 @@ namespace BAWebLab2.Controllers
             try
             {
                 if (ApiHelper.CheckValidHeader(Request, ref response))
-            {
-                
+                {
                     var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                     var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
-
-
                     if (result.Error == false)
                     {
                         response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                        response.Message = HttpStatusCode.OK.ToString();
+                        response.Message.Add(HttpStatusCode.OK.ToString());
                         response.Data = result;
                     }
                     else
                     {
                         response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                        response.Message = HttpStatusCode.InternalServerError.ToString();
+                        response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                         response.Data = result;
                     }
-               
 
-            }
+                }
             }
             catch (Exception ex)
             {
@@ -84,23 +80,21 @@ namespace BAWebLab2.Controllers
             try
             {
                 var valid = validGetDataReport(input, ref response);
-            if (valid)
-            {
-               
+                if (valid)
+                {
                     var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
                     var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
-
 
                     if (result.Error == false)
                     {
                         response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                        response.Message = HttpStatusCode.OK.ToString();
+                        response.Message.Add(HttpStatusCode.OK.ToString());
                         response.Data = result;
                     }
                     else
                     {
                         response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                        response.Message = HttpStatusCode.InternalServerError.ToString();
+                        response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                         response.Data = result;
                     }
 
@@ -112,34 +106,43 @@ namespace BAWebLab2.Controllers
             }
             return Ok(response);
         }
- 
+
+        /// <summary>kiểm tra tham số đầu vào báo cáo</summary>
+        /// <param name="input">tham số đầu vào báo cáo</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra</param>
+        /// <returns>kết quả kiểm tra</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
         private bool validGetDataReport(InputSearchList input, ref ApiResponse<ResultReportSpeed> response)
-        { 
-            if (!ApiHelper.CheckValidHeader(Request, ref response))
-            { 
-                return false;
-            }
+        {
+            var valid = true;
+            ApiHelper.CheckValidHeader(Request, ref response);
             if (input.DayFrom is null)
-            {  
+            {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "Null DayFrom input", ref response);
-                return false;
             }
             if (input.DayTo is null)
-            { 
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "Null DayTo input", ref response); 
-                return false;
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "Null DayTo input", ref response);
             }
-            if (input.DayFrom > input.DayTo)
-            {  
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
-                return false;
+            if (input.DayTo is not null && input.DayFrom is not null)
+            {
+                if (input.DayFrom > input.DayTo)
+                {
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
+                }
+                if (((input.DayTo - input.DayFrom)).Value.TotalDays > 60)
+                {
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom must not be more than 60 days from DayTo", ref response);
+                }
             }
-            if (((input.DayTo - input.DayFrom)).Value.TotalDays > 60)
-            {  
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom must not be more than 60 days from DayTo", ref response);
-                return false;
+            if (response.Message.Count > 0)
+            {
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
     }

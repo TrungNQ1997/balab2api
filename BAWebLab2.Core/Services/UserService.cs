@@ -35,11 +35,11 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified> 
         public StoreResult<UserModel> GetListUsersFilter(InputSearchList input)
-        { 
-            var result = new StoreResult<UserModel>(); 
+        {
+            var result = new StoreResult<UserModel>();
             DynamicParameters parameters = new DynamicParameters();
             try
-            { 
+            {
                 parameters.Add("userId", int.Parse(input.UserId));
                 parameters.Add("pageNumber", input.PageNumber);
                 parameters.Add("pageSize", input.PageSize);
@@ -51,11 +51,10 @@ namespace BAWebLab2.Core.Services
 
                 var resultStore = _userRepository.CallStoredProcedure<UserModel>("BAWeb_User_GetUserInfo", ref parameters);
 
-                var list = resultStore.ListPrimary; 
-                var t = list.SingleOrDefault(m => m.Username.Contains("11")); 
+                var list = resultStore.ListPrimary;
                 var count = parameters.Get<long>("count");
                 result.List = list;
-                result.Count = (int)count; 
+                result.Count = (int)count;
                 result.Error = false;
             }
             catch (Exception ex)
@@ -76,9 +75,9 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<UserModel> Login(InputLogin input)
-        { 
-            var result = new StoreResult<UserModel>(); 
-            DynamicParameters parameters = new DynamicParameters(); 
+        {
+            var result = new StoreResult<UserModel>();
+            DynamicParameters parameters = new DynamicParameters();
             try
             {
                 parameters.Add("username", input.Username);
@@ -109,12 +108,12 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<UserRole> CheckLoginAndRole(InputLogin input)
-        { 
-            var result = new StoreResult<UserRole>(); 
+        {
+            var result = new StoreResult<UserRole>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("token", input.Token); 
+                parameters.Add("token", input.Token);
                 parameters.Add("menuId", int.Parse(input.MenuId));
                 parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
                 parameters.Add("isAdmin", false, DbType.Boolean, ParameterDirection.Output);
@@ -146,13 +145,13 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<UserRole> GetRole(InputLogin input)
-        { 
+        {
             var result = new StoreResult<UserRole>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("userId", input.UserId); 
+                parameters.Add("userId", input.UserId);
                 parameters.Add("menuId", int.Parse(input.MenuId));
                 parameters.Add("isAdmin", 0, DbType.Boolean, ParameterDirection.Output);
 
@@ -183,8 +182,8 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<int> EditUser(User user)
-        { 
-            var result = new StoreResult<int>(); 
+        {
+            var result = new StoreResult<int>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
@@ -208,8 +207,8 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<int> ChangePass(InputLogin input)
-        { 
-            var result = new StoreResult<int>(); 
+        {
+            var result = new StoreResult<int>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
@@ -243,7 +242,7 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<int> DeleteUser(InputDelete input)
-        { 
+        {
             var result = new StoreResult<int>();
             result = _userRepository.DeleteUser(input);
             if (!result.List.Contains(0))
@@ -262,11 +261,11 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public StoreResult<int> AddUser(User user)
-        { 
-            var result = new StoreResult<int>(); 
+        {
+            var result = new StoreResult<int>();
             DynamicParameters parameters = new DynamicParameters();
             try
-            { 
+            {
                 user.Password = FormatDataHelper.HashMD5(user.Password);
 
                 _userRepository.Add(user);

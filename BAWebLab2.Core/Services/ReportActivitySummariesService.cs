@@ -15,8 +15,7 @@ namespace BAWebLab2.Core.Services
         private readonly IReportActivitySummariesRepository _reportActivitySummariesRepository;
 
         public ReportActivitySummariesService(IReportActivitySummariesRepository reportActivitySummariesRepository)
-        {
-
+        { 
             _reportActivitySummariesRepository = reportActivitySummariesRepository;
         }
 

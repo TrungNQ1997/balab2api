@@ -41,12 +41,9 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("id", (item.Id));
-                parameters.Add("username", (item.Username));
-
-                parameters.Add("userId", (userId));
-
-                parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
-
+                parameters.Add("username", (item.Username)); 
+                parameters.Add("userId", (userId)); 
+                parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output); 
                 connection.Query("BAWeb_User_DeleteUserInfo", parameters, commandType: CommandType.StoredProcedure);
                 var result = parameters.Get<Int64>("ret");
                 myObject.List.Add((int)result);
@@ -79,10 +76,12 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     /// trungnq3 7/12/2023 created
     /// </Modified>
     public new void Update(User user)
-    {
-
+    { 
         user.DateEdited = DateTime.Now;
-        base.Update(user);
+        _bADbContext.Entry(user).State = EntityState.Modified;
+        // không update lại pass khi sửa
+        _bADbContext.Entry(user).Property(x => x.Password).IsModified = false;
+        _bADbContext.SaveChanges(); 
     }
 
 }

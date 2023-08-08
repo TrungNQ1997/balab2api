@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BAWebLab2.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -102,6 +106,153 @@ namespace BAWebLab2.Core.LibCommon
 
             return listVehicleID;
         }
+
+        /// <summary>kiểm tra  string null hoặc rỗng</summary>
+        /// <typeparam name="T">kiểu đối tượng trả về list</typeparam>
+        /// <param name="text">chuỗi muốn kiểm tra</param>
+        /// <param name="property">tên thuộc tính</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi và ghi log</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool checkNullOrEmptyString<T>(string? text, string property, ref ApiResponse<T> response)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null " + property, ref response);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra parse string to int</summary>
+        /// <typeparam name="T">kiểu đối tượng trả về list</typeparam>
+        /// <param name="text">chuỗi cần kiểm tra</param>
+        /// <param name="property">tên thuộc tính</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool checkParseIntString<T>(string? text, string property, ref ApiResponse<T> response)
+        {
+            try
+            {
+                int.Parse(text);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra mật khẩu thỏa mãn yêu cầu</summary>
+        /// <param name="pass">mật khẩu</param>
+        /// <param name="property">tên thuộc tính</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool checkValidPass(string? pass, string property, ref ApiResponse<int> response)
+        {
+            if (pass.IsNullOrEmpty() || !Regex.IsMatch(pass, @"^[a-zA-Z0-9]{6,100}$"))
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra username thỏa mãn điều kiện</summary>
+        /// <param name="username">username.</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool ValidUsername(string username, ref ApiResponse<int> response)
+        {
+            if (username.IsNullOrEmpty() || !Regex.IsMatch(username, @"^[a-zA-Z0-9]{1,50}$"))
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong username", ref response);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra số điện thoại thỏa mãn điều kiện</summary>
+        /// <param name="phone">string số điện thoại</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool ValidPhone(string? phone, ref ApiResponse<int> response)
+        {
+            if (phone.IsNullOrEmpty() || !Regex.IsMatch(phone, @"^[0-9]{1,10}$"))
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong phone", ref response);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra mail có thỏa mãn điều kiện</summary>
+        /// <param name="mail">string mail.</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool ValidMail(string? mail, ref ApiResponse<int> response)
+        {
+            if (!mail.IsNullOrEmpty())
+            {
+                if (!Regex.IsMatch(mail, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
+                {
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong email", ref response);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>kiểm tra ngày sinh null và đủ 18 tuổi</summary>
+        /// <param name="birthday">ngày sinh</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static bool ValidBirthday(DateTime? birthday, ref ApiResponse<int> response)
+        {
+            if (birthday is null)
+            {
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null birthday", ref response);
+                return false;
+            }
+            else
+            {
+                if (DateTime.Now.Year - birthday.Value.Year < 18)
+                {
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "user not 18 years old", ref response);
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
     }
 }

@@ -14,8 +14,7 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTTranportTypesRepository _bGTTranportTypesRepository;
 
         public BGTTranportTypesService(IBGTTranportTypesRepository bGTTranportTypesRepository)
-        {
-
+        { 
             _bGTTranportTypesRepository = bGTTranportTypesRepository;
         }
 

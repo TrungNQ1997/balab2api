@@ -28,14 +28,23 @@ namespace BAWebLab2.Core.LibCommon
 
         }
 
+        /// <summary>kiểm tra  header của request</summary>
+        /// <typeparam name="T">kiểu đối tượng trả về list</typeparam>
+        /// <param name="request">request nhận từ client</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
         public static bool CheckValidHeader<T>(HttpRequest request, ref ApiResponse<T> response)
-        { 
+        {
             try
             {
                 var comID = int.Parse(ApiHelper.GetHeader(request, "CompanyID"));
             }
             catch (Exception ex)
-            { 
+            {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format header CompanyID", ref response);
                 return false;
             }

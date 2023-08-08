@@ -4,10 +4,8 @@ using BAWebLab2.Model;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
 using static Dapper.SqlMapper;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BAWebLab2.Repository
 {
@@ -46,6 +44,7 @@ namespace BAWebLab2.Repository
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+
             _context.SaveChanges();
         }
 
