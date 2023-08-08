@@ -39,6 +39,7 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool CheckValidHeader<T>(HttpRequest request, ref ApiResponse<T> response)
         {
+            var valid = true;
             try
             {
                 var comID = int.Parse(ApiHelper.GetHeader(request, "CompanyID"));
@@ -46,9 +47,9 @@ namespace BAWebLab2.Core.LibCommon
             catch (Exception ex)
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format header CompanyID", ref response);
-                return false;
+                valid = false;
             }
-            return true;
+           return valid;
         }
 
     }

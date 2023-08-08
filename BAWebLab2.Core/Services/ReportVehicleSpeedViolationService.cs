@@ -156,14 +156,16 @@ namespace BAWebLab2.Core.Services
         {
             // tạo key redis
             var keyList = _cacheHelper.CreateKeyReport("ReportSpeed", companyID, input);
+            var keyCount = _cacheHelper.CreateKeyReportCount("ReportSpeed", companyID, input);
             IEnumerable<ResultReportSpeed> listReturn;
-            var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList, input, ref storeResult);
+            var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList, input);
             IEnumerable<ResultReportSpeed> results;
 
             // check có cache không?
             // đã có cache thì phân trang và trả về list
             if (listCache is not null)
             {
+                storeResult.Count = _cacheHelper.GetRedisCache<int>(keyCount);
                 listReturn = CalData(listCache);
             }
             // chưa có cache thì get lại db và lưu lại ienumable vào cache
@@ -172,6 +174,7 @@ namespace BAWebLab2.Core.Services
                 results = GetIEnumerableAfterJoin(input, companyID);
                 _cacheHelper.AddEnumerableToSortedSet(keyList, results, TimeSpan.FromMinutes(5));
                 storeResult.Count = results.Count();
+                _cacheHelper.PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
                 var listPaged = ReportHelper.PagingIEnumerable(input, results);
                 var list = CalData(listPaged);
                 listReturn = list;
@@ -234,7 +237,7 @@ namespace BAWebLab2.Core.Services
                      TransportTypeName = tranportTypesSpeed?.DisplayName
                  });
 
-            return final;
+            return final.OrderBy(m => m.PrivateCode);
         }
 
         /// <summary>lấy group của bảng report activity .</summary>

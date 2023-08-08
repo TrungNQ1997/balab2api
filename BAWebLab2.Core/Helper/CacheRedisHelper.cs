@@ -59,16 +59,18 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public IEnumerable<T>? GetSortedSetMembers<T>(string key)
         {
+            IEnumerable<T>? result = null;
             var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
             if (context.Cache.KeyExists(key))
             {
-                return context.Collections.GetRedisSortedSet<T>(key);
+                result = context.Collections.GetRedisSortedSet<T>(key);
 
             }
             else
             {
-                return null;
+                result = null;
             };
+            return result;
         }
 
         /// <summary>lấy ra sorted set và phân trang</summary>
@@ -81,20 +83,20 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/7/2023 created
         /// </Modified>
-        public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputSearchList input, ref StoreResult<ResultReportSpeed> storeResult)
+        public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputSearchList input)
         {
+            IEnumerable<T>? result = null;
             var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
             if (context.Cache.KeyExists(key))
             {
-                IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
-                storeResult.Count = sortedSet.Count();
-                return sortedSet.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
+                var beginIndex = ((input.PageNumber - 1) * input.PageSize) + 1;
+                result = context.Collections.GetRedisSortedSet<T>(key).GetRangeByScore(beginIndex, beginIndex + input.PageSize).Select(m => m.Value);
             }
             else
             {
-                storeResult.Count = 0;
-                return null;
+                result = null;
             };
+            return result;
         }
 
         /// <summary>đẩy data vào redis cache</summary>
@@ -157,6 +159,24 @@ namespace BAWebLab2.Core.LibCommon
             keyInput = keyInput.Replace(':', ';');
             var keyList = keyBasic + "_List:" + keyInput;
             return keyList;
+        }
+
+        /// <summary>tạo key redis báo cáo count.</summary>
+        /// <param name="moduleName">tên báo cáo</param>
+        /// <param name="companyId">mã công ty</param>
+        /// <param name="input">tham số đầu vào báo cáo</param>
+        /// <returns>key</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public string CreateKeyReportCount(string moduleName, int companyId, InputSearchList input)
+        {
+            var keyBasic = $"{companyId}:_{moduleName}:";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
+            keyInput = keyInput.Replace(':', ';');
+            var keyCount = keyBasic + "_Count:" + keyInput;
+            return keyCount;
         }
 
     }

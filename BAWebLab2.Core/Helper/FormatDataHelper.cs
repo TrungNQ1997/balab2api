@@ -31,15 +31,13 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public double RoundDouble(double? number)
         {
+            double result = 0;
             string? setting2 = _configuration["NumberRoundDecimal"];
-            if (number is null)
+            if (number is not null) 
             {
-                return 0;
+                result = Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
             }
-            else
-            {
-                return Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
-            }
+            return result;
         }
 
         /// <summary>đổi số phút thành định dạng giờ hh:mm</summary>
@@ -119,12 +117,13 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool checkNullOrEmptyString<T>(string? text, string property, ref ApiResponse<T> response)
         {
+            var valid = true;
             if (string.IsNullOrEmpty(text))
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null " + property, ref response);
-                return false;
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra parse string to int</summary>
@@ -139,6 +138,7 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool checkParseIntString<T>(string? text, string property, ref ApiResponse<T> response)
         {
+            var valid = true;
             try
             {
                 int.Parse(text);
@@ -146,9 +146,9 @@ namespace BAWebLab2.Core.LibCommon
             catch (Exception ex)
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
-                return false;
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra mật khẩu thỏa mãn yêu cầu</summary>
@@ -162,12 +162,13 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool checkValidPass(string? pass, string property, ref ApiResponse<int> response)
         {
+            var valid = true;
             if (pass.IsNullOrEmpty() || !Regex.IsMatch(pass, @"^[a-zA-Z0-9]{6,100}$"))
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
-                return false;
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra username thỏa mãn điều kiện</summary>
@@ -180,12 +181,13 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool ValidUsername(string username, ref ApiResponse<int> response)
         {
+            var valid = true;
             if (username.IsNullOrEmpty() || !Regex.IsMatch(username, @"^[a-zA-Z0-9]{1,50}$"))
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong username", ref response);
-                return false;
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra số điện thoại thỏa mãn điều kiện</summary>
@@ -198,12 +200,13 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool ValidPhone(string? phone, ref ApiResponse<int> response)
         {
+            var valid = true;
             if (phone.IsNullOrEmpty() || !Regex.IsMatch(phone, @"^[0-9]{1,10}$"))
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong phone", ref response);
-                return false;
+                valid = false;
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra mail có thỏa mãn điều kiện</summary>
@@ -216,15 +219,16 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool ValidMail(string? mail, ref ApiResponse<int> response)
         {
+            var valid = true;
             if (!mail.IsNullOrEmpty())
             {
                 if (!Regex.IsMatch(mail, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
                 {
                     LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong email", ref response);
-                    return false;
+                    valid = false;
                 }
             }
-            return true;
+            return valid;
         }
 
         /// <summary>kiểm tra ngày sinh null và đủ 18 tuổi</summary>
@@ -237,20 +241,21 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static bool ValidBirthday(DateTime? birthday, ref ApiResponse<int> response)
         {
+            var valid = true;
             if (birthday is null)
             {
                 LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null birthday", ref response);
-                return false;
+                valid = false;
             }
             else
             {
                 if (DateTime.Now.Year - birthday.Value.Year < 18)
                 {
                     LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "user not 18 years old", ref response);
-                    return false;
+                    valid = false;
                 }
             }
-            return true;
+            return valid;
         }
 
 
