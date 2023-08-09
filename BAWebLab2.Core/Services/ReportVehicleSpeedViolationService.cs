@@ -159,7 +159,6 @@ namespace BAWebLab2.Core.Services
             var keyCount = _cacheHelper.CreateKeyReportCount("ReportSpeed", companyID, input);
             IEnumerable<ResultReportSpeed> listReturn;
             var listCache = _cacheHelper.GetSortedSetMembersPaging<ResultReportSpeed>(keyList, input);
-            IEnumerable<ResultReportSpeed> results;
 
             // check có cache không?
             // đã có cache thì phân trang và trả về list
@@ -171,13 +170,12 @@ namespace BAWebLab2.Core.Services
             // chưa có cache thì get lại db và lưu lại ienumable vào cache
             else
             {
-                results = GetIEnumerableAfterJoin(input, companyID);
-                _cacheHelper.AddEnumerableToSortedSet(keyList, results, TimeSpan.FromMinutes(5));
-                storeResult.Count = results.Count();
+                var listJoin = GetIEnumerableAfterJoin(input, companyID);
+                _cacheHelper.AddEnumerableToSortedSet(keyList, listJoin, TimeSpan.FromMinutes(5));
+                storeResult.Count = listJoin.Count();
                 _cacheHelper.PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
-                var listPaged = ReportHelper.PagingIEnumerable(input, results);
-                var list = CalData(listPaged);
-                listReturn = list;
+                var listPaged = ReportHelper.PagingIEnumerable(input, listJoin);
+                listReturn = CalData(listPaged);
             }
             return listReturn;
         }

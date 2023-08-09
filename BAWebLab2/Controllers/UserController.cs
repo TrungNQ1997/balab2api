@@ -4,10 +4,8 @@ using System.Net;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using BAWebLab2.Model;
 using BAWebLab2.Entities;
-using System.Text.RegularExpressions;
 using BAWebLab2.Core.LibCommon;
 using Microsoft.IdentityModel.Tokens;
-using Azure;
 
 /// <summary>lớp nhận request từ client, api phân hệ người dùng với tiền tố là user</summary>
 /// <Modified>

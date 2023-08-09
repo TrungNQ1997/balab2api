@@ -138,8 +138,7 @@ namespace BAWebLab2.Repository
 
             var resultList = multi.Read<T1>().ToList();
             connection.Close();
-            return new MultipleResult<T1> { ListPrimary = resultList };
-
+            return new MultipleResult<T1> { ListPrimary = resultList }; 
         }
 
 

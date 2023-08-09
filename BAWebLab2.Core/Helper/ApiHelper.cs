@@ -24,8 +24,7 @@ namespace BAWebLab2.Core.LibCommon
         public static string GetHeader(HttpRequest request, string key)
         {
             request.Headers.TryGetValue(key, out StringValues headerValue);
-            return headerValue.ToString();
-
+            return headerValue.ToString(); 
         }
 
         /// <summary>kiểm tra  header của request</summary>

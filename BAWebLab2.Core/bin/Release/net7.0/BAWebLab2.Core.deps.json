@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BAWebLab2.Infrastructure": "1.0.0",
+          "CachingFramework.Redis": "15.0.2",
           "Dapper": "2.0.123",
           "EntityFramework": "6.4.4",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -73,6 +74,18 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.6.0.0",
             "fileVersion": "1.600.22.20503"
+          }
+        }
+      },
+      "CachingFramework.Redis/15.0.2": {
+        "dependencies": {
+          "StackExchange.Redis": "2.6.90",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/CachingFramework.Redis.dll": {
+            "assemblyVersion": "15.0.2.0",
+            "fileVersion": "15.0.2.0"
           }
         }
       },
@@ -2054,6 +2067,7 @@
           }
         }
       },
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
       "System.Runtime.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "5.0.0",
@@ -2497,6 +2511,13 @@
       "sha512": "sha512-EycyMsb6rD2PK9P0SyibFfEhvWWttdrYhyPF4f41uzdB/44yQlV+2Wehxyg489Rj6gbPvSPgbKq0xsHJBhipZA==",
       "path": "azure.identity/1.6.0",
       "hashPath": "azure.identity.1.6.0.nupkg.sha512"
+    },
+    "CachingFramework.Redis/15.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-b3EB8AFHPJlODjyDeJkuYMv2pY2GM0kEFbDBvp/E5uh6z2sDE/EFAUa/EkODaRbutf9+j+UTFcIuFkF/VworMA==",
+      "path": "cachingframework.redis/15.0.2",
+      "hashPath": "cachingframework.redis.15.0.2.nupkg.sha512"
     },
     "Dapper/2.0.123": {
       "type": "package",
@@ -3715,6 +3736,13 @@
       "sha512": "sha512-30D6MkO8WF9jVGWZIP0hmCN8l9BTY4LCsAzLIe4xFSXzs+AjDotR7DpSmj27pFskDURzUvqYYY0ikModgBTxWw==",
       "path": "system.runtime.caching/5.0.0",
       "hashPath": "system.runtime.caching.5.0.0.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
     },
     "System.Runtime.Extensions/4.3.0": {
       "type": "package",

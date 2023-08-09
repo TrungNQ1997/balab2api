@@ -53,9 +53,9 @@
         /// </Modified>
         public List<T> List { get; set; }
 
-        /// <summary>Gets or sets  enumerable
+        /// <summary>Gets or sets  ienumerable
         /// đối tượng trả về</summary>
-        /// <value>enumerable đối tượng trả về</value>
+        /// <value>ienumerable đối tượng trả về</value>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 8/8/2023 created

@@ -63,8 +63,7 @@ namespace BAWebLab2.Core.LibCommon
             var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
             if (context.Cache.KeyExists(key))
             {
-                result = context.Collections.GetRedisSortedSet<T>(key);
-
+                result = context.Collections.GetRedisSortedSet<T>(key); 
             }
             else
             {

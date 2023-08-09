@@ -20,8 +20,7 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static void LogError(string error)
         {
-            _logger.Error(error);
-
+            _logger.Error(error); 
         }
 
         /// <summary>ghi lỗi vào log và push lỗi vào dữ liệu trả về</summary>

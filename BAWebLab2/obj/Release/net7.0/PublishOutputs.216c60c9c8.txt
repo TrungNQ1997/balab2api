@@ -11,6 +11,7 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Azure.Core.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Azure.Identity.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\CacheManager.Core.dll
+C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\CachingFramework.Redis.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\Dapper.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\EasyCaching.Core.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\obj\Release\net7.0\PubTmp\Out\EFCoreSecondLevelCacheInterceptor.dll
