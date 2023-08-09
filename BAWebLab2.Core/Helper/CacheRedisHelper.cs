@@ -82,14 +82,14 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/7/2023 created
         /// </Modified>
-        public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputSearchList input)
+        public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputReport input)
         {
             IEnumerable<T>? result = null;
             var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
             if (context.Cache.KeyExists(key))
             {
                 var beginIndex = ((input.PageNumber - 1) * input.PageSize) + 1;
-                result = context.Collections.GetRedisSortedSet<T>(key).GetRangeByScore(beginIndex, beginIndex + input.PageSize).Select(m => m.Value);
+                result = context.Collections.GetRedisSortedSet<T>(key).GetRangeByScore(beginIndex, beginIndex + input.PageSize - 1).Select(m => m.Value);
             }
             else
             {
@@ -151,10 +151,10 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/2/2023 created
         /// </Modified>
-        public string CreateKeyReport(string moduleName, int companyId, InputSearchList input)
+        public string CreateKeyReport(string moduleName, int companyId, InputReport input)
         {
             var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.VehicleSearch is null ? "" : input.VehicleSearch.ToString())}";
             keyInput = keyInput.Replace(':', ';');
             var keyList = keyBasic + "_List:" + keyInput;
             return keyList;
@@ -169,10 +169,10 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/8/2023 created
         /// </Modified>
-        public string CreateKeyReportCount(string moduleName, int companyId, InputSearchList input)
+        public string CreateKeyReportCount(string moduleName, int companyId, InputReport input)
         {
             var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.TextSearch is null ? "" : input.TextSearch)}";
+            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.VehicleSearch is null ? "" : input.VehicleSearch.ToString())}";
             keyInput = keyInput.Replace(':', ';');
             var keyCount = keyBasic + "_Count:" + keyInput;
             return keyCount;

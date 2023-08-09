@@ -3,6 +3,8 @@ using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.Generic;
 
 namespace BAWebLab2.Core.Services
 {
@@ -85,7 +87,7 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<ResultReportSpeed> GetDataReport(InputSearchList input, int companyID)
+        public StoreResult<ResultReportSpeed> GetDataReport(InputReport input, int companyID)
         {
             var result = new StoreResult<ResultReportSpeed>();
             try
@@ -152,7 +154,7 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private IEnumerable<ResultReportSpeed> GetListCacheOrDB(InputSearchList input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
+        private IEnumerable<ResultReportSpeed> GetListCacheOrDB(InputReport input, int companyID, ref StoreResult<ResultReportSpeed> storeResult)
         {
             // tạo key redis
             var keyList = _cacheHelper.CreateKeyReport("ReportSpeed", companyID, input);
@@ -188,17 +190,17 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputSearchList input, int companyID)
+        private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputReport input, int companyID)
         {
             // parce string truyền vào để lấy list id vehicle
-            var listVehicleID = FormatDataHelper.StringToListLong(input.TextSearch);
+           // var listVehicleID = FormatDataHelper.StringToListLong(input.TextSearch);
 
             // lấy ra 5 bảng cần join đã lọc theo tham số đầu vào
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();
             var bGTVehicleTransportTypes = _bGTVehicleTransportTypesService.GetByCompanyID(companyID);
             var vehicles = _vehiclesService.FindByCompanyID(companyID);
-            var activityGroup = GetReportActivityGroup(input, listVehicleID, companyID);
-            var bgtSpeedGroup = GetSpeedGroup(input, listVehicleID, companyID);
+            var activityGroup = GetReportActivityGroup(input, input.VehicleSearch, companyID);
+            var bgtSpeedGroup = GetSpeedGroup(input, input.VehicleSearch, companyID);
 
             // left join và check null 5 bảng lấy dữ liệu tổng hợp
             var final =
@@ -247,11 +249,11 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputSearchList input, List<long> arrVehicle, int companyID)
+        private IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputReport input, List<long> arrVehicle, int companyID)
         {
             IEnumerable<ReportActivitySummaries> activity;
             // lọc bảng activity theo tham số đầu vào
-            if (string.IsNullOrEmpty(input.TextSearch))
+            if (arrVehicle.Count == 0)
             {
                 activity = _reportActivitySummariesService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
             && m.EndTime <= input.DayTo);
@@ -281,10 +283,10 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/27/2023 created
         /// </Modified>
-        private IEnumerable<BGTSpeedOvers> GetSpeedFilter(InputSearchList input, List<long> arrVehicle, int companyID)
+        private IEnumerable<BGTSpeedOvers> GetSpeedFilter(InputReport input, List<long> arrVehicle, int companyID)
         {
             IEnumerable<BGTSpeedOvers> bgtSpeed;
-            if (string.IsNullOrEmpty(input.TextSearch))
+            if (arrVehicle.Count == 0)
             {
                 bgtSpeed = _bGTSpeedOversService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
              && m.EndTime <= input.DayTo);
@@ -306,7 +308,7 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/26/2023 created
         /// </Modified>
-        private IEnumerable<ResultReportSpeed> GetSpeedGroup(InputSearchList input, List<long> arrVehicle, int companyID)
+        private IEnumerable<ResultReportSpeed> GetSpeedGroup(InputReport input, List<long> arrVehicle, int companyID)
         {
             var bgtSpeed = GetSpeedFilter(input, arrVehicle, companyID);
 

@@ -22,6 +22,11 @@ namespace BAWebLab2.Core.LibCommon
             _configuration = configuration;
         }
 
+        public static string regexPass = @"^[a-zA-Z0-9]{6,100}$";
+        public static string regexUsername = @"^[a-zA-Z0-9]{1,50}$";
+        public static string regexPhone = @"^[0-9]{1,10}$";
+        public static string regexMail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$";
+
         /// <summary>làm tròn số theo cấu hình config trong appsettings.json</summary>
         /// <param name="number">số cần làm tròn</param>
         /// <returns>số đã làm tròn</returns>
@@ -33,7 +38,7 @@ namespace BAWebLab2.Core.LibCommon
         {
             double result = 0;
             string? setting2 = _configuration["NumberRoundDecimal"];
-            if (number is not null) 
+            if (number is not null)
             {
                 result = Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
             }
@@ -151,60 +156,31 @@ namespace BAWebLab2.Core.LibCommon
             return valid;
         }
 
-        /// <summary>kiểm tra mật khẩu thỏa mãn yêu cầu</summary>
-        /// <param name="pass">mật khẩu</param>
+        /// <summary>kiểm tra thuộc tính theo regex</summary>
+        /// <param name="value">giá trị</param>
         /// <param name="property">tên thuộc tính</param>
-        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
-        /// <returns>true - không lỗi, false - có lỗi</returns>
+        /// <param name="response">đối tượng lưu kết quả trả về</param>
+        /// <param name="pattern">pattern để check regex</param>
+        /// <returns>true - giá trị thỏa mãn regex, false - giá trị sai định dạng, log bug và add error vào response</returns>
         /// <Modified>
         /// Name Date Comments
-        /// trungnq3 8/8/2023 created
+        /// trungnq3 8/9/2023 created
         /// </Modified>
-        public static bool checkValidPass(string? pass, string property, ref ApiResponse<int> response)
+        public static bool checkValidPropertyRegex(string? value, string property, ref ApiResponse<int> response, string pattern)
         {
             var valid = true;
-            if (pass.IsNullOrEmpty() || !Regex.IsMatch(pass, @"^[a-zA-Z0-9]{6,100}$"))
+            if (value.IsNullOrEmpty())
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
+                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "empty " + property, ref response);
                 valid = false;
             }
-            return valid;
-        }
-
-        /// <summary>kiểm tra username thỏa mãn điều kiện</summary>
-        /// <param name="username">username.</param>
-        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
-        /// <returns>true - không lỗi, false - có lỗi</returns>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 8/8/2023 created
-        /// </Modified>
-        public static bool ValidUsername(string username, ref ApiResponse<int> response)
-        {
-            var valid = true;
-            if (username.IsNullOrEmpty() || !Regex.IsMatch(username, @"^[a-zA-Z0-9]{1,50}$"))
+            else
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong username", ref response);
-                valid = false;
-            }
-            return valid;
-        }
-
-        /// <summary>kiểm tra số điện thoại thỏa mãn điều kiện</summary>
-        /// <param name="phone">string số điện thoại</param>
-        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
-        /// <returns>true - không lỗi, false - có lỗi</returns>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 8/8/2023 created
-        /// </Modified>
-        public static bool ValidPhone(string? phone, ref ApiResponse<int> response)
-        {
-            var valid = true;
-            if (phone.IsNullOrEmpty() || !Regex.IsMatch(phone, @"^[0-9]{1,10}$"))
-            {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong phone", ref response);
-                valid = false;
+                if (!Regex.IsMatch(value, pattern))
+                {
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format " + property, ref response);
+                    valid = false;
+                }
             }
             return valid;
         }
@@ -222,9 +198,9 @@ namespace BAWebLab2.Core.LibCommon
             var valid = true;
             if (!mail.IsNullOrEmpty())
             {
-                if (!Regex.IsMatch(mail, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,200}$"))
+                if (!Regex.IsMatch(mail, FormatDataHelper.regexMail))
                 {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong email", ref response);
+                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format email", ref response);
                     valid = false;
                 }
             }

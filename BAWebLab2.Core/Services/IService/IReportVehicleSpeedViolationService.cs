@@ -28,6 +28,6 @@ namespace BAWebLab2.Core.Services.IService
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<ResultReportSpeed> GetDataReport(InputSearchList input, int companyID);
+        public StoreResult<ResultReportSpeed> GetDataReport(InputReport input, int companyID);
     }
 }

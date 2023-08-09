@@ -1,4 +1,5 @@
-﻿using BAWebLab2.Model;
+﻿using BAWebLab2.Infrastructure.Models;
+using BAWebLab2.Model;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -18,7 +19,7 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/2/2023 created
         /// </Modified>
-        public static IEnumerable<T> PagingIEnumerable<T>(InputSearchList input, IEnumerable<T> list)
+        public static IEnumerable<T> PagingIEnumerable<T>(InputReport input, IEnumerable<T> list)
         {
             return list.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
         }

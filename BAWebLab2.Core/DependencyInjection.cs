@@ -25,16 +25,20 @@ namespace BAWebLab2.Core
         /// </Modified>
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
         {
-            string redisConnectionString = Configuration.GetSection("RedisCacheServerUrl").Value;
+            //string redisConnectionString = Configuration.GetSection("RedisCacheServerUrl").Value;
 
-            // Cấu hình Redis Cluster
-            ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisConnectionString);
+            //// Cấu hình Redis Cluster
+            //ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisConnectionString);
 
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.ConfigurationOptions = redisConfig;
+
+            //}); 
             services.AddStackExchangeRedisCache(options =>
             {
-                options.ConfigurationOptions = redisConfig;
-
-            }); 
+                options.Configuration = Configuration["RedisCacheServerUrl"];
+            });
             services.AddScoped<ApiHelper>();
             services.AddScoped<CacheRedisHelper>();
             services.AddScoped<FormatDataHelper>();

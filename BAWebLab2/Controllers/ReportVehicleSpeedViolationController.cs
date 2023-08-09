@@ -74,7 +74,7 @@ namespace BAWebLab2.Controllers
         /// trungnq3 7/20/2023 created
         /// </Modified>
         [HttpPost("getDataReport")]
-        public IActionResult GetDataReport([FromBody] InputSearchList input)
+        public IActionResult GetDataReport([FromBody] InputReport input)
         {
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
             try
@@ -115,29 +115,20 @@ namespace BAWebLab2.Controllers
         /// Name Date Comments
         /// trungnq3 8/8/2023 created
         /// </Modified>
-        private bool validGetDataReport(InputSearchList input, ref ApiResponse<ResultReportSpeed> response)
+        private bool validGetDataReport(InputReport input, ref ApiResponse<ResultReportSpeed> response)
         {
             var valid = true;
             ApiHelper.CheckValidHeader(Request, ref response);
-            if (input.DayFrom is null)
-            {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "Null DayFrom input", ref response);
-            }
-            if (input.DayTo is null)
-            {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "Null DayTo input", ref response);
-            }
-            if (input.DayTo is not null && input.DayFrom is not null)
-            {
+             
                 if (input.DayFrom > input.DayTo)
                 {
                     LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
                 }
-                if (((input.DayTo - input.DayFrom)).Value.TotalDays > 60)
+                if (((input.DayTo - input.DayFrom)).TotalDays > 60)
                 {
                     LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom must not be more than 60 days from DayTo", ref response);
                 }
-            }
+            
             if (response.Message.Count > 0)
             {
                 valid = false;

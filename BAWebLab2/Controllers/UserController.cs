@@ -346,12 +346,12 @@ public class UserController : ControllerBase
     private bool ValidUserAdd(User user, ref ApiResponse<int> response)
     {
         var valid = true;
-        var validUsername = FormatDataHelper.ValidUsername(user.Username, ref response);
-        var validPhone = FormatDataHelper.ValidPhone(user.Phone, ref response);
+        var validUsername = FormatDataHelper.checkValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
+        var validPhone = FormatDataHelper.checkValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
         var validMail = FormatDataHelper.ValidMail(user.Email, ref response);
-        var validBirthday = FormatDataHelper.ValidBirthday(user.Birthday, ref response);
-        var validPass = FormatDataHelper.checkValidPass(user.Password, "Password", ref response);
-        var validFullName = FormatDataHelper.checkNullOrEmptyString(user.FullName, "FullName", ref response);// ValidFullName(user.FullName, ref response);
+        var validBirthday = FormatDataHelper.ValidBirthday(user.Birthday, ref response); 
+        var validPass = FormatDataHelper.checkValidPropertyRegex(user.Password, "Password", ref response, FormatDataHelper.regexPass);
+        var validFullName = FormatDataHelper.checkNullOrEmptyString(user.FullName, "FullName", ref response);
 
         if (!(validBirthday && validFullName && validMail && validPass && validPhone && validUsername))
         {
@@ -372,8 +372,8 @@ public class UserController : ControllerBase
     private bool ValidUserEdit(User user, ref ApiResponse<int> response)
     {
         var valid = true;
-        var validUsername = FormatDataHelper.ValidUsername(user.Username, ref response);
-        var validPhone = FormatDataHelper.ValidPhone(user.Phone, ref response);
+        var validUsername = FormatDataHelper.checkValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
+        var validPhone = FormatDataHelper.checkValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
         var validMail = FormatDataHelper.ValidMail(user.Email, ref response);
         var validBirthday = FormatDataHelper.ValidBirthday(user.Birthday, ref response);
         var validFullName = FormatDataHelper.checkNullOrEmptyString(user.FullName, "FullName", ref response);
@@ -500,9 +500,9 @@ public class UserController : ControllerBase
     /// </Modified>
     private bool validChangePass(InputLogin data, ref ApiResponse<int> response)
     {
-        var valid = true;
-        var validPass = FormatDataHelper.checkValidPass(data.Password, "Password", ref response);
-        var validPassOld = FormatDataHelper.checkValidPass(data.PasswordOld, "PasswordOld", ref response);
+        var valid = true; 
+        var validPass = FormatDataHelper.checkValidPropertyRegex(data.Password, "Password", ref response, FormatDataHelper.regexPass);
+        var validPassOld = FormatDataHelper.checkValidPropertyRegex(data.PasswordOld, "PasswordOld", ref response, FormatDataHelper.regexPass);
         if (!(validPass && validPassOld))
         {
             valid = false;
