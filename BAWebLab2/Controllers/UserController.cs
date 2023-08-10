@@ -7,9 +7,7 @@ using BAWebLab2.Entities;
 using BAWebLab2.Core.LibCommon;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using log4net;
-using BAWebLab2.Core.Services;
 
 /// <summary>lớp nhận request từ client, api phân hệ người dùng với tiền tố là user</summary>
 /// <Modified>
@@ -292,7 +290,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when change pass " +ex.Message, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
 
         return Ok(response);
@@ -332,7 +330,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when delete user " + ex.Message, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
 
@@ -404,7 +402,7 @@ public class UserController : ControllerBase
         {
             if (input.DayFrom > input.DayTo)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(input) + " " + "DayFrom bigger than DayTo", ref response, _logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", "data " + JsonConvert.SerializeObject(input) + " " + "DayFrom bigger than DayTo", ref response, _logger);
             }
         }
          
@@ -429,7 +427,7 @@ public class UserController : ControllerBase
         var valid = true;
         if (input.Token.IsNullOrEmpty())
         {
-            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(input) + " wrong token", ref response, _logger);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "wrong token", "data " + JsonConvert.SerializeObject(input) + " wrong token", ref response, _logger);
         }
         FormatDataHelper.CheckParseIntString(input.MenuId, "Menuid", ref response);
         if (response.Message.Count > 0)
@@ -455,7 +453,7 @@ public class UserController : ControllerBase
 
         if (!data.IsRemember.HasValue)
         {
-            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(data) + " null IsRemember", ref response, _logger);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null IsRemember", "data " + JsonConvert.SerializeObject(data) + " null IsRemember", ref response, _logger);
         }
         if (response.Message.Count > 0)
         {
@@ -518,7 +516,7 @@ public class UserController : ControllerBase
         var valid = true;
         if (data.Users.Count == 0)
         {
-            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " empty list user delete", ref response, _logger);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "empty list User delete", "data " + JsonConvert.SerializeObject(data) + " empty list user delete", ref response, _logger);
         }
         FormatDataHelper.CheckNullOrEmptyString(data.UserId, "userId", ref response);
         if (response.Message.Count > 0)
