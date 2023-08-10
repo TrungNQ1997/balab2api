@@ -1,9 +1,12 @@
 ﻿using BAWebLab2.Core.LibCommon;
+using BAWebLab2.Core.Services;
 using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -20,10 +23,10 @@ namespace BAWebLab2.Controllers
     {
 
         private readonly IReportVehicleSpeedViolationService _reportVehicleSpeedViolationService;
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationController));
 
         public ReportVehicleSpeedViolationController(IReportVehicleSpeedViolationService reportVehicleSpeedViolationService)
-        {
-
+        { 
             _reportVehicleSpeedViolationService = reportVehicleSpeedViolationService;
         }
 
@@ -60,7 +63,7 @@ namespace BAWebLab2.Controllers
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get data " + ex.Message,   ex.ToString(), ref response,_logger);
             }
 
             return Ok(response);
@@ -79,7 +82,7 @@ namespace BAWebLab2.Controllers
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
             try
             {
-                var valid = validGetDataReport(input, ref response);
+                var valid = ValidGetDataReport(input, ref response);
                 if (valid)
                 {
                     var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
@@ -102,7 +105,7 @@ namespace BAWebLab2.Controllers
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get data " + ex.Message, "data " + JsonConvert.SerializeObject(input) + " " + ex.ToString(), ref response, _logger);
             }
             return Ok(response);
         }
@@ -115,19 +118,11 @@ namespace BAWebLab2.Controllers
         /// Name Date Comments
         /// trungnq3 8/8/2023 created
         /// </Modified>
-        private bool validGetDataReport(InputReport input, ref ApiResponse<ResultReportSpeed> response)
+        private bool ValidGetDataReport(InputReport input, ref ApiResponse<ResultReportSpeed> response)
         {
             var valid = true;
             ApiHelper.CheckValidHeader(Request, ref response);
-             
-                if (input.DayFrom > input.DayTo)
-                {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
-                }
-                if (((input.DayTo - input.DayFrom)).TotalDays > 60)
-                {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom must not be more than 60 days from DayTo", ref response);
-                }
+            ReportHelper.CheckDayReport(input.DayFrom,input.DayTo,ref response);
             
             if (response.Message.Count > 0)
             {

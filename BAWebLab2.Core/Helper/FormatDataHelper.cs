@@ -1,6 +1,8 @@
 ﻿using BAWebLab2.Model;
+using log4net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,6 +18,7 @@ namespace BAWebLab2.Core.LibCommon
     public class FormatDataHelper
     {
         private readonly IConfiguration _configuration;
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(FormatDataHelper));
 
         public FormatDataHelper(IConfiguration configuration)
         {
@@ -37,10 +40,17 @@ namespace BAWebLab2.Core.LibCommon
         public double RoundDouble(double? number)
         {
             double result = 0;
-            string? setting2 = _configuration["NumberRoundDecimal"];
-            if (number is not null)
+            try
             {
-                result = Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
+                string? setting2 = _configuration["NumberRoundDecimal"];
+                if (number is not null)
+                {
+                    result = Math.Round((double)number, int.Parse(setting2 is null ? "0" : setting2));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("data " + JsonConvert.SerializeObject(number) + " error at RoundDouble " + ex.ToString(), _logger);
             }
             return result;
         }
@@ -55,17 +65,23 @@ namespace BAWebLab2.Core.LibCommon
         public static string NumberMinuteToStringHour(double? number)
         {
             string stringReturn = "";
-            if (number is not null)
+            try
             {
-                stringReturn = (Math.Floor(((double)number / 60))).ToString().PadLeft(2, '0') + ":" + (Math.Ceiling((double)number % 60)).ToString().PadLeft(2, '0');
+                if (number is not null)
+                {
+                    stringReturn = (Math.Floor(((double)number / 60))).ToString().PadLeft(2, '0') + ":" + (Math.Ceiling((double)number % 60)).ToString().PadLeft(2, '0');
+                }
+                if (stringReturn == "00:00")
+                {
+                    stringReturn = "";
+                }
             }
-            if (stringReturn == "00:00")
+            catch (Exception ex)
             {
-                stringReturn = "";
+                LogHelper.LogErrorInClass("error in NumberMinuteToStringHour data " + JsonConvert.SerializeObject(number) + " " + ex.ToString(), _logger);
             }
             return stringReturn;
         }
-
 
         /// <summary>mã hóa md5 1 chuỗi</summary>
         /// <param name="text">The text.
@@ -77,37 +93,23 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static string HashMD5(string text)
         {
-            MD5 md5 = MD5.Create();
-            byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
-            StringBuilder hashSb = new StringBuilder();
-            foreach (byte b in hash)
+            var StrReturn = "";
+            try
             {
-                hashSb.Append(b.ToString("X2"));
+                MD5 md5 = MD5.Create();
+                byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
+                StringBuilder hashSb = new StringBuilder();
+                foreach (byte b in hash)
+                {
+                    hashSb.Append(b.ToString("X2"));
+                }
+                StrReturn = hashSb.ToString();
             }
-            return hashSb.ToString();
-        }
-
-        /// <summary>parse Strings thành  list&lt;long&gt;</summary>
-        /// <param name="text">string đầu vào</param>
-        /// <returns>list&lt;long&gt; đã parse</returns>
-        /// <Modified>
-        /// Name Date Comments
-        /// trungnq3 7/27/2023 created
-        /// </Modified>
-        public static List<long> StringToListLong(string? text)
-        {
-            var listVehicleID = new List<long>();
-            if (!string.IsNullOrEmpty(text))
+            catch (Exception ex)
             {
-                listVehicleID = text?.Split(',')?.Select(long.Parse)?.ToList();
+                _logger.Error("error in HashMD5 data " + JsonConvert.SerializeObject(text) + " " + ex.ToString());
             }
-
-            if (listVehicleID is null)
-            {
-                listVehicleID = new List<long>();
-            }
-
-            return listVehicleID;
+            return StrReturn;
         }
 
         /// <summary>kiểm tra  string null hoặc rỗng</summary>
@@ -120,13 +122,20 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/8/2023 created
         /// </Modified>
-        public static bool checkNullOrEmptyString<T>(string? text, string property, ref ApiResponse<T> response)
+        public static bool CheckNullOrEmptyString<T>(string? text, string property, ref ApiResponse<T> response)
         {
             var valid = true;
-            if (string.IsNullOrEmpty(text))
+            try
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null " + property, ref response);
-                valid = false;
+                if (string.IsNullOrEmpty(text))
+                {
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null " + JsonConvert.SerializeObject(property) , " in CheckNullOrEmptyString data " + JsonConvert.SerializeObject(text) + " null " + property, ref response, _logger);
+                    valid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null property " + JsonConvert.SerializeObject(property), "value " + JsonConvert.SerializeObject(text) + " property " + JsonConvert.SerializeObject(property) + " " + ex.ToString(), ref response, _logger);
             }
             return valid;
         }
@@ -141,7 +150,7 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/8/2023 created
         /// </Modified>
-        public static bool checkParseIntString<T>(string? text, string property, ref ApiResponse<T> response)
+        public static bool CheckParseIntString<T>(string? text, string property, ref ApiResponse<T> response)
         {
             var valid = true;
             try
@@ -150,7 +159,7 @@ namespace BAWebLab2.Core.LibCommon
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong " + property, ref response);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"error format " + JsonConvert.SerializeObject(property), "error in CheckParseIntString data " + JsonConvert.SerializeObject(text) + " wrong " + property + " " + ex.ToString(), ref response, _logger);
                 valid = false;
             }
             return valid;
@@ -166,21 +175,32 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/9/2023 created
         /// </Modified>
-        public static bool checkValidPropertyRegex(string? value, string property, ref ApiResponse<int> response, string pattern)
+        public static bool CheckValidPropertyRegex(string? value, string property, ref ApiResponse<int> response, string pattern)
         {
             var valid = true;
-            if (value.IsNullOrEmpty())
+            try
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "empty " + property, ref response);
-                valid = false;
-            }
-            else
-            {
-                if (!Regex.IsMatch(value, pattern))
+                if (value.IsNullOrEmpty())
                 {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format " + property, ref response);
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                  " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " at CheckValidPropertyRegex empty " + JsonConvert.SerializeObject(property), ref response, _logger);
+
                     valid = false;
                 }
+                else
+                {
+                    if (!Regex.IsMatch(value, pattern))
+                    {
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"error format " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                  " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " at CheckValidPropertyRegex error format " + JsonConvert.SerializeObject(property), ref response, _logger);
+                        valid = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest," error " +JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                    " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " " + ex.ToString(), ref response, _logger);
             }
             return valid;
         }
@@ -196,13 +216,20 @@ namespace BAWebLab2.Core.LibCommon
         public static bool ValidMail(string? mail, ref ApiResponse<int> response)
         {
             var valid = true;
-            if (!mail.IsNullOrEmpty())
+            try
             {
-                if (!Regex.IsMatch(mail, FormatDataHelper.regexMail))
+                if (!mail.IsNullOrEmpty())
                 {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format email", ref response);
-                    valid = false;
+                    if (!Regex.IsMatch(mail, FormatDataHelper.regexMail))
+                    {
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error format email", "error format email value " + JsonConvert.SerializeObject(mail), ref response, _logger);
+                        valid = false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error format email", "data " + JsonConvert.SerializeObject(mail) + " error " + ex.ToString(), ref response, _logger);
             }
             return valid;
         }
@@ -218,22 +245,28 @@ namespace BAWebLab2.Core.LibCommon
         public static bool ValidBirthday(DateTime? birthday, ref ApiResponse<int> response)
         {
             var valid = true;
-            if (birthday is null)
+            try
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null birthday", ref response);
-                valid = false;
-            }
-            else
-            {
-                if (DateTime.Now.Year - birthday.Value.Year < 18)
+                if (birthday is null)
                 {
-                    LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "user not 18 years old", ref response);
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null birthday", "null birthday value " + JsonConvert.SerializeObject(birthday), ref response, _logger);
                     valid = false;
                 }
+                else
+                {
+                    if (DateTime.Now.Year - birthday.Value.Year < 18)
+                    {
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "user not 18 years old", "user not 18 years old, data " + JsonConvert.SerializeObject(birthday), ref response, _logger);
+                        valid = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error birthday", "data " + JsonConvert.SerializeObject(birthday) + " error " + ex.ToString(), ref response, _logger);
             }
             return valid;
         }
-
-
+         
     }
 }

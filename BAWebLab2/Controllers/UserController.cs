@@ -6,6 +6,10 @@ using BAWebLab2.Model;
 using BAWebLab2.Entities;
 using BAWebLab2.Core.LibCommon;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using log4net;
+using BAWebLab2.Core.Services;
 
 /// <summary>lớp nhận request từ client, api phân hệ người dùng với tiền tố là user</summary>
 /// <Modified>
@@ -17,10 +21,10 @@ using Microsoft.IdentityModel.Tokens;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly ILog _logger = LogManager.GetLogger(typeof(UserController));
 
     public UserController(IUserService userService)
-    {
-
+    { 
         _userService = userService;
     }
 
@@ -56,7 +60,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get data " + ex.Message, "data " + JsonConvert.SerializeObject(data) + ex.ToString(), ref response,_logger);
         }
         return Ok(response);
     }
@@ -94,7 +98,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when login " +ex.Message, "data " + JsonConvert.SerializeObject(data) + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
     }
@@ -132,7 +136,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "error when check login get role " + ex.Message, "data " + JsonConvert.SerializeObject(data) + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
     }
@@ -151,7 +155,7 @@ public class UserController : ControllerBase
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
         try
         {
-            if (validGetRole(data, ref response))
+            if (ValidGetRole(data, ref response))
             {
                 var result = _userService.GetRole(data);
                 if (result.Error == false)
@@ -170,10 +174,9 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get role " + ex.Message, "data " + JsonConvert.SerializeObject(data) + ex.ToString(), ref response,_logger);
         }
-        return Ok(response);
-
+        return Ok(response); 
     }
 
     /// <summary>api thêm người dùng</summary>
@@ -209,7 +212,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error add user " + ex.Message, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
 
@@ -249,7 +252,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when edit user " + ex.Message, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
 
@@ -270,7 +273,7 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (validChangePass(data, ref response))
+            if (ValidChangePass(data, ref response))
             {
                 result = _userService.ChangePass(data);
                 if (result.Error == false)
@@ -289,7 +292,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
 
         return Ok(response);
@@ -310,7 +313,7 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (validDeleteUser(data, ref response))
+            if (ValidDeleteUser(data, ref response))
             {
                 var result = _userService.DeleteUser(data);
                 if (result.Error == false)
@@ -329,7 +332,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, ex.ToString(), ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " " + ex.ToString(), ref response, _logger);
         }
         return Ok(response);
 
@@ -346,12 +349,12 @@ public class UserController : ControllerBase
     private bool ValidUserAdd(User user, ref ApiResponse<int> response)
     {
         var valid = true;
-        var validUsername = FormatDataHelper.checkValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
-        var validPhone = FormatDataHelper.checkValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
+        var validUsername = FormatDataHelper.CheckValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
+        var validPhone = FormatDataHelper.CheckValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
         var validMail = FormatDataHelper.ValidMail(user.Email, ref response);
         var validBirthday = FormatDataHelper.ValidBirthday(user.Birthday, ref response); 
-        var validPass = FormatDataHelper.checkValidPropertyRegex(user.Password, "Password", ref response, FormatDataHelper.regexPass);
-        var validFullName = FormatDataHelper.checkNullOrEmptyString(user.FullName, "FullName", ref response);
+        var validPass = FormatDataHelper.CheckValidPropertyRegex(user.Password, "Password", ref response, FormatDataHelper.regexPass);
+        var validFullName = FormatDataHelper.CheckNullOrEmptyString(user.FullName, "FullName", ref response);
 
         if (!(validBirthday && validFullName && validMail && validPass && validPhone && validUsername))
         {
@@ -372,11 +375,11 @@ public class UserController : ControllerBase
     private bool ValidUserEdit(User user, ref ApiResponse<int> response)
     {
         var valid = true;
-        var validUsername = FormatDataHelper.checkValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
-        var validPhone = FormatDataHelper.checkValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
+        var validUsername = FormatDataHelper.CheckValidPropertyRegex(user.Username, "Username", ref response, FormatDataHelper.regexUsername);
+        var validPhone = FormatDataHelper.CheckValidPropertyRegex(user.Phone, "Phone", ref response, FormatDataHelper.regexPhone);
         var validMail = FormatDataHelper.ValidMail(user.Email, ref response);
         var validBirthday = FormatDataHelper.ValidBirthday(user.Birthday, ref response);
-        var validFullName = FormatDataHelper.checkNullOrEmptyString(user.FullName, "FullName", ref response);
+        var validFullName = FormatDataHelper.CheckNullOrEmptyString(user.FullName, "FullName", ref response);
 
         if (!(validBirthday && validFullName && validMail && validPhone && validUsername))
         {
@@ -401,18 +404,10 @@ public class UserController : ControllerBase
         {
             if (input.DayFrom > input.DayTo)
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "DayFrom bigger than DayTo", ref response);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(input) + " " + "DayFrom bigger than DayTo", ref response, _logger);
             }
         }
-
-        try
-        {
-            int.Parse(input.UserId);
-        }
-        catch (Exception ex)
-        {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong userid", ref response);
-        }
+         
         if (response.Message.Count > 0)
         {
             valid = false;
@@ -434,9 +429,9 @@ public class UserController : ControllerBase
         var valid = true;
         if (input.Token.IsNullOrEmpty())
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "wrong token", ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(input) + " wrong token", ref response, _logger);
         }
-        FormatDataHelper.checkParseIntString(input.MenuId, "Menuid", ref response);
+        FormatDataHelper.CheckParseIntString(input.MenuId, "Menuid", ref response);
         if (response.Message.Count > 0)
         {
             valid = false;
@@ -455,12 +450,12 @@ public class UserController : ControllerBase
     private bool ValidLogin(InputLogin data, ref ApiResponse<UserModel> response)
     {
         var valid = true;
-        var validUsername = FormatDataHelper.checkNullOrEmptyString(data.Username, "Username", ref response);
-        var validPassword = FormatDataHelper.checkNullOrEmptyString(data.Password, "Password", ref response);
+        var validUsername = FormatDataHelper.CheckNullOrEmptyString(data.Username, "Username", ref response);
+        var validPassword = FormatDataHelper.CheckNullOrEmptyString(data.Password, "Password", ref response);
 
         if (!data.IsRemember.HasValue)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "null IsRemember", ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "data " + JsonConvert.SerializeObject(data) + " null IsRemember", ref response, _logger);
         }
         if (response.Message.Count > 0)
         {
@@ -477,11 +472,11 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 8/8/2023 created
     /// </Modified>
-    private bool validGetRole(InputLogin data, ref ApiResponse<UserRole> response)
+    private bool ValidGetRole(InputLogin data, ref ApiResponse<UserRole> response)
     {
         var valid = true;
-        var validMenuId = FormatDataHelper.checkParseIntString(data.MenuId, "MenuId", ref response);
-        var validUserId = FormatDataHelper.checkNullOrEmptyString(data.UserId, "userId", ref response);
+        var validMenuId = FormatDataHelper.CheckParseIntString(data.MenuId, "MenuId", ref response);
+        var validUserId = FormatDataHelper.CheckNullOrEmptyString(data.UserId, "userId", ref response);
         if (!(validMenuId && validUserId))
         {
             valid = false;
@@ -498,11 +493,11 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 8/8/2023 created
     /// </Modified>
-    private bool validChangePass(InputLogin data, ref ApiResponse<int> response)
+    private bool ValidChangePass(InputLogin data, ref ApiResponse<int> response)
     {
         var valid = true; 
-        var validPass = FormatDataHelper.checkValidPropertyRegex(data.Password, "Password", ref response, FormatDataHelper.regexPass);
-        var validPassOld = FormatDataHelper.checkValidPropertyRegex(data.PasswordOld, "PasswordOld", ref response, FormatDataHelper.regexPass);
+        var validPass = FormatDataHelper.CheckValidPropertyRegex(data.Password, "Password", ref response, FormatDataHelper.regexPass);
+        var validPassOld = FormatDataHelper.CheckValidPropertyRegex(data.PasswordOld, "PasswordOld", ref response, FormatDataHelper.regexPass);
         if (!(validPass && validPassOld))
         {
             valid = false;
@@ -518,14 +513,14 @@ public class UserController : ControllerBase
     /// Name Date Comments
     /// trungnq3 8/8/2023 created
     /// </Modified>
-    private bool validDeleteUser(InputDelete data, ref ApiResponse<int> response)
+    private bool ValidDeleteUser(InputDelete data, ref ApiResponse<int> response)
     {
         var valid = true;
         if (data.Users.Count == 0)
         {
-            LogHelper.LogAndSetResponseError(HttpStatusCode.InternalServerError, "empty list user delete", ref response);
+            LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "data " + JsonConvert.SerializeObject(data) + " empty list user delete", ref response, _logger);
         }
-        FormatDataHelper.checkNullOrEmptyString(data.UserId, "userId", ref response);
+        FormatDataHelper.CheckNullOrEmptyString(data.UserId, "userId", ref response);
         if (response.Message.Count > 0)
         {
             valid = false;

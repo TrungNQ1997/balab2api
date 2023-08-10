@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using CachingFramework.Redis.Contracts;
 using BAWebLab2.Infrastructure.Models;
+using log4net;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -19,6 +20,7 @@ namespace BAWebLab2.Core.LibCommon
     {
         private static IDistributedCache _cache { get; set; }
         private readonly IConfiguration _configuration;
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(CacheRedisHelper));
 
         public CacheRedisHelper(IDistributedCache cache, IConfiguration configuration)
         {
@@ -37,16 +39,23 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data, TimeSpan time)
         {
-            int i = 1;
-            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
-            IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
-            sortedSet.AddRange(data.Select((m) => new SortedMember<T>(i, m)
+            try
             {
-                Value = m,
-                Score = i++
-            }));
-            sortedSet.TimeToLive = time;
-            context.Dispose();
+                int i = 1;
+                var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+                IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
+                sortedSet.AddRange(data.Select((m) => new SortedMember<T>(i, m)
+                {
+                    Value = m,
+                    Score = i++
+                }));
+                sortedSet.TimeToLive = time;
+                context.Dispose();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("data " + JsonConvert.SerializeObject(data) + " key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
+            }
         }
 
         /// <summary>lấy sorted set</summary>
@@ -60,15 +69,22 @@ namespace BAWebLab2.Core.LibCommon
         public IEnumerable<T>? GetSortedSetMembers<T>(string key)
         {
             IEnumerable<T>? result = null;
-            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
-            if (context.Cache.KeyExists(key))
+            try
             {
-                result = context.Collections.GetRedisSortedSet<T>(key); 
+                var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+                if (context.Cache.KeyExists(key))
+                {
+                    result = context.Collections.GetRedisSortedSet<T>(key);
+                }
+                else
+                {
+                    result = null;
+                };
             }
-            else
+            catch (Exception ex)
             {
-                result = null;
-            };
+                LogHelper.LogErrorInClass("key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
+            }
             return result;
         }
 
@@ -85,16 +101,23 @@ namespace BAWebLab2.Core.LibCommon
         public IEnumerable<T>? GetSortedSetMembersPaging<T>(string key, InputReport input)
         {
             IEnumerable<T>? result = null;
-            var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
-            if (context.Cache.KeyExists(key))
+            try
             {
-                var beginIndex = ((input.PageNumber - 1) * input.PageSize) + 1;
-                result = context.Collections.GetRedisSortedSet<T>(key).GetRangeByScore(beginIndex, beginIndex + input.PageSize - 1).Select(m => m.Value);
+                var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
+                if (context.Cache.KeyExists(key))
+                {
+                    var beginIndex = ((input.PageNumber - 1) * input.PageSize) + 1;
+                    result = context.Collections.GetRedisSortedSet<T>(key).GetRangeByScore(beginIndex, beginIndex + input.PageSize - 1).Select(m => m.Value);
+                }
+                else
+                {
+                    result = null;
+                };
             }
-            else
+            catch (Exception ex)
             {
-                result = null;
-            };
+                LogHelper.LogErrorInClass("key " + JsonConvert.SerializeObject(key) + " input " + JsonConvert.SerializeObject(input) + " error " + ex.ToString(), _logger);
+            }
             return result;
         }
 
@@ -110,9 +133,16 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public void PushDataToCache(object? data, TimeSpan time, string key)
         {
-            var cachedDataString = JsonConvert.SerializeObject(data);
-            var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
-            _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
+            try
+            {
+                var cachedDataString = JsonConvert.SerializeObject(data);
+                var newDataToCache = Encoding.UTF8.GetBytes(cachedDataString);
+                _cache.Set(key, newDataToCache, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = time });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("data " + JsonConvert.SerializeObject(data) + " key " + JsonConvert.SerializeObject(key) + " TimeSpan " + time.ToString() + " error " + ex.ToString(), _logger);
+            }
         }
 
         /// <summary>lấy dữ liệu từ redis cache.</summary>
@@ -125,8 +155,17 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public T? GetRedisCache<T>(string key)
         {
-            var serializedValue = _cache.Get(key);
-            return serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
+            var objReturn = default(T?);
+            try
+            {
+                var serializedValue = _cache.Get(key);
+                objReturn = serializedValue is null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(serializedValue));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
+            }
+            return objReturn;
         }
 
         /// <summary>tạo key redis theo medule</summary>
@@ -153,11 +192,19 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public string CreateKeyReport(string moduleName, int companyId, InputReport input)
         {
-            var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.VehicleSearch is null ? "" : input.VehicleSearch.ToString())}";
-            keyInput = keyInput.Replace(':', ';');
-            var keyList = keyBasic + "_List:" + keyInput;
-            return keyList;
+            var keyReturn = "";
+            try
+            {
+                var keyBasic = $"{companyId}:_{moduleName}:"; CreateKeyByModule(null, 1);
+                var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(JsonConvert.SerializeObject(input.VehicleSearch))}";
+                keyInput = keyInput.Replace(':', ';');
+                keyReturn = keyBasic + "_List:" + keyInput;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("moduleName " + JsonConvert.SerializeObject(moduleName) + " companyId " + JsonConvert.SerializeObject(companyId) + " input " + JsonConvert.SerializeObject(input) + " error " + ex.ToString(), _logger);
+            }
+            return keyReturn;
         }
 
         /// <summary>tạo key redis báo cáo count.</summary>
@@ -171,11 +218,19 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public string CreateKeyReportCount(string moduleName, int companyId, InputReport input)
         {
-            var keyBasic = $"{companyId}:_{moduleName}:";
-            var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(input.VehicleSearch is null ? "" : input.VehicleSearch.ToString())}";
-            keyInput = keyInput.Replace(':', ';');
-            var keyCount = keyBasic + "_Count:" + keyInput;
-            return keyCount;
+            var keyReturn = "";
+            try
+            {
+                var keyBasic = $"{companyId}:_{moduleName}:";
+                var keyInput = $"_{input.DayFrom.ToString()}_{input.DayTo.ToString()}_{FormatDataHelper.HashMD5(JsonConvert.SerializeObject(input.VehicleSearch))}";
+                keyInput = keyInput.Replace(':', ';');
+                keyReturn = keyBasic + "_Count:" + keyInput;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("moduleName " + JsonConvert.SerializeObject(moduleName) + " companyId " + JsonConvert.SerializeObject(companyId) + " input " + JsonConvert.SerializeObject(input) + " error " + ex.ToString(), _logger);
+            }
+            return keyReturn;
         }
 
     }

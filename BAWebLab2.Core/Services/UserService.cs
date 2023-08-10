@@ -40,7 +40,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("userId", int.Parse(input.UserId));
+                parameters.Add("userId", input.UserId);
                 parameters.Add("pageNumber", input.PageNumber);
                 parameters.Add("pageSize", input.PageSize);
                 parameters.Add("textSearch", input.TextSearch);

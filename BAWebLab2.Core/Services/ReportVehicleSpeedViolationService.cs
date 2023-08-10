@@ -58,7 +58,7 @@ namespace BAWebLab2.Core.Services
                 // có rồi thì trả về list cache
                 if (ienumerable is not null)
                 {
-                    result.iEnumerable = ienumerable;
+                    result.iEnumerable = ienumerable.OrderBy(m => m.PrivateCode);
                 }
                 // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
                 else
@@ -176,7 +176,7 @@ namespace BAWebLab2.Core.Services
                 _cacheHelper.AddEnumerableToSortedSet(keyList, listJoin, TimeSpan.FromMinutes(5));
                 storeResult.Count = listJoin.Count();
                 _cacheHelper.PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
-                var listPaged = ReportHelper.PagingIEnumerable(input, listJoin);
+                var listPaged = ReportHelper.PagingIEnumerable(input.PageNumber,input.PageSize, listJoin);
                 listReturn = CalData(listPaged);
             }
             return listReturn;
@@ -191,10 +191,7 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/26/2023 created
         /// </Modified>
         private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputReport input, int companyID)
-        {
-            // parce string truyền vào để lấy list id vehicle
-           // var listVehicleID = FormatDataHelper.StringToListLong(input.TextSearch);
-
+        { 
             // lấy ra 5 bảng cần join đã lọc theo tham số đầu vào
             var bGTTranportTypes = _bGTTranportTypesService.GetAll();
             var bGTVehicleTransportTypes = _bGTVehicleTransportTypesService.GetByCompanyID(companyID);

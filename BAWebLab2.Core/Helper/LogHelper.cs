@@ -12,6 +12,7 @@ namespace BAWebLab2.Core.LibCommon
     public class LogHelper
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LogHelper));
+
         /// <summary>ghi lỗi vào log</summary>
         /// <param name="error">chuỗi lỗi</param>
         /// <Modified>
@@ -20,7 +21,19 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static void LogError(string error)
         {
-            _logger.Error(error); 
+            _logger.Error(error);
+        }
+
+        /// <summary>ghi lỗi vào log</summary>
+        /// <param name="error">chuỗi lỗi</param>
+        /// <param name="log">ILog được khỏi tạo từ class muốn log</param>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 7/28/2023 created
+        /// </Modified>
+        public static void LogErrorInClass(string error, ILog log)
+        {
+            log.Error(error);
         }
 
         /// <summary>ghi lỗi vào log và push lỗi vào dữ liệu trả về</summary>
@@ -36,6 +49,23 @@ namespace BAWebLab2.Core.LibCommon
         {
             LogError(error);
             response.Message.Add(error);
+            response.StatusCode = ((int)statusCode).ToString();
+        }
+
+        /// <summary>ghi lỗi vào log và push lỗi vào dữ liệu trả về</summary>
+        /// <typeparam name="T">kiểu đối tượng trả về list</typeparam>
+        /// <param name="statusCode">mã lỗi theo http status code.</param>
+        /// <param name="error">string lỗi</param>
+        /// <param name="response">đối tượng nhận kết quả kiểm tra dữ liệu</param>
+        /// <param name="log">ILog được khỏi tạo từ class muốn log</param>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/8/2023 created
+        /// </Modified>
+        public static void LogAndSetResponseErrorInClass<T>(HttpStatusCode statusCode, string errorDisplay, string errorLog, ref ApiResponse<T> response, ILog log)
+        {
+            log.Error(errorLog);
+            response.Message.Add(errorDisplay);
             response.StatusCode = ((int)statusCode).ToString();
         }
 

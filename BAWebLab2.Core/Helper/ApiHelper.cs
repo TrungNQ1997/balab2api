@@ -1,7 +1,9 @@
 ﻿using BAWebLab2.Entities;
 using BAWebLab2.Model;
+using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace BAWebLab2.Core.LibCommon
@@ -13,6 +15,8 @@ namespace BAWebLab2.Core.LibCommon
     /// </Modified>
     public class ApiHelper
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ApiHelper));
+
         /// <summary>lấy giá trị  header trong request</summary>
         /// <param name="request">request chưa header</param>
         /// <param name="key">key của header cần lấy</param>
@@ -23,8 +27,15 @@ namespace BAWebLab2.Core.LibCommon
         /// </Modified>
         public static string GetHeader(HttpRequest request, string key)
         {
-            request.Headers.TryGetValue(key, out StringValues headerValue);
-            return headerValue.ToString(); 
+            var value = "";
+            try
+            {
+                request.Headers.TryGetValue(key, out StringValues headerValue);
+                value = headerValue.ToString();
+            } catch (Exception ex){
+                LogHelper.LogErrorInClass("key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
+            }
+            return value;
         }
 
         /// <summary>kiểm tra  header của request</summary>
@@ -45,7 +56,7 @@ namespace BAWebLab2.Core.LibCommon
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseError(HttpStatusCode.BadRequest, "error format header CompanyID", ref response);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null CompanyID", "error in CheckValidHeader error format header CompanyID exception " + ex.ToString(), ref response,   _logger);
                 valid = false;
             }
            return valid;

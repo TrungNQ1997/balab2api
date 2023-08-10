@@ -54,7 +54,7 @@
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public string? UserId { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>Gets or sets nôi dung tìm kiếm theo username, sdt, ..</summary>
         /// <value>nôi dung tìm kiếm theo username, sdt, ..</value>
@@ -62,7 +62,7 @@
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public string? TextSearch { get; set; }
+        public string TextSearch { get; set; }
 
 
 
