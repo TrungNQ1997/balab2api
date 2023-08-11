@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BAWebLab2.Entities;
+using BAWebLab2.Infrastructure.Entities;
 
 namespace BAWebLab2.Infrastructure.DataContext
 {
@@ -14,10 +15,15 @@ namespace BAWebLab2.Infrastructure.DataContext
 
         public BADbContext(DbContextOptions<BADbContext> options) : base(options)
         {
-
+            //UserTokens.Add(new UserToken() { CompanyID = 15076, UserID = 1, Token = "EF4A9073-58AB-4D2D-93C1-6936093EE015" });
         }
 
+        public List<UserToken> UserTokens = new List<UserToken>();
+ 
+
         DbSet<User> Users { get; set; }
+
+       //public DbSet<UserToken> UserTokens { get; set; }
 
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
@@ -42,6 +48,8 @@ namespace BAWebLab2.Infrastructure.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<UserToken>()
+            //.HasKey(i => i.Token);
             modelBuilder.Entity<Vehicles>()
             .HasKey(i => i.PK_VehicleID);
             modelBuilder.Entity<BGTSpeedOvers>()
@@ -56,8 +64,11 @@ namespace BAWebLab2.Infrastructure.DataContext
              
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
-
+             
         }
+         
+
+        
 
 
 

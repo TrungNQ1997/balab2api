@@ -45,6 +45,7 @@ namespace BAWebLab2.Core
             services.AddScoped<LogHelper>();
             services.AddScoped<ReportHelper>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserTokenService, UserTokenService>();
             services.AddScoped<IBGTSpeedOversService, BGTSpeedOversService>();
             services.AddScoped<IBGTTranportTypesService, BGTTranportTypesService>();
             services.AddScoped<IBGTVehicleTransportTypesService, BGTVehicleTransportTypesService>();

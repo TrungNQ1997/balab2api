@@ -11,7 +11,7 @@ using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BAWebLab2.Controllers
-{
+{ 
     /// <summary>class nhận request từ client của báo cáo vi phạm tốc độ phương tiện</summary>
     /// <Modified>
     /// Name Date Comments
@@ -21,6 +21,7 @@ namespace BAWebLab2.Controllers
     [ApiController]
     public class ReportVehicleSpeedViolationController : ControllerBase
     {
+        private readonly string secretKey = "2d94c6a1f3e8c6b8";
 
         private readonly IReportVehicleSpeedViolationService _reportVehicleSpeedViolationService;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationController));
@@ -40,30 +41,36 @@ namespace BAWebLab2.Controllers
         public IActionResult GetVehicles()
         {
             ApiResponse<Vehicles> response = new ApiResponse<Vehicles>();
+
             try
             {
-                if (ApiHelper.CheckValidHeader(Request, ref response))
+                if (ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
                 {
-                    var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
-                    var result = _reportVehicleSpeedViolationService.GetVehicles(comID);
-                    if (result.Error == false)
-                    {
-                        response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                        response.Message.Add(HttpStatusCode.OK.ToString());
-                        response.Data = result;
-                    }
-                    else
-                    {
-                        response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                        response.Message.Add(HttpStatusCode.InternalServerError.ToString());
-                        response.Data = result;
-                    }
-
+                    var validSecuHeader = false;
+                    var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+                    
+                        var result = _reportVehicleSpeedViolationService.GetVehicles(userToken);
+                        if (result.Error == false)
+                        {
+                            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                            response.Message.Add(HttpStatusCode.OK.ToString());
+                            response.Data = result;
+                        }
+                        else
+                        {
+                            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                            response.Message.Add(HttpStatusCode.InternalServerError.ToString());
+                            response.Data = result;
+                        }
+ 
+                } else
+                {
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null header security", "null header security", ref response, _logger);
                 }
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get data " + ex.Message,   ex.ToString(), ref response,_logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "error when get data " + ex.Message, ex.ToString(), ref response, _logger);
             }
 
             return Ok(response);
@@ -82,11 +89,12 @@ namespace BAWebLab2.Controllers
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
             try
             {
-                var valid = ValidGetDataReport(input, ref response);
+                var valid = ValidGetDataReport(input, ref response); 
                 if (valid)
                 {
-                    var comID = int.Parse(ApiHelper.GetHeader(Request, "CompanyID"));
-                    var result = _reportVehicleSpeedViolationService.GetDataReport(input, comID);
+                    var validSecuHeader = false;
+                    var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+                    var result = _reportVehicleSpeedViolationService.GetDataReport(input, userToken);
 
                     if (result.Error == false)
                     {
@@ -99,8 +107,11 @@ namespace BAWebLab2.Controllers
                         response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
                         response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                         response.Data = result;
-                    }
-
+                    } 
+                }
+                else
+                {
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null header security", "null header security", ref response, _logger);
                 }
             }
             catch (Exception ex)
@@ -121,7 +132,7 @@ namespace BAWebLab2.Controllers
         private bool ValidGetDataReport(InputReport input, ref ApiResponse<ResultReportSpeed> response)
         {
             var valid = true;
-            ApiHelper.CheckValidHeader(Request, ref response);
+            ApiHelper.CheckNullSecurityHeader(Request,ApiHelper.HeaderNameSecurity, ref response);
             ReportHelper.CheckDayReport(input.DayFrom,input.DayTo,ref response);
             
             if (response.Message.Count > 0)
@@ -131,5 +142,6 @@ namespace BAWebLab2.Controllers
             return valid;
         }
 
+     
     }
 }

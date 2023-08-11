@@ -262,8 +262,7 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         public StoreResult<int> AddUser(User user)
         {
-            var result = new StoreResult<int>();
-            DynamicParameters parameters = new DynamicParameters();
+            var result = new StoreResult<int>(); 
             try
             {
                 user.Password = FormatDataHelper.HashMD5(user.Password);

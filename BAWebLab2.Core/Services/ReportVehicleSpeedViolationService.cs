@@ -1,9 +1,12 @@
 ﻿using BAWebLab2.Core.LibCommon;
 using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
+using BAWebLab2.Infrastructure.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
+using log4net;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BAWebLab2.Core.Services
@@ -20,18 +23,22 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
+        IUserTokenService _userTokenService;
         private readonly CacheRedisHelper _cacheHelper;
         private readonly FormatDataHelper _formatDataHelper;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
 
         public ReportVehicleSpeedViolationService(
             IBGTSpeedOversService bGTSpeedOversService, IReportActivitySummariesService reportActivitySummariesService,
             IVehiclesService vehiclesService, IBGTTranportTypesService bGTTranportTypesService,
+            IUserTokenService userTokenService,
             IBGTVehicleTransportTypesService bGTVehicleTransportTypesService,
             CacheRedisHelper cacheHelper, FormatDataHelper formatDataHelper)
         {
             _cacheHelper = cacheHelper;
             _formatDataHelper = formatDataHelper;
             _bGTSpeedOversService = bGTSpeedOversService;
+            _userTokenService = userTokenService;
             _vehiclesService = vehiclesService;
             _bGTTranportTypesService = bGTTranportTypesService;
             _bGTVehicleTransportTypesService = bGTVehicleTransportTypesService;
@@ -45,35 +52,38 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<Vehicles> GetVehicles(int companyID)
+        public StoreResult<Vehicles> GetVehicles( UserToken userToken)
         {
-            var result = new StoreResult<Vehicles>();
+            var result = new StoreResult<Vehicles>(); 
             try
             {
-                // tạo key redis cache
-                var key = _cacheHelper.CreateKeyByModule("Vehicle", companyID);
-                var ienumerable = _cacheHelper.GetSortedSetMembers<Vehicles>(key);
+                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                {
+                    // tạo key redis cache
+                    var key = _cacheHelper.CreateKeyByModule("Vehicle", userToken.CompanyID);
+                    var ienumerable = _cacheHelper.GetSortedSetMembers<Vehicles>(key);
 
-                // check xem đã có cache vehicle chưa
-                // có rồi thì trả về list cache
-                if (ienumerable is not null)
-                {
-                    result.iEnumerable = ienumerable.OrderBy(m => m.PrivateCode);
+                    // check xem đã có cache vehicle chưa
+                    // có rồi thì trả về list cache
+                    if (ienumerable is not null)
+                    {
+                        result.iEnumerable = ienumerable.OrderBy(m => m.PrivateCode);
+                    }
+                    // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
+                    else
+                    {
+                        var list = _vehiclesService.FindByCompanyID(userToken.CompanyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
+                        result.iEnumerable = list;
+                        _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5));
+                    }
+                    result.Error = false;
                 }
-                // chưa có thì lấy trong db, lưu vào cache sau đó trả về list
-                else
-                {
-                    var list = _vehiclesService.FindByCompanyID(companyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
-                    result.iEnumerable = list;
-                    _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5));
-                }
-                result.Error = false;
             }
             catch (Exception ex)
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LogHelper.LogError(ex.ToString());
+                LogHelper.LogErrorInClass("data userToken " + JsonConvert.SerializeObject(userToken) + " error " + ex.ToString(), _logger);
             }
 
             return result;
@@ -87,12 +97,12 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<ResultReportSpeed> GetDataReport(InputReport input, int companyID)
+        public StoreResult<ResultReportSpeed> GetDataReport(InputReport input, UserToken userToken)
         {
             var result = new StoreResult<ResultReportSpeed>();
             try
             {
-                var final = GetListCacheOrDB(input, companyID, ref result);
+                var final = GetListCacheOrDB(input, userToken.CompanyID, ref result);
                 result.iEnumerable = final;
                 result.Error = false;
             }
@@ -100,7 +110,7 @@ namespace BAWebLab2.Core.Services
             {
                 result.Message = ex.Message;
                 result.Error = true;
-                LogHelper.LogError(ex.ToString());
+                LogHelper.LogErrorInClass("data inputReport " + JsonConvert.SerializeObject(input) + " companyId " + JsonConvert.SerializeObject(userToken.CompanyID) +" error "+ ex.ToString(),_logger);
             }
 
             return result;
