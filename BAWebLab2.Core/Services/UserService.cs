@@ -7,6 +7,8 @@ using BAWebLab2.Service;
 using log4net;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Core.LibCommon;
+using BAWebLab2.Infrastructure.Entities;
+using BAWebLab2.Core.Services.IService;
 
 namespace BAWebLab2.Core.Services
 {
@@ -19,11 +21,12 @@ namespace BAWebLab2.Core.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ILog _logger;
+		private readonly IUserTokenService _userTokenService;
 
-        public UserService(IUserRepository userRepository)
+		public UserService(IUserRepository userRepository, IUserTokenService userTokenService)
         {
-            _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
-
+            _logger = LogManager.GetLogger(typeof(UserService));
+            _userTokenService = userTokenService;
             _userRepository = userRepository;
         }
 
@@ -34,13 +37,15 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified> 
-        public StoreResult<UserModel> GetListUsersFilter(InputSearchList input)
+        public StoreResult<UserModel> GetListUsersFilter(InputSearchList input, UserToken userToken)
         {
             var result = new StoreResult<UserModel>();
             DynamicParameters parameters = new DynamicParameters();
-            try
+			try
             {
-                parameters.Add("userId", input.UserId);
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{
+					parameters.Add("userId", input.UserId);
                 parameters.Add("pageNumber", input.PageNumber);
                 parameters.Add("pageSize", input.PageSize);
                 parameters.Add("textSearch", input.TextSearch);
@@ -56,10 +61,16 @@ namespace BAWebLab2.Core.Services
                 result.List = list;
                 result.Count = (int)count;
                 result.Error = false;
-            }
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 result.Error = true;
                 _logger.Error(ex.ToString());
             }
@@ -94,7 +105,7 @@ namespace BAWebLab2.Core.Services
             }
             catch (Exception ex)
             {
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 _logger.Error(ex.ToString());
             }
             return result;
@@ -107,13 +118,15 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<UserRole> CheckLoginAndRole(InputLogin input)
+        public StoreResult<UserRole> CheckLoginAndRole(InputLogin input, UserToken userToken)
         {
             var result = new StoreResult<UserRole>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("token", input.Token);
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{
+					parameters.Add("token", input.Token);
                 parameters.Add("menuId", int.Parse(input.MenuId));
                 parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
                 parameters.Add("isAdmin", false, DbType.Boolean, ParameterDirection.Output);
@@ -126,11 +139,16 @@ namespace BAWebLab2.Core.Services
 
                 result.Error = ret == 0 ? true : false;
                 result.Admin = isAdmin;
-
-            }
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 result.Error = true;
                 _logger.Error(ex.ToString());
             }
@@ -144,14 +162,16 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<UserRole> GetRole(InputLogin input)
+        public StoreResult<UserRole> GetRole(InputLogin input, UserToken userToken)
         {
             var result = new StoreResult<UserRole>();
 
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("userId", input.UserId);
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{
+					parameters.Add("userId", input.UserId);
                 parameters.Add("menuId", int.Parse(input.MenuId));
                 parameters.Add("isAdmin", 0, DbType.Boolean, ParameterDirection.Output);
 
@@ -163,11 +183,17 @@ namespace BAWebLab2.Core.Services
 
                 result.List = resultStore.ListPrimary;
                 result.Error = false;
-            }
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
                 result.Error = true;
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 _logger.Error(ex.ToString());
             }
             return result;
@@ -181,19 +207,26 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> EditUser(User user)
+        public StoreResult<int> EditUser(User user, UserToken userToken)
         {
             var result = new StoreResult<int>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                //user.Password = FormatDataHelper.HashMD5(user.Password);
-                _userRepository.Update(user);
-            }
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{ 
+					_userRepository.Update(user);
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
                 result.Error = true;
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 _logger.Error(ex.ToString());
             }
             return result;
@@ -206,13 +239,15 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> ChangePass(InputLogin input)
+        public StoreResult<int> ChangePass(InputLogin input, UserToken userToken)
         {
             var result = new StoreResult<int>();
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                parameters.Add("password", FormatDataHelper.HashMD5(input.Password));
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{
+					parameters.Add("password", FormatDataHelper.HashMD5(input.Password));
                 parameters.Add("passwordOld", FormatDataHelper.HashMD5(input.PasswordOld));
                 parameters.Add("userId", int.Parse(input.UserId));
                 parameters.Add("username", input.Username);
@@ -223,12 +258,17 @@ namespace BAWebLab2.Core.Services
                 var ret = parameters.Get<long>("ret");
 
                 result.Error = ret == 0 ? false : true;
-
-            }
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
                 result.Error = true;
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 _logger.Error(ex.ToString());
             }
             return result;
@@ -241,15 +281,28 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> DeleteUser(InputDelete input)
+        public StoreResult<int> DeleteUser(InputDelete input, UserToken userToken)
         {
             var result = new StoreResult<int>();
-            result = _userRepository.DeleteUser(input);
-            if (!result.List.Contains(0))
+            try
             {
-                result.Error = true;
-            }
-
+                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                {
+                    result = _userRepository.DeleteUser(input);
+                }
+                else
+                {
+                    var error = "wrong user token ";
+                    LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+                }
+                if (!result.List.Contains(0))
+                {
+                    result.Error = true;
+                }
+            } catch(Exception ex) {
+				var error = "error delete user ";
+				LogHelper.LogAndSetResponseStoreErrorInClass(error, error + ex.ToString, ref result, _logger);
+			}
             return result;
         }
 
@@ -260,19 +313,27 @@ namespace BAWebLab2.Core.Services
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> AddUser(User user)
+        public StoreResult<int> AddUser(User user, UserToken userToken)
         {
             var result = new StoreResult<int>(); 
             try
             {
-                user.Password = FormatDataHelper.HashMD5(user.Password);
+				if (_userTokenService.FakeDataAndCheckToken(userToken))
+				{
+					user.Password = FormatDataHelper.HashMD5(user.Password);
 
                 _userRepository.Add(user);
-            }
+				}
+				else
+				{
+					var error = "wrong user token ";
+					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+				}
+			}
             catch (Exception ex)
             {
                 result.Error = true;
-                result.Message = ex.Message;
+                result.Message.Add(ex.Message);
                 _logger.Error(ex.ToString());
             }
             return result;

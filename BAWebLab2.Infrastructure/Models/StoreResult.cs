@@ -43,7 +43,7 @@
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public string Message { get; set; }
+        public List<string> Message { get; set; }
 
         /// <summary>Gets or sets danh sách đối tượng trả về</summary>
         /// <value>danh sách đối tượng trả về client</value>
@@ -66,7 +66,9 @@
         {
             List = new List<T>();
             iEnumerable = new List<T>();
-        }
+            Message = new List<string>();
+
+		}
          
     }
 }

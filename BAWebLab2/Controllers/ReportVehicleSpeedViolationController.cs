@@ -8,6 +8,7 @@ using log4net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.WebSockets;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BAWebLab2.Controllers
@@ -20,9 +21,7 @@ namespace BAWebLab2.Controllers
     [Route("reportVehicleSpeedViolation")]
     [ApiController]
     public class ReportVehicleSpeedViolationController : ControllerBase
-    {
-        private readonly string secretKey = "2d94c6a1f3e8c6b8";
-
+    { 
         private readonly IReportVehicleSpeedViolationService _reportVehicleSpeedViolationService;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationController));
 
@@ -48,7 +47,8 @@ namespace BAWebLab2.Controllers
                 {
                     var validSecuHeader = false;
                     var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
-                    
+                    if (validSecuHeader)
+                    {
                         var result = _reportVehicleSpeedViolationService.GetVehicles(userToken);
                         if (result.Error == false)
                         {
@@ -62,6 +62,12 @@ namespace BAWebLab2.Controllers
                             response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                             response.Data = result;
                         }
+                    }
+                    else
+                    {
+                        var error = "error user token";
+						LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+					}
  
                 } else
                 {
@@ -94,21 +100,28 @@ namespace BAWebLab2.Controllers
                 {
                     var validSecuHeader = false;
                     var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
-                    var result = _reportVehicleSpeedViolationService.GetDataReport(input, userToken);
+                    if (validSecuHeader)
+                    {
+                        var result = _reportVehicleSpeedViolationService.GetDataReport(input, userToken);
 
-                    if (result.Error == false)
+                        if (result.Error == false)
+                        {
+                            response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                            response.Message.Add(HttpStatusCode.OK.ToString());
+                            response.Data = result;
+                        }
+                        else
+                        {
+                            response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                            response.Message.Add(HttpStatusCode.InternalServerError.ToString());
+                            response.Data = result;
+                        }
+                    } else
                     {
-                        response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                        response.Message.Add(HttpStatusCode.OK.ToString());
-                        response.Data = result;
-                    }
-                    else
-                    {
-                        response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                        response.Message.Add(HttpStatusCode.InternalServerError.ToString());
-                        response.Data = result;
-                    } 
-                }
+						var error = "error user token";
+						LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+					}
+				}
                 else
                 {
                     LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null header security", "null header security", ref response, _logger);

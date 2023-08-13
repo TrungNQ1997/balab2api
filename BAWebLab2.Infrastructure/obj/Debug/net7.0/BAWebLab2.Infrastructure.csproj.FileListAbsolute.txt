@@ -12,3 +12,17 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\obj\Debug\net7
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\obj\Debug\net7.0\ref\BAWebLab2.Infrastructure.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\bin\Debug\net7.0\BAWebLab2.Infrastructure.runtimeconfig.json
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.genruntimeconfig.cache
+D:\github\balab2api\BAWebLab2.Infrastructure\bin\Debug\net7.0\BAWebLab2.Infrastructure.deps.json
+D:\github\balab2api\BAWebLab2.Infrastructure\bin\Debug\net7.0\BAWebLab2.Infrastructure.runtimeconfig.json
+D:\github\balab2api\BAWebLab2.Infrastructure\bin\Debug\net7.0\BAWebLab2.Infrastructure.dll
+D:\github\balab2api\BAWebLab2.Infrastructure\bin\Debug\net7.0\BAWebLab2.Infrastructure.pdb
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.csproj.AssemblyReference.cache
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.AssemblyInfoInputs.cache
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.AssemblyInfo.cs
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.csproj.CoreCompileInputs.cache
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.dll
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\refint\BAWebLab2.Infrastructure.dll
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.pdb
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\BAWebLab2.Infrastructure.genruntimeconfig.cache
+D:\github\balab2api\BAWebLab2.Infrastructure\obj\Debug\net7.0\ref\BAWebLab2.Infrastructure.dll

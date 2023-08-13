@@ -139,3 +139,13 @@ C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.Co
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll
 C:\Users\trungnq3\source\repos\BAWebLab2\BAWebLab2\bin\Debug\net7.0\CachingFramework.Redis.dll
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.csproj.AssemblyReference.cache
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.GeneratedMSBuildEditorConfig.editorconfig
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.AssemblyInfoInputs.cache
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.AssemblyInfo.cs
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.csproj.CoreCompileInputs.cache
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.MvcApplicationPartsAssemblyInfo.cs
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.MvcApplicationPartsAssemblyInfo.cache
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.dll
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\refint\BAWebLab2.dll
+D:\github\balab2api\BAWebLab2\obj\Debug\net7.0\BAWebLab2.pdb

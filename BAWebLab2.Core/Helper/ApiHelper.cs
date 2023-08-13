@@ -54,30 +54,8 @@ namespace BAWebLab2.Core.LibCommon
             try
             {
                 var securityData = GetHeader(request, key);
-                var encryptedPayload = Convert.FromBase64String(securityData);
-                 
-                using (var aesAlg = Aes.Create())
-                {
-                    aesAlg.Key = StringToByteArray(secretKey);
-                    aesAlg.IV = StringToByteArray(iv);
-
-                    using (var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV))
-                    {
-                        using (var msDecrypt = new MemoryStream(encryptedPayload))
-                        {
-                            using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                            {
-                                using (var srDecrypt = new StreamReader(csDecrypt))
-                                {
-                                    var decryptedPayload = srDecrypt.ReadToEnd();
-                                    objParce = JsonConvert.DeserializeObject<UserToken>(decryptedPayload); 
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
+				objParce = FormatDataHelper.DeCryptionUserToken(secretKey, iv, securityData); 
+			}
             catch (Exception ex)
             {
                 _logger.Error(ex.ToString()); 
@@ -127,7 +105,7 @@ namespace BAWebLab2.Core.LibCommon
 
         public static bool CheckNullSecurityHeader<T>(HttpRequest request, string headerName, ref ApiResponse<T> response)
         {
-            var valid = true;
+            var valid = false;
             try
             {
                 var validSecuHeader = false;
@@ -135,6 +113,9 @@ namespace BAWebLab2.Core.LibCommon
                 if (userToken == null)
                 {
                     valid = false;
+                } else
+                {
+                    valid = true;
                 }
             }
             catch (Exception ex)
@@ -146,13 +127,7 @@ namespace BAWebLab2.Core.LibCommon
         }
 
 
-        private static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
+      
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BAWebLab2.Model;
 using BAWebLab2.Entities;
+using BAWebLab2.Infrastructure.Entities;
 
 namespace BAWebLab2.Service
 {
@@ -18,7 +19,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<UserModel> GetListUsersFilter(InputSearchList input);
+        public StoreResult<UserModel> GetListUsersFilter(InputSearchList input, UserToken userToken);
 
         /// <summary>lấy danh sách quyền và quyền admin của user</summary>
         /// <param name="input">chứa user_id và menu_id</param>
@@ -27,7 +28,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<UserRole> GetRole(InputLogin input);
+        public StoreResult<UserRole> GetRole(InputLogin input, UserToken userToken);
 
         /// <summary>api kiểm tra username, pass có hợp lệ không</summary>
         /// <param name="input">đối tượng chứa username, pass</param>
@@ -45,7 +46,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> AddUser(User input);
+        public StoreResult<int> AddUser(User input, UserToken userToken);
 
         /// <summary>api kiểm tra đăng nhập theo token và get quyền theo menu_id</summary>
         /// <param name="input">đối tượng chứa token và menu_id</param>
@@ -54,7 +55,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<UserRole> CheckLoginAndRole(InputLogin input);
+        public StoreResult<UserRole> CheckLoginAndRole(InputLogin input, UserToken userToken);
 
 
         /// <summary>sửa user</summary>
@@ -64,7 +65,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> EditUser(User input);
+        public StoreResult<int> EditUser(User input, UserToken userToken);
 
         /// <summary>đổi mật khẩu user đang đăng nhập</summary>
         /// <param name="input">đối tượng chứa pass cũ và mới</param>
@@ -73,7 +74,7 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> ChangePass(InputLogin input);
+        public StoreResult<int> ChangePass(InputLogin input, UserToken userToken);
 
         /// <summary>xóa nhiều user</summary>
         /// <param name="input">đối tượng chứa list id user cần xóa và id user gọi api xóa</param>
@@ -82,6 +83,6 @@ namespace BAWebLab2.Service
         /// Name Date Comments
         /// trungnq3 7/12/2023 created
         /// </Modified>
-        public StoreResult<int> DeleteUser(InputDelete input);
+        public StoreResult<int> DeleteUser(InputDelete input, UserToken userToken);
     }
 }

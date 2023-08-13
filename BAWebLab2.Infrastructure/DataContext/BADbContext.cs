@@ -15,12 +15,10 @@ namespace BAWebLab2.Infrastructure.DataContext
 
         public BADbContext(DbContextOptions<BADbContext> options) : base(options)
         {
-            //UserTokens.Add(new UserToken() { CompanyID = 15076, UserID = 1, Token = "EF4A9073-58AB-4D2D-93C1-6936093EE015" });
         }
 
         public List<UserToken> UserTokens = new List<UserToken>();
- 
-
+  
         DbSet<User> Users { get; set; }
 
        //public DbSet<UserToken> UserTokens { get; set; }

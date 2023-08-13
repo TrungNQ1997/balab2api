@@ -24,14 +24,14 @@ namespace BAWebLab2.Infrastructure.Repositories
         {
             if (_bADbContext.UserTokens.Count() == 0)
             {
-                _bADbContext.UserTokens.Add(new UserToken() { CompanyID = 15076, UserID = 1, Token = "EF4A9073-58AB-4D2D-93C1-6936093EE015" }); 
+                _bADbContext.UserTokens.Add(new UserToken() { CompanyID = 15076, UserID = 1, Token = "EF4A9073-58AB-4D2D-93C1-6936093EE015", ExpiredDate = DateTime.Now.AddDays(1) }); 
             }
         }
 
         public bool CheckExistToken(UserToken userToken)
         {
             var exist = false;
-            if(_bADbContext.UserTokens.Where(m=>m.Token == userToken.Token && m.CompanyID == userToken.CompanyID && m.UserID == userToken.UserID).Count() > 0)
+            if(_bADbContext.UserTokens.Where(m=>m.Token == userToken.Token && m.CompanyID == userToken.CompanyID && m.UserID == userToken.UserID && m.ExpiredDate > DateTime.Now).Count() > 0)
             {
                 exist = true;
             }

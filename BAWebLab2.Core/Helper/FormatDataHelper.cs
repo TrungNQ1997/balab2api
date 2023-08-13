@@ -1,9 +1,11 @@
-﻿using BAWebLab2.Model;
+﻿using BAWebLab2.Infrastructure.Entities;
+using BAWebLab2.Model;
 using log4net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.WebSockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -264,9 +266,58 @@ namespace BAWebLab2.Core.LibCommon
             catch (Exception ex)
             {
                 LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error birthday", "data " + JsonConvert.SerializeObject(birthday) + " error " + ex.ToString(), ref response, _logger);
-            }
-            return valid;
+            } 
+			return valid;
         }
-         
-    }
+
+		public static UserToken? DeCryptionUserToken(string secretKey,string iv,string securityData)
+        {
+            var objParce = new UserToken();
+            try
+            {
+                var encryptedPayload = Convert.FromBase64String(securityData);
+                using (var aesAlg = Aes.Create())
+                {
+                    aesAlg.Key = FormatDataHelper.StringToByteArray(secretKey);
+                    aesAlg.IV = FormatDataHelper.StringToByteArray(iv);
+
+                    using (var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV))
+                    {
+                        using (var msDecrypt = new MemoryStream(encryptedPayload))
+                        {
+                            using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                            {
+                                using (var srDecrypt = new StreamReader(csDecrypt))
+                                {
+                                    var decryptedPayload = srDecrypt.ReadToEnd();
+                                    objParce = JsonConvert.DeserializeObject<UserToken>(decryptedPayload);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex) {
+                LogHelper.LogErrorInClass("error when DeCryption UserToken " + ex.ToString(), _logger);
+            }
+            return objParce;
+		}
+
+		public static byte[] StringToByteArray(string hex)
+		{
+			byte[] byReturn = new byte[1];
+            try
+            {
+                byReturn = Enumerable.Range(0, hex.Length)
+                                 .Where(x => x % 2 == 0)
+                                 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                                 .ToArray();
+            } catch (Exception ex)
+            {
+                LogHelper.LogErrorInClass("error when convert String To Byte Array ,error " + ex.ToString(), _logger);
+            }
+            return byReturn;
+		}
+
+	}
 }

@@ -42,5 +42,11 @@ namespace BAWebLab2.Core.LibCommon
             response.StatusCode = ((int)statusCode).ToString();
         }
 
-    }
+		public static void LogAndSetResponseStoreErrorInClass<T>(string errorDisplay, string errorLog, ref StoreResult<T> response, ILog log)
+		{
+			log.Error(errorLog);
+			response.Message.Add(errorDisplay); 
+		}
+
+	}
 }

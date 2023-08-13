@@ -16,6 +16,8 @@ namespace BAWebLab2.Infrastructure.Entities
 
 		public int CompanyID { get; set; }
 
+		public DateTime ExpiredDate { get; set; }
+
 		public UserToken() { }
 	}
 }

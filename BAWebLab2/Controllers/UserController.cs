@@ -39,22 +39,32 @@ public class UserController : ControllerBase
         ApiResponse<UserModel> response = new ApiResponse<UserModel>();
         try
         {
-            if (ValidInputSearch(data, ref response))
+            if (ValidInputSearch(data, ref response) && ApiHelper.CheckNullSecurityHeader(Request,ApiHelper.HeaderNameSecurity,ref response))
             {
-                var result = _userService.GetListUsersFilter(data);
-                if (result.Error == false)
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+                if (validSecuHeader)
                 {
-                    response.StatusCode = ((int)HttpStatusCode.OK).ToString();
-                    response.Message.Add(HttpStatusCode.OK.ToString());
-                    response.Data = result;
-                }
-                else
-                {
-                    response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
-                    response.Message.Add(HttpStatusCode.InternalServerError.ToString());
-                    response.Data = result;
-                }
-            }
+                    var result = _userService.GetListUsersFilter(data,userToken);
+                    if (result.Error == false)
+                    {
+                        response.StatusCode = ((int)HttpStatusCode.OK).ToString();
+                        response.Message.Add(HttpStatusCode.OK.ToString());
+                        response.Data = result;
+                    }
+                    else
+                    {
+                        response.StatusCode = ((int)HttpStatusCode.InternalServerError).ToString();
+                        response.Message.Add(HttpStatusCode.InternalServerError.ToString());
+                        response.Data = result;
+                    }
+				} 
+			else
+			{
+				var error = "error user token";
+				LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+			}
+		}
         }
         catch (Exception ex)
         {
@@ -115,9 +125,13 @@ public class UserController : ControllerBase
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
         try
         {
-            if (ValidCheckLoginAndRole(data, ref response))
+            if (ValidCheckLoginAndRole(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                var result = _userService.CheckLoginAndRole(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					var result = _userService.CheckLoginAndRole(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -130,7 +144,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -153,9 +173,13 @@ public class UserController : ControllerBase
         ApiResponse<UserRole> response = new ApiResponse<UserRole>();
         try
         {
-            if (ValidGetRole(data, ref response))
+            if (ValidGetRole(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                var result = _userService.GetRole(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					var result = _userService.GetRole(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -168,7 +192,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -191,9 +221,13 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (ValidUserAdd(data, ref response))
+            if (ValidUserAdd(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                var result = _userService.AddUser(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					var result = _userService.AddUser(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -206,7 +240,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -231,9 +271,13 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (ValidUserEdit(data, ref response))
+            if (ValidUserEdit(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                result = _userService.EditUser(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					result = _userService.EditUser(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -246,7 +290,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -271,9 +321,13 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (ValidChangePass(data, ref response))
+            if (ValidChangePass(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                result = _userService.ChangePass(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					result = _userService.ChangePass(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -286,7 +340,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -311,9 +371,13 @@ public class UserController : ControllerBase
         ApiResponse<int> response = new ApiResponse<int>();
         try
         {
-            if (ValidDeleteUser(data, ref response))
+            if (ValidDeleteUser(data, ref response) || ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response))
             {
-                var result = _userService.DeleteUser(data);
+				var validSecuHeader = false;
+				var userToken = ApiHelper.DeCryptionHeader(Request, ApiHelper.HeaderNameSecurity, ref validSecuHeader);
+				if (validSecuHeader)
+				{
+					var result = _userService.DeleteUser(data,userToken);
                 if (result.Error == false)
                 {
                     response.StatusCode = ((int)HttpStatusCode.OK).ToString();
@@ -326,7 +390,13 @@ public class UserController : ControllerBase
                     response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                     response.Data = result;
                 }
-            }
+				}
+				else
+				{
+					var error = "error user token";
+					LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+				}
+			}
         }
         catch (Exception ex)
         {
