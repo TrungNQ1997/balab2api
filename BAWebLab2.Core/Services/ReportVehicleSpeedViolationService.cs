@@ -6,6 +6,7 @@ using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
 using log4net;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BAWebLab2.Core.Services
 {
@@ -71,6 +72,7 @@ namespace BAWebLab2.Core.Services
                     else
                     {
                         var list = _vehiclesService.FindByCompanyID(userToken.CompanyID).OrderBy(m => m.PrivateCode).ThenBy(o => o.PK_VehicleID);
+                        var count = list.Count();
                         result.iEnumerable = list;
                         _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5));
                     }
@@ -108,6 +110,7 @@ namespace BAWebLab2.Core.Services
                 if (_userTokenService.FakeDataAndCheckToken(userToken))
                 {
                     var final = GetListCacheOrDB(input, userToken.CompanyID, ref result);
+                    var count = final.Count();
                     result.iEnumerable = final;
                     result.Error = false;
                 }

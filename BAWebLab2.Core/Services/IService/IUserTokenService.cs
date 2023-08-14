@@ -12,5 +12,7 @@ namespace BAWebLab2.Core.Services.IService
         /// trungnq3 8/14/2023 created
         /// </Modified>
         public bool FakeDataAndCheckToken(UserToken input);
+
+        public bool CheckTokenUser(UserToken input);
     }
 }

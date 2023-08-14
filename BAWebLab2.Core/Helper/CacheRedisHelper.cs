@@ -1,5 +1,4 @@
-﻿using BAWebLab2.Model;
-using CachingFramework.Redis.Contracts.RedisObjects;
+﻿using CachingFramework.Redis.Contracts.RedisObjects;
 using CachingFramework.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +20,7 @@ namespace BAWebLab2.Core.LibCommon
         private static IDistributedCache _cache { get; set; }
         private readonly IConfiguration _configuration;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(CacheRedisHelper));
+         
 
         public CacheRedisHelper(IDistributedCache cache, IConfiguration configuration)
         {
@@ -40,7 +40,7 @@ namespace BAWebLab2.Core.LibCommon
         public void AddEnumerableToSortedSet<T>(string key, IEnumerable<T> data, TimeSpan time)
         {
             try
-            {
+            { 
                 int i = 1;
                 var context = new RedisContext(_configuration["RedisCacheServerUrl"]);
                 IRedisSortedSet<T> sortedSet = context.Collections.GetRedisSortedSet<T>(key);
@@ -54,7 +54,7 @@ namespace BAWebLab2.Core.LibCommon
             }
             catch (Exception ex)
             {
-                LogHelper.LogErrorInClass("data " + JsonConvert.SerializeObject(data) + " key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
+                LogHelper.LogErrorInClass( " key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
             }
         }
 

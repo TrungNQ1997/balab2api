@@ -3,9 +3,12 @@ using BAWebLab2.Infrastructure.Repository.IRepository;
 using BAWebLab2.Model;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
 using static Dapper.SqlMapper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BAWebLab2.Repository
 {
@@ -18,10 +21,15 @@ namespace BAWebLab2.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly BADbContext _context;
-        public GenericRepository(BADbContext context)
+        private readonly IConfiguration _configuration;
+
+        public GenericRepository(BADbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
+        //static SqlConnection sql = new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BAWebManager;User ID=trungnq2;password=123;Encrypt=False;");
+
 
         /// <summary>thêm mới đối tượng</summary>
         /// <param name="entity">đối tượng muốn thêm</param>
@@ -131,13 +139,19 @@ namespace BAWebLab2.Repository
         /// </Modified>
         public MultipleResult<T1> CallStoredProcedure<T1>(string storedProcedureName, ref DynamicParameters param)
         {
-            using var connection = _context.Database.GetDbConnection();
-            connection.Open();
+            //using var connection = _context.Database.GetDbConnection();
+            //connection.Open();
 
-            var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
+            //var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
+
+            //test
+            var sql = new SqlConnection(_configuration.GetConnectionString("AppSettings:ConnectionString"));
+            sql.Open();
+            var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
 
             var resultList = multi.Read<T1>().ToList();
-            connection.Close();
+            sql.Close();
+            //connection.Close();
             return new MultipleResult<T1> { ListPrimary = resultList }; 
         }
 

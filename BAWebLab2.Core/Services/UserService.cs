@@ -44,7 +44,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     parameters.Add("userId", input.UserId);
                     parameters.Add("pageNumber", input.PageNumber);
@@ -126,7 +126,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     parameters.Add("token", input.Token);
                     parameters.Add("menuId", int.Parse(input.MenuId));
@@ -172,7 +172,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     parameters.Add("userId", input.UserId);
                     parameters.Add("menuId", int.Parse(input.MenuId));
@@ -217,7 +217,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     _userRepository.Update(user);
                 }
@@ -250,7 +250,7 @@ namespace BAWebLab2.Core.Services
             DynamicParameters parameters = new DynamicParameters();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     parameters.Add("password", FormatDataHelper.HashMD5(input.Password));
                     parameters.Add("passwordOld", FormatDataHelper.HashMD5(input.PasswordOld));
@@ -292,7 +292,7 @@ namespace BAWebLab2.Core.Services
             var result = new StoreResult<int>();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     result = _userRepository.DeleteUser(input);
                 }
@@ -327,7 +327,7 @@ namespace BAWebLab2.Core.Services
             var result = new StoreResult<int>();
             try
             {
-                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                if (_userTokenService.CheckTokenUser(userToken))
                 {
                     user.Password = FormatDataHelper.HashMD5(user.Password);
 

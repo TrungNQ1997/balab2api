@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Configuration;
 
 namespace BAWebLab2.Infrastructure
 {
@@ -27,7 +28,7 @@ namespace BAWebLab2.Infrastructure
         {
             services.AddDbContext<BADbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BAWebManager;User ID=trungnq2;password=123;Encrypt=False;");  //Configuration.GetConnectionString("DefaultConnection"));
 
             });
 
