@@ -1,24 +1,11 @@
-﻿using BAWebLab2.Core.LibCommon;
-using BAWebLab2.Core.Services.IService;
-using BAWebLab2.Entities;
+﻿using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Infrastructure.Entities;
-using BAWebLab2.Infrastructure.Repositories;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
-using System.IdentityModel.Tokens.Jwt;
-
-using Microsoft.IdentityModel.Tokens;
-using BAWebLab2.Model;
-using Dapper;
 using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Core.Services
 {
-    public class UserTokenService:IUserTokenService
+    public class UserTokenService : IUserTokenService
     {
         private readonly IUserTokenRepository _userTokenRepository;
         private readonly ILog _logger;
@@ -28,7 +15,14 @@ namespace BAWebLab2.Core.Services
 
             _userTokenRepository = userTokenRepository;
         }
-         
+
+        /// <summary>Fakes dữ liệu test và kiểm tra token tồn tại</summary>
+        /// <param name="input">chứa thông tin user và token</param>
+        /// <returns>true - token thỏa mãn, false - token sai</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified> 
         public bool FakeDataAndCheckToken(UserToken input)
         {
             var valid = false;
@@ -36,7 +30,7 @@ namespace BAWebLab2.Core.Services
             _userTokenRepository.FakeData();
 
             //check data
-            valid = _userTokenRepository.CheckExistToken(input); 
+            valid = _userTokenRepository.CheckExistToken(input);
             return valid;
         }
 

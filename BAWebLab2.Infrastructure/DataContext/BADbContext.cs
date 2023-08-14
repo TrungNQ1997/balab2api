@@ -18,10 +18,8 @@ namespace BAWebLab2.Infrastructure.DataContext
         }
 
         public List<UserToken> UserTokens = new List<UserToken>();
-  
-        DbSet<User> Users { get; set; }
 
-       //public DbSet<UserToken> UserTokens { get; set; }
+        DbSet<User> Users { get; set; }
 
         /// <summary>config cấu hình đối tượng entity map db</summary>
         /// <param name="modelBuilder">
@@ -59,16 +57,11 @@ namespace BAWebLab2.Infrastructure.DataContext
             modelBuilder.Entity<BGTVehicleTransportTypes>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_TransportTypeID });
             modelBuilder.Entity<BGTVehicleTransportTypes>().Property(p => p.IsDeleted).IsRequired(required: false);
-             
+
             modelBuilder.Entity<ReportActivitySummaries>()
            .HasKey(i => new { i.FK_VehicleID, i.FK_Date });
-             
+
         }
-         
-
-        
-
-
 
     }
 }

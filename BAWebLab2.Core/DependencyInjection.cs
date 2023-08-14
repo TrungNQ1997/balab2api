@@ -24,17 +24,7 @@ namespace BAWebLab2.Core
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
-        {
-            //string redisConnectionString = Configuration.GetSection("RedisCacheServerUrl").Value;
-
-            //// Cấu hình Redis Cluster
-            //ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisConnectionString);
-
-            //services.AddStackExchangeRedisCache(options =>
-            //{
-            //    options.ConfigurationOptions = redisConfig;
-
-            //}); 
+        { 
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration["RedisCacheServerUrl"];

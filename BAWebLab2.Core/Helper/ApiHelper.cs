@@ -1,15 +1,11 @@
-﻿using BAWebLab2.Entities;
-using BAWebLab2.Infrastructure.Entities;
+﻿using BAWebLab2.Infrastructure.Entities;
 using BAWebLab2.Model;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace BAWebLab2.Core.LibCommon
 {
@@ -41,12 +37,23 @@ namespace BAWebLab2.Core.LibCommon
             {
                 request.Headers.TryGetValue(key, out StringValues headerValue);
                 value = headerValue.ToString();
-            } catch (Exception ex){
+            }
+            catch (Exception ex)
+            {
                 LogHelper.LogErrorInClass("key " + JsonConvert.SerializeObject(key) + " error " + ex.ToString(), _logger);
             }
             return value;
         }
 
+        /// <summary>giải mã header</summary>
+        /// <param name="request">request từ client</param>
+        /// <param name="key">key cần lấy trong header</param>
+        /// <param name="valid">biến kiểm tra header, true - header đúng, false - header sai</param>
+        /// <returns>đối tượng userToken sau khi giải mã</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
         public static UserToken DeCryptionHeader(HttpRequest request, string key, ref bool valid)
         {
             var objReturn = new UserToken();
@@ -54,21 +61,23 @@ namespace BAWebLab2.Core.LibCommon
             try
             {
                 var securityData = GetHeader(request, key);
-				objParce = FormatDataHelper.DeCryptionUserToken(secretKey, iv, securityData); 
-			}
+                objParce = FormatDataHelper.DeCryptionUserToken(secretKey, iv, securityData);
+            }
             catch (Exception ex)
             {
-                _logger.Error(ex.ToString()); 
+                _logger.Error(ex.ToString());
             }
             if (objParce == null)
             {
                 valid = false;
-            } else
+            }
+            else
             {
-                if(objParce.Token.IsNullOrEmpty())
+                if (objParce.Token.IsNullOrEmpty())
                 {
                     valid = false;
-                } else
+                }
+                else
                 {
                     objReturn = objParce;
                     valid = true;
@@ -92,17 +101,27 @@ namespace BAWebLab2.Core.LibCommon
             try
             {
                 var comID = int.Parse(ApiHelper.GetHeader(request, "CompanyID"));
-                 
+
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null CompanyID", "error in CheckValidHeader error format header CompanyID exception " + ex.ToString(), ref response,   _logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null CompanyID", "error in CheckValidHeader error format header CompanyID exception " + ex.ToString(), ref response, _logger);
                 valid = false;
             }
-              
-           return valid;
+
+            return valid;
         }
 
+        /// <summary>kiểm tra header bảo mật</summary>
+        /// <typeparam name="T">kiểu đối tượng api trả về</typeparam>
+        /// <param name="request">request từ client</param>
+        /// <param name="headerName">tên của header.</param>
+        /// <param name="response">đối tượng nhận kết quả trả về</param>
+        /// <returns>true - có header thỏa mãn, false - header null</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
         public static bool CheckNullSecurityHeader<T>(HttpRequest request, string headerName, ref ApiResponse<T> response)
         {
             var valid = false;
@@ -113,7 +132,8 @@ namespace BAWebLab2.Core.LibCommon
                 if (userToken == null)
                 {
                     valid = false;
-                } else
+                }
+                else
                 {
                     valid = true;
                 }
@@ -125,9 +145,6 @@ namespace BAWebLab2.Core.LibCommon
             }
             return valid;
         }
-
-
-      
 
     }
 }

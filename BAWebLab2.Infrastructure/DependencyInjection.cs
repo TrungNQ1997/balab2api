@@ -28,20 +28,9 @@ namespace BAWebLab2.Infrastructure
             services.AddDbContext<BADbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                
+
             });
 
-            //using (var context = services.GetService<AppDbContext>())
-            //{
-            //	var product = new Product
-            //	{
-            //		Name = "Sample Product"
-            //		// Set other properties here
-            //	};
-
-            //	context.Products.Add(product); // Thêm bản ghi vào DbSet<Product>
-            //	context.SaveChanges(); // Lưu thay đổi vào cơ sở dữ liệu
-            //}
             services.AddScoped<IUserTokenRepository, UserTokenRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVehiclesRepository, VehiclesRepository>();
@@ -49,7 +38,7 @@ namespace BAWebLab2.Infrastructure
             services.AddScoped<IBGTTranportTypesRepository, BGTTranportTypesRepository>();
             services.AddScoped<IBGTSpeedOversRepository, BGTSpeedOversRepository>();
             services.AddScoped<IReportActivitySummariesRepository, ReportActivitySummariesRepository>();
-             
+
         }
     }
 }

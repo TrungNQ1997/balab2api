@@ -1,18 +1,24 @@
 ﻿using BAWebLab2.Infrastructure.Entities;
 using BAWebLab2.Infrastructure.Repository.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAWebLab2.Infrastructure.Repositories.IRepository
 {
-    public interface IUserTokenRepository:IGenericRepository<UserToken>
+    public interface IUserTokenRepository : IGenericRepository<UserToken>
     {
-        //public new void Add(UserToken userToken);
+        /// <summary>Fakes dữ liệu test token</summary>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
         public void FakeData();
 
+        /// <summary>kiểm tra token có tồn tại</summary>
+        /// <param name="userToken">chứ thông tin user token.</param>
+        /// <returns>true - token thỏa mãn, false - token sai</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
         public bool CheckExistToken(UserToken userToken);
     }
 }

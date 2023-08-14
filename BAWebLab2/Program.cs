@@ -1,8 +1,7 @@
-﻿ 
+﻿
 using BAWebLab2.Core;
 using BAWebLab2.Infrastructure;
 using log4net.Config;
-using System.Configuration;
 
 XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
@@ -27,14 +26,12 @@ builder.Services.AddCors(options =>
                           });
 });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterInfrastructureDependencies(builder.Configuration);
 builder.Services.RegisterCoreDependencies(builder.Configuration);
-
-
+ 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

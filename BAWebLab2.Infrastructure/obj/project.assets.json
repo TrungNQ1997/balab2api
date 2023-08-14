@@ -4484,23 +4484,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\trungnq3\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
       "projectName": "BAWebLab2.Infrastructure",
-      "projectPath": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\github\\balab2api\\BAWebLab2.Infrastructure\\obj\\",
+      "projectPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\BAWebLab2.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\trungnq3\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\trungnq3\\source\\repos\\BAWebLab2\\BAWebLab2.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\trungnq3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4508,7 +4509,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\Admin\\Downloads": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4592,7 +4593,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

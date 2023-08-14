@@ -5,10 +5,7 @@ using BAWebLab2.Infrastructure.Entities;
 using BAWebLab2.Infrastructure.Models;
 using BAWebLab2.Model;
 using log4net;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Net;
 
 namespace BAWebLab2.Core.Services
 {
@@ -24,7 +21,7 @@ namespace BAWebLab2.Core.Services
         private readonly IBGTTranportTypesService _bGTTranportTypesService;
         private readonly IBGTVehicleTransportTypesService _bGTVehicleTransportTypesService;
         private readonly IReportActivitySummariesService _reportActivitySummariesService;
-		private readonly IUserTokenService _userTokenService;
+        private readonly IUserTokenService _userTokenService;
         private readonly CacheRedisHelper _cacheHelper;
         private readonly FormatDataHelper _formatDataHelper;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationService));
@@ -47,15 +44,15 @@ namespace BAWebLab2.Core.Services
         }
 
         /// <summary>lấy danh sách vehicle</summary>
-        /// <param name="companyID">mã công ty</param>
+        /// <param name="userToken">thông tin user và token</param>
         /// <returns>danh sách vehicle</returns>
         /// <Modified>
         /// Name Date Comments
         /// trungnq3 7/20/2023 created
         /// </Modified>
-        public StoreResult<Vehicles> GetVehicles( UserToken userToken)
+        public StoreResult<Vehicles> GetVehicles(UserToken userToken)
         {
-            var result = new StoreResult<Vehicles>(); 
+            var result = new StoreResult<Vehicles>();
             try
             {
                 if (_userTokenService.FakeDataAndCheckToken(userToken))
@@ -78,7 +75,8 @@ namespace BAWebLab2.Core.Services
                         _cacheHelper.AddEnumerableToSortedSet<Vehicles>(key, list, TimeSpan.FromMinutes(5));
                     }
                     result.Error = false;
-                } else
+                }
+                else
                 {
                     var error = "wrong user token ";
                     LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
@@ -96,7 +94,7 @@ namespace BAWebLab2.Core.Services
 
         /// <summary>lấy dữ liệu báo cáo vi phạm tốc độ phương tiện</summary>
         /// <param name="input">đối tượng chứa các tham số báo cáo cần</param>
-        /// <param name="companyID">mã công ty</param>
+        /// <param name="userToken">thông tin user và token</param>
         /// <returns>dữ liệu báo cáo</returns>
         /// <Modified>
         /// Name Date Comments
@@ -107,23 +105,23 @@ namespace BAWebLab2.Core.Services
             var result = new StoreResult<ResultReportSpeed>();
             try
             {
-				if (_userTokenService.FakeDataAndCheckToken(userToken))
-				{
-					var final = GetListCacheOrDB(input, userToken.CompanyID, ref result);
-                result.iEnumerable = final;
-                result.Error = false;
-				}
-				else
-				{
-					var error = "wrong user token ";
-					LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
-				}
-			}
+                if (_userTokenService.FakeDataAndCheckToken(userToken))
+                {
+                    var final = GetListCacheOrDB(input, userToken.CompanyID, ref result);
+                    result.iEnumerable = final;
+                    result.Error = false;
+                }
+                else
+                {
+                    var error = "wrong user token ";
+                    LogHelper.LogAndSetResponseStoreErrorInClass(error, error, ref result, _logger);
+                }
+            }
             catch (Exception ex)
             {
                 result.Message.Add(ex.Message);
                 result.Error = true;
-                LogHelper.LogErrorInClass("data inputReport " + JsonConvert.SerializeObject(input) + " companyId " + JsonConvert.SerializeObject(userToken.CompanyID) +" error "+ ex.ToString(),_logger);
+                LogHelper.LogErrorInClass("data inputReport " + JsonConvert.SerializeObject(input) + " companyId " + JsonConvert.SerializeObject(userToken.CompanyID) + " error " + ex.ToString(), _logger);
             }
 
             return result;
@@ -167,7 +165,8 @@ namespace BAWebLab2.Core.Services
                     };
 
                 });
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogHelper.LogErrorInClass("error when CalData report " + ex.ToString(), _logger);
             }
@@ -199,7 +198,7 @@ namespace BAWebLab2.Core.Services
                 if (listCache is not null)
                 {
                     storeResult.Count = _cacheHelper.GetRedisCache<int>(keyCount);
-					iEnumerableReturn = CalData(listCache);
+                    iEnumerableReturn = CalData(listCache);
                 }
                 // chưa có cache thì get lại db và lưu lại ienumable vào cache
                 else
@@ -209,12 +208,13 @@ namespace BAWebLab2.Core.Services
                     storeResult.Count = listJoin.Count();
                     _cacheHelper.PushDataToCache(storeResult.Count, TimeSpan.FromMinutes(5), keyCount);
                     var listPaged = ReportHelper.PagingIEnumerable(input.PageNumber, input.PageSize, listJoin);
-					iEnumerableReturn = CalData(listPaged);
+                    iEnumerableReturn = CalData(listPaged);
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                var error = " error when Get List Cache Or DB "; 
-				LogHelper.LogErrorInClass(error+ ex.ToString(),_logger);
+                var error = " error when Get List Cache Or DB ";
+                LogHelper.LogErrorInClass(error + ex.ToString(), _logger);
             }
             return iEnumerableReturn;
         }
@@ -229,7 +229,7 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         private IEnumerable<ResultReportSpeed> GetIEnumerableAfterJoin(InputReport input, int companyID)
         {
-			IEnumerable<ResultReportSpeed> iEnumerableReturn = new List<ResultReportSpeed>();
+            IEnumerable<ResultReportSpeed> iEnumerableReturn = new List<ResultReportSpeed>();
             try
             {
                 // lấy ra 5 bảng cần join đã lọc theo tham số đầu vào
@@ -239,8 +239,8 @@ namespace BAWebLab2.Core.Services
                 var activityGroup = GetReportActivityGroup(input, input.VehicleSearch, companyID);
                 var bgtSpeedGroup = GetSpeedGroup(input, input.VehicleSearch, companyID);
 
-				// left join và check null 5 bảng lấy dữ liệu tổng hợp
-				iEnumerableReturn =
+                // left join và check null 5 bảng lấy dữ liệu tổng hợp
+                iEnumerableReturn =
                     (from speed in (bgtSpeedGroup is null ? new List<ResultReportSpeed>() : bgtSpeedGroup)
 
                      join acti in (activityGroup is null ? new List<ReportActivitySummaries>() : activityGroup) on speed?.VehicleID equals acti?.FK_VehicleID into speedActis
@@ -273,7 +273,8 @@ namespace BAWebLab2.Core.Services
                          PrivateCode = vehicle?.PrivateCode,
                          TransportTypeName = tranportTypesSpeed?.DisplayName
                      }).OrderBy(m => m?.PrivateCode);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogHelper.LogErrorInClass("error when GetIEnumerableAfterJoin " + ex.ToString(), _logger);
             }
@@ -291,7 +292,7 @@ namespace BAWebLab2.Core.Services
         /// </Modified>
         private IEnumerable<ReportActivitySummaries> GetReportActivityGroup(InputReport input, List<long> arrVehicle, int companyID)
         {
-			IEnumerable<ReportActivitySummaries> activityGroup = new List<ReportActivitySummaries>();
+            IEnumerable<ReportActivitySummaries> activityGroup = new List<ReportActivitySummaries>();
             try
             {
                 IEnumerable<ReportActivitySummaries> activity;
@@ -314,7 +315,8 @@ namespace BAWebLab2.Core.Services
                     ActivityTime = k.Sum(p => p.ActivityTime),
                     TotalKmGps = k.Sum(p => p.TotalKmGps),
                 });
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogHelper.LogErrorInClass("error when GetReportActivityGroup " + ex.ToString(), _logger);
             }
@@ -345,9 +347,10 @@ namespace BAWebLab2.Core.Services
                     bgtSpeed = _bGTSpeedOversService.Find(m => m.FK_CompanyID == companyID && m.StartTime >= input.DayFrom
                  && m.EndTime <= input.DayTo && arrVehicle.Contains(m.FK_VehicleID));
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                LogHelper.LogErrorInClass("error when GetSpeedFilter " + ex.ToString(),_logger);
+                LogHelper.LogErrorInClass("error when GetSpeedFilter " + ex.ToString(), _logger);
             }
             return bgtSpeed;
         }
@@ -368,43 +371,44 @@ namespace BAWebLab2.Core.Services
             {
                 var bgtSpeed = GetSpeedFilter(input, arrVehicle, companyID);
 
-                 bgtSpeedGroup
-                   = bgtSpeed.GroupBy(m => m.FK_VehicleID).ToList().Select(k =>
-                   {
-                       // lấy tổng số lầm vi phạm tốc độ từ 5 đến 10km/h
-                       int sum5To10 = k.Count(l => (l.VelocityAllow + 5) <= l.VelocityGps && (l.VelocityAllow + 10) > l.VelocityGps);
+                bgtSpeedGroup
+                  = bgtSpeed.GroupBy(m => m.FK_VehicleID).ToList().Select(k =>
+                  {
+                      // lấy tổng số lầm vi phạm tốc độ từ 5 đến 10km/h
+                      int sum5To10 = k.Count(l => (l.VelocityAllow + 5) <= l.VelocityGps && (l.VelocityAllow + 10) > l.VelocityGps);
 
-                       // lấy tổng số lầm vi phạm tốc độ từ 10 đến 20km/h
-                       int sum10To20 = k.Count(l => (l.VelocityAllow + 10) <= l.VelocityGps && (l.VelocityAllow + 20) > l.VelocityGps);
+                      // lấy tổng số lầm vi phạm tốc độ từ 10 đến 20km/h
+                      int sum10To20 = k.Count(l => (l.VelocityAllow + 10) <= l.VelocityGps && (l.VelocityAllow + 20) > l.VelocityGps);
 
-                       // lấy tổng số lầm vi phạm tốc độ từ 20 đến 35km/h
-                       int sum20To35 = k.Count(l => (l.VelocityAllow + 20) <= l.VelocityGps && (l.VelocityAllow + 35) > l.VelocityGps);
+                      // lấy tổng số lầm vi phạm tốc độ từ 20 đến 35km/h
+                      int sum20To35 = k.Count(l => (l.VelocityAllow + 20) <= l.VelocityGps && (l.VelocityAllow + 35) > l.VelocityGps);
 
-                       // lấy tổng số lầm vi phạm tốc độ quá 35km/h
-                       int sumFrom35 = k.Count(l => (l.VelocityAllow + 35) < l.VelocityGps);
-                       int sumTotal = sum5To10 + sum10To20 + sum20To35 + sumFrom35;
+                      // lấy tổng số lầm vi phạm tốc độ quá 35km/h
+                      int sumFrom35 = k.Count(l => (l.VelocityAllow + 35) < l.VelocityGps);
+                      int sumTotal = sum5To10 + sum10To20 + sum20To35 + sumFrom35;
 
-                       // lấy tổng thời gian vi phạm = tổng (EndTime - StartTime)
-                       var sumTime = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(p => p.EndTime == null ? 0 : (((DateTime)p.EndTime).Subtract(p.StartTime).TotalSeconds));
+                      // lấy tổng thời gian vi phạm = tổng (EndTime - StartTime)
+                      var sumTime = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(p => p.EndTime == null ? 0 : (((DateTime)p.EndTime).Subtract(p.StartTime).TotalSeconds));
 
-                       // lấy tổng quãng đường vi phạm = tổng (EndKm - StartKm)
-                       double? sumKm = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(m => (m.EndKm - m.StartKm));
-                       return new ResultReportSpeed
-                       {
-                           VehicleID = k.Key,
-                           Sum5To10 = sum5To10,
-                           Sum10To20 = sum10To20,
-                           Sum20To35 = sum20To35,
-                           SumFrom35 = sumFrom35,
-                           SumTotal = sumTotal,
-                           ViolateKm = sumKm,
-                           ViolateTime = Convert.ToDouble(Math.Round(sumTime / 60, 2)),
-                       };
+                      // lấy tổng quãng đường vi phạm = tổng (EndKm - StartKm)
+                      double? sumKm = sumTotal == 0 ? 0 : k.Where(p => p.VelocityGps >= (p.VelocityAllow + 5)).Sum(m => (m.EndKm - m.StartKm));
+                      return new ResultReportSpeed
+                      {
+                          VehicleID = k.Key,
+                          Sum5To10 = sum5To10,
+                          Sum10To20 = sum10To20,
+                          Sum20To35 = sum20To35,
+                          SumFrom35 = sumFrom35,
+                          SumTotal = sumTotal,
+                          ViolateKm = sumKm,
+                          ViolateTime = Convert.ToDouble(Math.Round(sumTime / 60, 2)),
+                      };
 
-                   });
-            } catch(Exception ex)
+                  });
+            }
+            catch (Exception ex)
             {
-                LogHelper.LogErrorInClass("error when GetSpeedGroup " + ex.ToString(),_logger);
+                LogHelper.LogErrorInClass("error when GetSpeedGroup " + ex.ToString(), _logger);
             }
             return bgtSpeedGroup;
 

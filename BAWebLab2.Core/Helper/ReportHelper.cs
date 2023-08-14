@@ -26,9 +26,9 @@ namespace BAWebLab2.Core.LibCommon
         /// Name Date Comments
         /// trungnq3 8/2/2023 created
         /// </Modified>
-        public static IEnumerable<T> PagingIEnumerable<T>(int pageNumber,int pageSize, IEnumerable<T> list)
+        public static IEnumerable<T> PagingIEnumerable<T>(int pageNumber, int pageSize, IEnumerable<T> list)
         {
-            return list.Skip((pageNumber - 1) * pageSize).Take(pageSize); 
+            return list.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
 
         /// <summary>kiểm tra từ ngày đến ngày báo cáo</summary>
@@ -53,6 +53,6 @@ namespace BAWebLab2.Core.LibCommon
             }
             return valid;
         }
-         
+
     }
 }

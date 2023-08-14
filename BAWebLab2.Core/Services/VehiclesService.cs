@@ -14,7 +14,7 @@ namespace BAWebLab2.Core.Services
         private readonly IVehiclesRepository _vehiclesRepository;
 
         public VehiclesService(IVehiclesRepository vehiclesRepository)
-        { 
+        {
             _vehiclesRepository = vehiclesRepository;
         }
 

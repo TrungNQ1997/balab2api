@@ -1,5 +1,4 @@
 ﻿using BAWebLab2.Core.LibCommon;
-using BAWebLab2.Core.Services;
 using BAWebLab2.Core.Services.IService;
 using BAWebLab2.Entities;
 using BAWebLab2.Infrastructure.Models;
@@ -8,11 +7,9 @@ using log4net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
-using System.Net.WebSockets;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BAWebLab2.Controllers
-{ 
+{
     /// <summary>class nhận request từ client của báo cáo vi phạm tốc độ phương tiện</summary>
     /// <Modified>
     /// Name Date Comments
@@ -21,12 +18,12 @@ namespace BAWebLab2.Controllers
     [Route("reportVehicleSpeedViolation")]
     [ApiController]
     public class ReportVehicleSpeedViolationController : ControllerBase
-    { 
+    {
         private readonly IReportVehicleSpeedViolationService _reportVehicleSpeedViolationService;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportVehicleSpeedViolationController));
 
         public ReportVehicleSpeedViolationController(IReportVehicleSpeedViolationService reportVehicleSpeedViolationService)
-        { 
+        {
             _reportVehicleSpeedViolationService = reportVehicleSpeedViolationService;
         }
 
@@ -66,12 +63,14 @@ namespace BAWebLab2.Controllers
                     else
                     {
                         var error = "error user token";
-						LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
-					}
- 
-                } else
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+                    }
+
+                }
+                else
                 {
-                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null header security", "null header security", ref response, _logger);
+                    var error = "null header security";
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
                 }
             }
             catch (Exception ex)
@@ -95,7 +94,7 @@ namespace BAWebLab2.Controllers
             ApiResponse<ResultReportSpeed> response = new ApiResponse<ResultReportSpeed>();
             try
             {
-                var valid = ValidGetDataReport(input, ref response); 
+                var valid = ValidGetDataReport(input, ref response);
                 if (valid)
                 {
                     var validSecuHeader = false;
@@ -116,20 +115,22 @@ namespace BAWebLab2.Controllers
                             response.Message.Add(HttpStatusCode.InternalServerError.ToString());
                             response.Data = result;
                         }
-                    } else
+                    }
+                    else
                     {
-						var error = "error user token";
-						LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
-					}
-				}
+                        var error = "error user token";
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
+                    }
+                }
                 else
                 {
-                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null header security", "null header security", ref response, _logger);
+                    var error = "null header security";
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, error, error, ref response, _logger);
                 }
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError,"error when get data " + ex.Message, "data " + JsonConvert.SerializeObject(input) + " " + ex.ToString(), ref response, _logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.InternalServerError, "error when get data " + ex.Message, "data " + JsonConvert.SerializeObject(input) + " " + ex.ToString(), ref response, _logger);
             }
             return Ok(response);
         }
@@ -145,9 +146,9 @@ namespace BAWebLab2.Controllers
         private bool ValidGetDataReport(InputReport input, ref ApiResponse<ResultReportSpeed> response)
         {
             var valid = true;
-            ApiHelper.CheckNullSecurityHeader(Request,ApiHelper.HeaderNameSecurity, ref response);
-            ReportHelper.CheckDayReport(input.DayFrom,input.DayTo,ref response);
-            
+            ApiHelper.CheckNullSecurityHeader(Request, ApiHelper.HeaderNameSecurity, ref response);
+            ReportHelper.CheckDayReport(input.DayFrom, input.DayTo, ref response);
+
             if (response.Message.Count > 0)
             {
                 valid = false;
@@ -155,6 +156,6 @@ namespace BAWebLab2.Controllers
             return valid;
         }
 
-     
+
     }
 }

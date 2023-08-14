@@ -12,7 +12,7 @@ namespace BAWebLab2.Core.LibCommon
     public class LogHelper
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LogHelper));
-         
+
         /// <summary>ghi lỗi vào log</summary>
         /// <param name="error">chuỗi lỗi</param>
         /// <param name="log">ILog được khỏi tạo từ class muốn log</param>
@@ -24,7 +24,7 @@ namespace BAWebLab2.Core.LibCommon
         {
             log.Error(error);
         }
-         
+
         /// <summary>ghi lỗi vào log và push lỗi vào dữ liệu trả về</summary>
         /// <typeparam name="T">kiểu đối tượng trả về list</typeparam>
         /// <param name="statusCode">mã lỗi theo http status code.</param>
@@ -42,11 +42,21 @@ namespace BAWebLab2.Core.LibCommon
             response.StatusCode = ((int)statusCode).ToString();
         }
 
-		public static void LogAndSetResponseStoreErrorInClass<T>(string errorDisplay, string errorLog, ref StoreResult<T> response, ILog log)
-		{
-			log.Error(errorLog);
-			response.Message.Add(errorDisplay); 
-		}
+        /// <summary>ghi lỗi vào log và gán lỗi vào kết quả trả về</summary>
+        /// <typeparam name="T">kiểu đối tượng api trả về</typeparam>
+        /// <param name="errorDisplay">lỗi hiển thị với người dùng</param>
+        /// <param name="errorLog">lỗi log vào file</param>
+        /// <param name="response">đối tượng nhận kết quả trả về người dùng</param>
+        /// <param name="log">ILog được khởi tạo từ class cần log</param>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
+        public static void LogAndSetResponseStoreErrorInClass<T>(string errorDisplay, string errorLog, ref StoreResult<T> response, ILog log)
+        {
+            log.Error(errorLog);
+            response.Message.Add(errorDisplay);
+        }
 
-	}
+    }
 }

@@ -131,13 +131,13 @@ namespace BAWebLab2.Core.LibCommon
             {
                 if (string.IsNullOrEmpty(text))
                 {
-                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null " + JsonConvert.SerializeObject(property) , " in CheckNullOrEmptyString data " + JsonConvert.SerializeObject(text) + " null " + property, ref response, _logger);
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null " + JsonConvert.SerializeObject(property), " in CheckNullOrEmptyString data " + JsonConvert.SerializeObject(text) + " null " + property, ref response, _logger);
                     valid = false;
                 }
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null property " + JsonConvert.SerializeObject(property), "value " + JsonConvert.SerializeObject(text) + " property " + JsonConvert.SerializeObject(property) + " " + ex.ToString(), ref response, _logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null property " + JsonConvert.SerializeObject(property), "value " + JsonConvert.SerializeObject(text) + " property " + JsonConvert.SerializeObject(property) + " " + ex.ToString(), ref response, _logger);
             }
             return valid;
         }
@@ -161,7 +161,7 @@ namespace BAWebLab2.Core.LibCommon
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"error format " + JsonConvert.SerializeObject(property), "error in CheckParseIntString data " + JsonConvert.SerializeObject(text) + " wrong " + property + " " + ex.ToString(), ref response, _logger);
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error format " + JsonConvert.SerializeObject(property), "error in CheckParseIntString data " + JsonConvert.SerializeObject(text) + " wrong " + property + " " + ex.ToString(), ref response, _logger);
                 valid = false;
             }
             return valid;
@@ -184,7 +184,7 @@ namespace BAWebLab2.Core.LibCommon
             {
                 if (value.IsNullOrEmpty())
                 {
-                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"null " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                    LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "null " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
                   " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " at CheckValidPropertyRegex empty " + JsonConvert.SerializeObject(property), ref response, _logger);
 
                     valid = false;
@@ -193,7 +193,7 @@ namespace BAWebLab2.Core.LibCommon
                 {
                     if (!Regex.IsMatch(value, pattern))
                     {
-                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest,"error format " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                        LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error format " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
                   " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " at CheckValidPropertyRegex error format " + JsonConvert.SerializeObject(property), ref response, _logger);
                         valid = false;
                     }
@@ -201,7 +201,7 @@ namespace BAWebLab2.Core.LibCommon
             }
             catch (Exception ex)
             {
-                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest," error " +JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
+                LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, " error " + JsonConvert.SerializeObject(property), "data " + JsonConvert.SerializeObject(value) +
                     " pattern " + JsonConvert.SerializeObject(pattern) + " property " + JsonConvert.SerializeObject(property) + " " + ex.ToString(), ref response, _logger);
             }
             return valid;
@@ -266,11 +266,20 @@ namespace BAWebLab2.Core.LibCommon
             catch (Exception ex)
             {
                 LogHelper.LogAndSetResponseErrorInClass(HttpStatusCode.BadRequest, "error birthday", "data " + JsonConvert.SerializeObject(birthday) + " error " + ex.ToString(), ref response, _logger);
-            } 
-			return valid;
+            }
+            return valid;
         }
 
-		public static UserToken? DeCryptionUserToken(string secretKey,string iv,string securityData)
+        /// <summary>giải mã chuỗi bảo mật</summary>
+        /// <param name="secretKey">key bảo mật</param>
+        /// <param name="iv">iv bảo mật</param>
+        /// <param name="securityData">chuỗi mã hóa</param>
+        /// <returns>đối tượng userToken sau khi giải mã</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
+        public static UserToken? DeCryptionUserToken(string secretKey, string iv, string securityData)
         {
             var objParce = new UserToken();
             try
@@ -297,27 +306,36 @@ namespace BAWebLab2.Core.LibCommon
                     }
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 LogHelper.LogErrorInClass("error when DeCryption UserToken " + ex.ToString(), _logger);
             }
             return objParce;
-		}
+        }
 
-		public static byte[] StringToByteArray(string hex)
-		{
-			byte[] byReturn = new byte[1];
+        /// <summary>chuyển string ra dạng byte</summary>
+        /// <param name="hex">chuỗi cần chuyển</param>
+        /// <returns>byte sau khi chuyển</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/14/2023 created
+        /// </Modified>
+        public static byte[] StringToByteArray(string hex)
+        {
+            byte[] byReturn = new byte[1];
             try
             {
                 byReturn = Enumerable.Range(0, hex.Length)
                                  .Where(x => x % 2 == 0)
                                  .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                                  .ToArray();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogHelper.LogErrorInClass("error when convert String To Byte Array ,error " + ex.ToString(), _logger);
             }
             return byReturn;
-		}
+        }
 
-	}
+    }
 }
