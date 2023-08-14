@@ -7,6 +7,8 @@ using BAWebLab2.Repository;
 using BAWebLab2.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 /// <summary>class xử lí thao tác của phân hệ user với tầng Database</summary>
 /// <Modified>
@@ -16,11 +18,13 @@ using BAWebLab2.Infrastructure.Repositories.IRepository;
 public class UserRepository : GenericRepository<User>, IUserRepository
 {
     private readonly BADbContext _bADbContext;
-    public UserRepository(BADbContext bADbContext)
-        : base(bADbContext)
+	private readonly IConfiguration _configuration;
+	public UserRepository(BADbContext bADbContext, IConfiguration configuration)
+        : base(bADbContext, configuration)
     {
         _bADbContext = bADbContext;
-    }
+		_configuration = configuration;
+	}
      
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>

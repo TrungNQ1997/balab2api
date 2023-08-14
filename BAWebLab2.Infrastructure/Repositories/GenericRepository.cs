@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
+using System.Net.WebSockets;
 using static Dapper.SqlMapper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -145,7 +146,9 @@ namespace BAWebLab2.Repository
             //var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
 
             //test
-            var sql = new SqlConnection(_configuration.GetConnectionString("AppSettings:ConnectionString"));
+            //var str = _configuration.["AppSettings:ConnectionStrings:DefaultConnection"];
+
+			var sql = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
             sql.Open();
             var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
 

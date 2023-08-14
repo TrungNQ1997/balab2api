@@ -2,6 +2,8 @@
 using BAWebLab2.Infrastructure.DataContext;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Repository;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace BAWebLab2.Infrastructure.Repositories
 {
@@ -13,11 +15,13 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class BGTTranportTypesRepository : GenericRepository<BGTTranportTypes>, IBGTTranportTypesRepository
     {
         private readonly BADbContext _bADbContext;
-        public BGTTranportTypesRepository(BADbContext bADbContext)
-            : base(bADbContext)
+		private readonly IConfiguration _configuration;
+		public BGTTranportTypesRepository(BADbContext bADbContext, IConfiguration configuration)
+            : base(bADbContext, configuration)
         {
             _bADbContext = bADbContext;
-        }
+			_configuration = configuration;
+		}
 
     }
 }

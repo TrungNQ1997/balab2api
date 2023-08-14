@@ -23,3 +23,12 @@ D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\BAWebLab2.Core.csproj.CoreCo
 D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\BAWebLab2.Core.dll
 D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\refint\BAWebLab2.Core.dll
 D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\BAWebLab2.Core.pdb
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Core.deps.json
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Core.runtimeconfig.json
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Core.dll
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Core.pdb
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Infrastructure.dll
+D:\github\balab2api\BAWebLab2.Core\bin\Debug\net7.0\BAWebLab2.Infrastructure.pdb
+D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\BAWebLab2.Core.csproj.CopyComplete
+D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\BAWebLab2.Core.genruntimeconfig.cache
+D:\github\balab2api\BAWebLab2.Core\obj\Debug\net7.0\ref\BAWebLab2.Core.dll

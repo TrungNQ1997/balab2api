@@ -2,6 +2,8 @@
 using BAWebLab2.Infrastructure.DataContext;
 using BAWebLab2.Infrastructure.Repositories.IRepository;
 using BAWebLab2.Repository;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace BAWebLab2.Infrastructure.Repositories
 {
@@ -13,11 +15,13 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class VehiclesRepository : GenericRepository<Vehicles>, IVehiclesRepository
     {
         private readonly BADbContext _bADbContext;
-        public VehiclesRepository(BADbContext bADbContext)
-            : base(bADbContext)
+		private readonly IConfiguration _configuration;
+		public VehiclesRepository(BADbContext bADbContext, IConfiguration configuration)
+            : base(bADbContext,configuration)
         {
             _bADbContext = bADbContext;
-        }
+			_configuration = configuration;
+		}
 
     }
 }

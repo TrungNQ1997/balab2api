@@ -1,0 +1,18 @@
+2023-08-15 01:02:30,329 [6] ERROR BAWebLab2.Core.Services.UserService - System.InvalidOperationException: The ConnectionString property has not been initialized.
+   at System.Data.SqlClient.SqlConnection.PermissionDemand()
+   at System.Data.SqlClient.SqlConnectionFactory.PermissionDemand(DbConnection outerConnection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param) in D:\github\balab2api\BAWebLab2.Infrastructure\Repositories\GenericRepository.cs:line 149
+   at BAWebLab2.Core.Services.UserService.Login(InputLogin input) in D:\github\balab2api\BAWebLab2.Core\Services\UserService.cs:line 100
+2023-08-15 01:02:37,913 [12] ERROR BAWebLab2.Core.Services.UserService - System.InvalidOperationException: The ConnectionString property has not been initialized.
+   at System.Data.SqlClient.SqlConnection.PermissionDemand()
+   at System.Data.SqlClient.SqlConnectionFactory.PermissionDemand(DbConnection outerConnection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at BAWebLab2.Repository.GenericRepository`1.CallStoredProcedure[T1](String storedProcedureName, DynamicParameters& param) in D:\github\balab2api\BAWebLab2.Infrastructure\Repositories\GenericRepository.cs:line 149
+   at BAWebLab2.Core.Services.UserService.Login(InputLogin input) in D:\github\balab2api\BAWebLab2.Core\Services\UserService.cs:line 100
