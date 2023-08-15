@@ -15,12 +15,12 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class ReportActivitySummariesRepository : GenericRepository<ReportActivitySummaries>, IReportActivitySummariesRepository
     {
         private readonly BADbContext _bADbContext;
-		private readonly IConfiguration _configuration;
-		public ReportActivitySummariesRepository(BADbContext bADbContext, IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        public ReportActivitySummariesRepository(BADbContext bADbContext, IConfiguration configuration)
             : base(bADbContext, configuration)
         {
             _bADbContext = bADbContext;
-			_configuration = configuration;
-		}
+            _configuration = configuration;
+        }
     }
 }

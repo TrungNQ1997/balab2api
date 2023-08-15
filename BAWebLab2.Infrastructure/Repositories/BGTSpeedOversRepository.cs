@@ -15,12 +15,12 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class BGTSpeedOversRepository : GenericRepository<BGTSpeedOvers>, IBGTSpeedOversRepository
     {
         private readonly BADbContext _bADbContext;
-		private readonly IConfiguration _configuration;
-		public BGTSpeedOversRepository(BADbContext bADbContext, IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        public BGTSpeedOversRepository(BADbContext bADbContext, IConfiguration configuration)
             : base(bADbContext, configuration)
         {
             _bADbContext = bADbContext;
-			_configuration = configuration;
-		}
+            _configuration = configuration;
+        }
     }
 }

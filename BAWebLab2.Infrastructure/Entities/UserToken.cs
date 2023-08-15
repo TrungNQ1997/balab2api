@@ -2,6 +2,11 @@
 
 namespace BAWebLab2.Infrastructure.Entities
 {
+    /// <summary>class chứa thông tin token</summary>
+    /// <Modified>
+    /// Name Date Comments
+    /// trungnq3 8/15/2023 created
+    /// </Modified>
     [NotMapped]
     public class UserToken
     {

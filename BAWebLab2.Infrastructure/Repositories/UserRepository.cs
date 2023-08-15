@@ -18,14 +18,14 @@ using Microsoft.Extensions.Configuration;
 public class UserRepository : GenericRepository<User>, IUserRepository
 {
     private readonly BADbContext _bADbContext;
-	private readonly IConfiguration _configuration;
-	public UserRepository(BADbContext bADbContext, IConfiguration configuration)
+    private readonly IConfiguration _configuration;
+    public UserRepository(BADbContext bADbContext, IConfiguration configuration)
         : base(bADbContext, configuration)
     {
         _bADbContext = bADbContext;
-		_configuration = configuration;
-	}
-     
+        _configuration = configuration;
+    }
+
     /// <summary>xóa danh sách user</summary>
     /// <param name="input">đối tượng chứa danh sách user cần xóa, id user thực hiện xóa</param>
     /// <returns>chuỗi kết quả xóa: 0- thành công, khác 0- thất bại</returns>
@@ -45,9 +45,9 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("id", (item.Id));
-                parameters.Add("username", (item.Username)); 
-                parameters.Add("userId", (userId)); 
-                parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output); 
+                parameters.Add("username", (item.Username));
+                parameters.Add("userId", (userId));
+                parameters.Add("ret", 0, DbType.Int64, ParameterDirection.Output);
                 connection.Query("BAWeb_User_DeleteUserInfo", parameters, commandType: CommandType.StoredProcedure);
                 var result = parameters.Get<Int64>("ret");
                 myObject.List.Add((int)result);
@@ -59,7 +59,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return myObject;
 
     }
-     
+
     /// <summary>thêm mới đối tượng</summary>
     /// <param name="user">user muốn thêm</param>
     /// <Modified>
@@ -80,12 +80,12 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     /// trungnq3 7/12/2023 created
     /// </Modified>
     public new void Update(User user)
-    { 
+    {
         user.DateEdited = DateTime.Now;
         _bADbContext.Entry(user).State = EntityState.Modified;
         // không update lại pass khi sửa
         _bADbContext.Entry(user).Property(x => x.Password).IsModified = false;
-        _bADbContext.SaveChanges(); 
+        _bADbContext.SaveChanges();
     }
 
 }

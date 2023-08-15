@@ -20,18 +20,18 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyAllowSpecificOrigins,
                           policy =>
                           {
-                               policy.AllowAnyOrigin()
-                                                  .AllowAnyHeader()
-                                                  .AllowAnyMethod();
+                              policy.AllowAnyOrigin()
+                                                 .AllowAnyHeader()
+                                                 .AllowAnyMethod();
                           });
 });
 
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterInfrastructureDependencies(builder.Configuration);
 builder.Services.RegisterCoreDependencies(builder.Configuration);
- 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

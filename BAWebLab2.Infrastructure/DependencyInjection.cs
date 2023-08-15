@@ -28,7 +28,7 @@ namespace BAWebLab2.Infrastructure
         {
             services.AddDbContext<BADbContext>(options =>
             {
-                options.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BAWebManager;User ID=trungnq2;password=123;Encrypt=False;");  //Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 
             });
 

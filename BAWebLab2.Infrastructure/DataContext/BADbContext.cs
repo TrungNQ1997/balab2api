@@ -44,8 +44,6 @@ namespace BAWebLab2.Infrastructure.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<UserToken>()
-            //.HasKey(i => i.Token);
             modelBuilder.Entity<Vehicles>()
             .HasKey(i => i.PK_VehicleID);
             modelBuilder.Entity<BGTSpeedOvers>()

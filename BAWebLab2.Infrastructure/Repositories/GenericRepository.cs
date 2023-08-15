@@ -29,9 +29,7 @@ namespace BAWebLab2.Repository
             _context = context;
             _configuration = configuration;
         }
-        //static SqlConnection sql = new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BAWebManager;User ID=trungnq2;password=123;Encrypt=False;");
-
-
+         
         /// <summary>thêm mới đối tượng</summary>
         /// <param name="entity">đối tượng muốn thêm</param>
         /// <Modified>
@@ -139,25 +137,14 @@ namespace BAWebLab2.Repository
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public MultipleResult<T1> CallStoredProcedure<T1>(string storedProcedureName, ref DynamicParameters param)
-        {
-            //using var connection = _context.Database.GetDbConnection();
-            //connection.Open();
-
-            //var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
-
-            //test
-            //var str = _configuration.["AppSettings:ConnectionStrings:DefaultConnection"];
-
-			var sql = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        { 
+            var sql = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
             sql.Open();
-            var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
-
+            var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure); 
             var resultList = multi.Read<T1>().ToList();
-            sql.Close();
-            //connection.Close();
+            sql.Close(); 
             return new MultipleResult<T1> { ListPrimary = resultList }; 
         }
-
-
+         
     }
 }

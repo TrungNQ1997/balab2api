@@ -15,13 +15,13 @@ namespace BAWebLab2.Infrastructure.Repositories
     public class VehiclesRepository : GenericRepository<Vehicles>, IVehiclesRepository
     {
         private readonly BADbContext _bADbContext;
-		private readonly IConfiguration _configuration;
-		public VehiclesRepository(BADbContext bADbContext, IConfiguration configuration)
-            : base(bADbContext,configuration)
+        private readonly IConfiguration _configuration;
+        public VehiclesRepository(BADbContext bADbContext, IConfiguration configuration)
+            : base(bADbContext, configuration)
         {
             _bADbContext = bADbContext;
-			_configuration = configuration;
-		}
+            _configuration = configuration;
+        }
 
     }
 }

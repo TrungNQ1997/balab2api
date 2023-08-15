@@ -24,7 +24,7 @@ namespace BAWebLab2.Core
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public static void RegisterCoreDependencies(this IServiceCollection services, IConfiguration Configuration)
-        { 
+        {
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration["RedisCacheServerUrl"];

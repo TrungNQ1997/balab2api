@@ -13,6 +13,13 @@ namespace BAWebLab2.Core.Services.IService
         /// </Modified>
         public bool FakeDataAndCheckToken(UserToken input);
 
+        /// <summary>kiểm tra token user phân hệ user</summary>
+        /// <param name="input">thông tin user và token</param>
+        /// <returns>true - token đúng, false- token sai</returns>
+        /// <Modified>
+        /// Name Date Comments
+        /// trungnq3 8/15/2023 created
+        /// </Modified>
         public bool CheckTokenUser(UserToken input);
     }
 }

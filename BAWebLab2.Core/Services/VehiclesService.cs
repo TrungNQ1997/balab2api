@@ -27,7 +27,7 @@ namespace BAWebLab2.Core.Services
         /// trungnq3 7/27/2023 created
         /// </Modified>
         public IEnumerable<Vehicles> FindByCompanyID(int companyID)
-        { 
+        {
             return _vehiclesRepository.Find(m => m.FK_CompanyID == companyID && m.IsDeleted == false);
         }
     }
