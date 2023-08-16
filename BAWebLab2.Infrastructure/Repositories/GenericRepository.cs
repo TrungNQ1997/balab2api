@@ -4,6 +4,7 @@ using BAWebLab2.Model;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
@@ -24,12 +25,13 @@ namespace BAWebLab2.Repository
         protected readonly BADbContext _context;
         private readonly IConfiguration _configuration;
 
+
         public GenericRepository(BADbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
-         
+
         /// <summary>thêm mới đối tượng</summary>
         /// <param name="entity">đối tượng muốn thêm</param>
         /// <Modified>
@@ -137,14 +139,35 @@ namespace BAWebLab2.Repository
         /// trungnq3 7/12/2023 created
         /// </Modified>
         public MultipleResult<T1> CallStoredProcedure<T1>(string storedProcedureName, ref DynamicParameters param)
-        { 
+        {
             var sql = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-            sql.Open();
-            var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure); 
-            var resultList = multi.Read<T1>().ToList();
-            sql.Close(); 
-            return new MultipleResult<T1> { ListPrimary = resultList }; 
+            var multiReturn = new MultipleResult<T1>();
+            try
+            {
+                sql.Open();
+                var multi = sql.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
+                multiReturn.ListPrimary = multi.Read<T1>().ToList();
+                sql.Close();
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    LogHelper.LogExceptionMessage(ex);
+                    using var connection = _context.Database.GetDbConnection();
+                    connection.Open();
+                    var multi = connection.QueryMultiple(storedProcedureName, param, commandType: CommandType.StoredProcedure);
+                    multiReturn.ListPrimary = multi.Read<T1>().ToList();
+                    connection.Close();
+                }
+                catch (Exception ex2)
+                {
+                    LogHelper.LogExceptionMessage(ex2);
+                }
+            }
+
+            return multiReturn;
         }
-         
+
     }
 }
